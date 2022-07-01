@@ -1,30 +1,32 @@
 function createPad(gameBoard) {
-  const pad = document.createElement("div");
-  pad.classList.add("pad");
-  gameBoard.appendChild(pad);
+    const pad = document.createElement("div");
+    pad.classList.add("pad");
+    gameBoard.appendChild(pad);
 }
 
+
+
 function movePad() {
-  let pad = document.querySelector(".pad");
-  console.log(pad.style.gridColumnStart);
 
-  window.addEventListener("keydown", function (e) {
-    var rightStart = parseInt(pad.style.gridColumnStart);
-    var rightEnd = parseInt(pad.style.gridColumnEnd);
+    window.addEventListener("keydown", function (e) {
+        let pad = document.querySelector(".pad");
+        let padStyle = window.getComputedStyle(pad)
+        let padStart = parseInt(padStyle.gridColumnStart)
+        let padEnd = parseInt(padStyle.gridColumnEnd)
 
-    if (e.key === "ArrowRight") {
-      pad.style.gridColumnStart = rightStart + 1;
-      pad.style.gridColumnEnd = rightEnd + 1;
-    }
+        if (e.key === "ArrowRight" && padStart < 19) {
+            pad.style.gridColumnStart = padStart + 1;
+            pad.style.gridColumnEnd = padEnd + 1;
+        }
 
-    if (e.key === "ArrowLeft") {
-      pad.style.gridColumnStart -= 1;
-      pad.style.gridColumnEnd -= 1;
-    }
-  });
+        if (e.key === "ArrowLeft" && padEnd > 6) {
+            pad.style.gridColumnStart = padStart - 1;
+            pad.style.gridColumnEnd = padEnd - 1;
+        }
+    });
 
-  // grid-column-start: 10; /*x*/
-  // grid-column-end: 15;
+    // grid-column-start: 10; /*x*/
+    // grid-column-end: 15;
 }
 
 export { createPad, movePad };
