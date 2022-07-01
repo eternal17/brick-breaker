@@ -1,6 +1,6 @@
 import { draw as drawBrick } from './bricks.js'
 import { drawBall as addBall } from './ball.js'
-import { createPad as addPad, movePad as movePad} from './pad.js'
+import { createPad as addPad, movePadAndBall as move } from './pad.js'
 
 
 
@@ -12,10 +12,10 @@ function draw() {
     drawBrick(gameBoard)
     addPad(gameBoard)
     addBall(gameBoard)
-    movePad()
+    move()
 }
 
- 
+
 
 // needs to go in the main loop function
 draw()
