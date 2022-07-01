@@ -30,22 +30,25 @@ the file name in every url.
             display: grid;
             /* this is going to be useful to clarify the dimensions of the part of 
             the screen that is playable, grid by grid */
-            grid-template-rows: repeat(22, 1fr);
-            grid-template-columns: repeat(22, 1fr);
+            grid-template-rows: repeat(23, 1fr);
+            grid-template-columns: repeat(23, 1fr);
         }
 
         /* The elements below will eventually be filled with the needed style attributes */
         .pad {
             background-color: white;
-            border: .25vmin solid red;
-            grid-row-start: 21;
+            border: .25vmin solid blue;
+            grid-row-start: 22;
             grid-column-start: 10;
-            grid-column-end: 14;
+            grid-column-end: 15;
         }
 
         .ball {}
 
-        .bricks {}
+        .brick {
+            background-color: green;
+            border: .25vmin solid red;
+        }
     </style>
 
     <script src="game.js" defer type="module"></script>
