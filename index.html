@@ -25,8 +25,8 @@ the file name in every url.
 
         #game-board {
             background-color: black;
-            width: 75vmin;
-            height: 50vmin;
+            width: 70vmin;
+            height: 70vmin;
             display: grid;
             /* this is going to be useful to clarify the dimensions of the part of 
             the screen that is playable, grid by grid */
@@ -39,12 +39,26 @@ the file name in every url.
             background-color: white;
             border: .25vmin solid blue;
             grid-row-start: 22;
-            grid-column-start: 10;
+            grid-column-start: 10; /*x*/
             grid-column-end: 15;
             border-radius: 10px
         }
 
-        .ball {}
+        .ball {
+            background-color: purple;
+            border: .25vmin solid blue;
+            border-radius: 50%;
+            height: 15px;
+            width: 15px;
+            grid-row-start: 21;
+            grid-column-start: 12;
+            display:flex;
+            justify-content: center;
+            align-items: center;            
+
+            
+
+        }
 
         .brick {
             background-color: green;
