@@ -5,10 +5,10 @@ function createPad(gameBoard) {
 }
 
 
+export let hasSpaceBeenPressed = false
 
 function movePadAndBall() {
 
-    let hasSpaceBeenPressed = false
 
     window.addEventListener("keydown", function (e) {
 
