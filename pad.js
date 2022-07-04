@@ -5,14 +5,14 @@ function createPad(gameBoard) {
 }
 
 
-export let hasSpaceBeenPressed = false
+export let hasSpaceBeenPressed = {ball:false}
 
 function movePadAndBall() {
 
 
     window.addEventListener("keydown", function (e) {
 
-        if (e.code === 'Space') hasSpaceBeenPressed = true
+        if (e.code === 'Space') hasSpaceBeenPressed.ball = true 
 
         let pad = document.querySelector(".pad");
         let ball = document.querySelector(".ball")
@@ -22,7 +22,7 @@ function movePadAndBall() {
         let padEnd = parseInt(padStyle.gridColumnEnd)
         let ballStart = parseInt(ballStyle.gridColumnStart)
 
-        if (e.key === "ArrowRight" && padStart < 19 && !hasSpaceBeenPressed) {
+        if (e.key === "ArrowRight" && padStart < 19 && !hasSpaceBeenPressed.ball) {
             pad.style.gridColumnStart = padStart + 1;
             pad.style.gridColumnEnd = padEnd + 1;
             ball.style.gridColumnStart = ballStart + 1
@@ -31,7 +31,7 @@ function movePadAndBall() {
             pad.style.gridColumnEnd = padEnd + 1;
         }
 
-        if (e.key === "ArrowLeft" && padEnd > 6 && !hasSpaceBeenPressed) {
+        if (e.key === "ArrowLeft" && padEnd > 6 && !hasSpaceBeenPressed.ball) {
             pad.style.gridColumnStart = padStart - 1;
             pad.style.gridColumnEnd = padEnd - 1;
             ball.style.gridColumnStart = ballStart - 1

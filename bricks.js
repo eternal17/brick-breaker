@@ -7,7 +7,7 @@ export function draw(gameBoard) {
         const brick = document.createElement('div')
         brick.classList.add('brick')
         brick.style.gridRowStart = 12
-        brick.style.gridColumnStart = i;
+        brick.style.gridColumnStart = i; 
         gameBoard.appendChild(brick)
     }
 }
