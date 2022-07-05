@@ -54,18 +54,24 @@ export let hasSpaceBeenPressed = { ball: false }
 
 function movePad() {
     let pad = document.querySelector('.pad')
-    const padRect = pad.getBoundingClientRect()
 
     let padStyle = window.getComputedStyle(pad)
 
     window.addEventListener("keydown", function (e) {
+        const padRect = pad.getBoundingClientRect()
 
-        if (e.key === 'ArrowLeft' && parseInt(padStyle.right) <= 460) {
-            pad.style.right = `${parseInt(padStyle.right) + 10}px`
+        let matrix = new WebKitCSSMatrix(padStyle.transform)
+        if (e.key === 'ArrowLeft' && parseInt(padRect.left) >= parseInt(gameBoardRect.left) + 10) {
+
+            console.log('padLeft', padRect.left)
+            console.log(gameBoardRect.left)
+            // pad.style.right = `${parseInt(padStyle.right) + 10}px`
+            // console.log(padStyle.transform.)
+            pad.style.transform = `translateX(${matrix.m41 - 10}px)`
         }
 
-        if (e.key === 'ArrowRight' && parseInt(padStyle.right) >= 10) {
-            pad.style.right = `${parseInt(padStyle.right) - 10}px`
+        if (e.key === 'ArrowRight' && parseInt(padRect.right) <= parseInt(gameBoardRect.right) - 10) {
+            pad.style.transform = `translateX(${matrix.m41 + 10}px)`
         }
 
 

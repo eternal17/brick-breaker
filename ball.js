@@ -60,7 +60,7 @@ const INITIAL_VELOCITY = 0.025
 
 const gameBoard = document.querySelector('#game-board')
 export const gameBoardRect = gameBoard.getBoundingClientRect()
-console.log(gameBoardRect)
+console.log('testing', gameBoardRect)
 
 const test = document.querySelector('.ball')
 const testRect = test.getBoundingClientRect()
@@ -95,8 +95,8 @@ export default class Ball {
 
   // need to figure out the reset position of the ball, ie on the middle of the pad
   reset() {
-    this.x = 50
-    this.y = 50
+    this.x = 25
+    this.y = 25
     this.direction = { x: 0 }
 
     // while loop may not be needed in our case as the ball should be moving mainly horizontally
