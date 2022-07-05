@@ -45,11 +45,11 @@
 //     // grid-column-end: 15;
 // }
 
-import { gameBoardRect} from "./ball.js";
+import { gameBoardRect } from "./ball.js";
 
 
 
-export let hasSpaceBeenPressed = {ball:false}
+export let hasSpaceBeenPressed = { ball: false }
 
 
 function movePad() {
@@ -59,31 +59,26 @@ function movePad() {
     let padStyle = window.getComputedStyle(pad)
 
     window.addEventListener("keydown", function (e) {
-        
-        if(e.key==='ArrowLeft'){
-            // console.log('--',padStyle);
-            // console.log(parseInt(padStyle.right));
-           // console.log( `${parseInt(padStyle.right)+1}px`);
-           //`${parseInt(padStyle.right)+1}px`
-            pad.style.right =  `${parseInt(padStyle.right)+10}px`
-            console.log(pad.style.right);
+
+        if (e.key === 'ArrowLeft' && parseInt(padStyle.right) <= 460) {
+            pad.style.right = `${parseInt(padStyle.right) + 10}px`
+        }
+
+        if (e.key === 'ArrowRight' && parseInt(padStyle.right) >= 10) {
+            pad.style.right = `${parseInt(padStyle.right) - 10}px`
+        }
 
 
-            // (padRect.right < gameBoardRect.right ){
-            
-            }
-        
-        
 
     })
 }
 
 function movePadAndBall() {
     window.addEventListener("keydown", function (e) {
-        
+
     })
 }
-       
+
 
 
 export { movePad, movePadAndBall };
