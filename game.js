@@ -1,48 +1,51 @@
-import { draw as drawBrick } from "./bricks.js";
-import { drawBall as addBall, moveBall as ballMovement, checkWallCollision as wallCollision} from "./ball.js";
-import { createPad as addPad, movePadAndBall as move } from "./pad.js";
+// import { draw as drawBrick } from "./bricks.js";
+// import { drawBall as addBall, moveBall as ballMovement, checkWallCollision as wallCollision} from "./ball.js";
+// import { createPad as addPad, movePadAndBall as move } from "./pad.js";
 
-let lastRenderTime = 0;
+
+import Ball from './ball.js'
+const ball = new Ball(document.getElementById('ball'))
+let lastRenderTime
 
 
 function main(time) {
-  requestAnimationFrame(main);
-  const secondsSinceLastRender = (time - lastRenderTime) / 1000;
-  if (secondsSinceLastRender < 1/4) return;
+
+  if (lastRenderTime != null) {
+    const secondsSinceLastRender = (time - lastRenderTime);
+    ball.updateBallMovement(secondsSinceLastRender)
+  }
+  // if (secondsSinceLastRender < 1 / 4) return;
+
+
+
   lastRenderTime = time;
-  //console.log(secondsSinceLastRender);
-  ballMovement();
-  wallCollision()
-  let mainball = document.querySelector('.ball');
-//console.log(mainball);
-
-
+  requestAnimationFrame(main);
 }
 
 requestAnimationFrame(main);
 
-const gameBoard = document.getElementById("game-board");
+// const gameBoard = document.getElementById("game-board");
 
-drawBrick(gameBoard);
-addBall(gameBoard);
-addPad(gameBoard);
-move();
-
-
+// drawBrick(gameBoard);
+// addBall(gameBoard);
+// addPad(gameBoard);
+// move();
 
 
-// let mainball = document.querySelector('.ball');
-// //console.log(mainball);
-// let ballRect = mainball.getBoundingClientRect()
-// console.log('ballX', ballRect.left);
-// console.log('ballY', ballRect.top);
 
-//ballPhysics(gameBoard)
 
-// function draw() {
-//     //gameBoard.innerHTML = ''
-//     move();
-// }
-// draw();
+// // let mainball = document.querySelector('.ball');
+// // //console.log(mainball);
+// // let ballRect = mainball.getBoundingClientRect()
+// // console.log('ballX', ballRect.left);
+// // console.log('ballY', ballRect.top);
 
-function update() {}
+// //ballPhysics(gameBoard)
+
+// // function draw() {
+// //     //gameBoard.innerHTML = ''
+// //     move();
+// // }
+// // draw();
+
+// function update() {}
