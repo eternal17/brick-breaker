@@ -54,8 +54,12 @@
 
 const INITIAL_VELOCITY = 0.025
 
-const gameBoard = document.querySelector('#game-board')
-const gameBoardRect = gameBoard.getBoundingClientRect()
+
+
+
+
+ const gameBoard = document.querySelector('#game-board')
+ export const gameBoardRect = gameBoard.getBoundingClientRect()
 console.log(gameBoardRect)
 
 const test = document.querySelector('.ball')

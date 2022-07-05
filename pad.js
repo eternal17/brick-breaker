@@ -45,4 +45,45 @@
 //     // grid-column-end: 15;
 // }
 
-// export { createPad, movePadAndBall };
+import { gameBoardRect} from "./ball.js";
+
+
+
+export let hasSpaceBeenPressed = {ball:false}
+
+
+function movePad() {
+    let pad = document.querySelector('.pad')
+    const padRect = pad.getBoundingClientRect()
+
+    let padStyle = window.getComputedStyle(pad)
+
+    window.addEventListener("keydown", function (e) {
+        
+        if(e.key==='ArrowLeft'){
+            // console.log('--',padStyle);
+            // console.log(parseInt(padStyle.right));
+           // console.log( `${parseInt(padStyle.right)+1}px`);
+           //`${parseInt(padStyle.right)+1}px`
+            pad.style.right =  `${parseInt(padStyle.right)+10}px`
+            console.log(pad.style.right);
+
+
+            // (padRect.right < gameBoardRect.right ){
+            
+            }
+        
+        
+
+    })
+}
+
+function movePadAndBall() {
+    window.addEventListener("keydown", function (e) {
+        
+    })
+}
+       
+
+
+export { movePad, movePadAndBall };

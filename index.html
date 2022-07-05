@@ -39,15 +39,16 @@ the file name in every url.
         }
 
         /* The elements below will eventually be filled with the needed style attributes */
-        /* .pad {
+        .pad {
             background-color: white;
             border: .25vmin solid blue;
             position: absolute;
             width: 10vh;
             height: 1.5vh;
             bottom: 2vw;
-            border-radius: 10px
-        } */
+            border-radius: 10px;
+            right: 300px;
+        }
 
         .ball {
             --x: 50;
@@ -80,6 +81,7 @@ the file name in every url.
 
 <body>
     <div id="game-board">
+        <div class = 'pad'></div>
         <!-- <div class="pad"></div> -->
         <div class="ball" id="ball"></div>
     </div>
