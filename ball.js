@@ -56,6 +56,11 @@ const INITIAL_VELOCITY = 0.025
 
 const gameBoard = document.querySelector('#game-board')
 const gameBoardRect = gameBoard.getBoundingClientRect()
+console.log(gameBoardRect)
+
+const test = document.querySelector('.ball')
+const testRect = test.getBoundingClientRect()
+console.log(testRect)
 export default class Ball {
   constructor(ballElement) {
     this.ballElement = ballElement
@@ -91,10 +96,10 @@ export default class Ball {
     this.direction = { x: 0 }
 
     // while loop may not be needed in our case as the ball should be moving mainly horizontally
-    while (Math.abs(this.direction.x) <= .2 || Math.abs(this.direction.y) >= 0.9) {
-      const heading = randomNumberBetween(0, 2 * Math.PI)
-      this.direction = { x: Math.cos(heading), y: Math.sin(heading) }
-    }
+    // while (Math.abs(this.direction.x) <= .2 || Math.abs(this.direction.y) >= 0.9) {
+    // }
+    const heading = randomNumberBetween(0, 2 * Math.PI)
+    this.direction = { x: Math.cos(heading), y: Math.sin(heading) }
     this.velocity = INITIAL_VELOCITY
   }
   updateBallMovement(secondsSinceLastRender) {
@@ -102,11 +107,11 @@ export default class Ball {
     this.y += this.direction.y * this.velocity * secondsSinceLastRender
     const rect = this.rect()
     // console.log(gameBoardRect)
-    if (rect.bottom >= gameBoardRect.height || rect.top <= 0) {
-      this.direction.y *= -1
-    }
-    if (rect.right >= gameBoardRect.width || rect.left <= 0) {
+    if (rect.right >= gameBoardRect.right || rect.left <= gameBoardRect.left) {
       this.direction.x *= -1
+    }
+    if (rect.bottom >= gameBoardRect.bottom || rect.top <= gameBoardRect.top) {
+      this.direction.y *= -1
     }
   }
 }
