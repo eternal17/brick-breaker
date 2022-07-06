@@ -1,6 +1,39 @@
-// import { hasSpaceBeenPressed as beenPressed } from "./pad.js";
+import { hasSpaceBeenPressed as beenPressed } from "./pad.js";
+let xcord;
+let ycord;
 
+function ballTest() {
+  if (hasSpaceBeenPressed.ball) {
+    getCoords();
+    removeCSS();
+  }
+}
 
+function getCoords() {
+  let ball = document.querySelector(".ball");
+  let ballRect = ball.getBoundingClientRect();
+  xcord = ballRect.x;
+  ycord = ballRect.y;
+
+  
+  return { xcord, ycord };
+}
+
+function removeCSS() {
+  let ball = document.querySelector(".ball");
+  ball.style.removeProperty("height")
+  ball.style.removeProperty("grid-row-start")
+  ball.style.removeProperty("grid-column-start")
+
+  
+console.log(ball.getBoundingClientRect());
+
+  // ball.style.setProperty("grid-column-start", null);
+  // ball.style.setProperty("grid-column-start", null);
+
+  //document.getElementById(ball).style.backgroundColor = 'pink';
+}
+export { ballTest };
 
 // let collided = false
 
@@ -54,15 +87,11 @@
 
 // export { drawBall, moveBall, checkWallCollision };
 
-const INITIAL_VELOCITY = 0.025
+const INITIAL_VELOCITY = 0.025;
 
-
-
-
-
-const gameBoard = document.querySelector('#game-board')
-export const gameBoardRect = gameBoard.getBoundingClientRect()
-import { hasSpaceBeenPressed } from './pad.js'
+const gameBoard = document.querySelector("#game-board");
+export const gameBoardRect = gameBoard.getBoundingClientRect();
+import { hasSpaceBeenPressed } from "./pad.js";
 // export default class Ball {
 //   constructor(ballElement) {
 
@@ -122,5 +151,5 @@ import { hasSpaceBeenPressed } from './pad.js'
 // }
 
 function randomNumberBetween(min, max) {
-  return Math.random() * (max - min) + min
+  return Math.random() * (max - min) + min;
 }

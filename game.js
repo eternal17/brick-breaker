@@ -1,6 +1,7 @@
 // import { draw as drawBrick } from "./bricks.js";
 // import { drawBall as addBall, moveBall as ballMovement, checkWallCollision as wallCollision} from "./ball.js";
 // import { createPad as addPad, movePadAndBall as move } from "./pad.js";
+import { ballTest } from "./ball.js";
 import { movePadAndBall } from "./pad.js";
 
 // import Ball from "./ball.js";
@@ -14,9 +15,11 @@ function main(time) {
     const secondsSinceLastRender = time - lastRenderTime;
     // ball.updateBallMovement(secondsSinceLastRender);
 
+    ballTest()
   }
   // if (secondsSinceLastRender < 1 / 4) return;
 
+  
   lastRenderTime = time;
   requestAnimationFrame(main);
 }

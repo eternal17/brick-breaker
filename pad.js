@@ -4,53 +4,48 @@
 //     gameBoard.appendChild(pad);
 // }
 
-
-export let hasSpaceBeenPressed = { ball: false }
+export let hasSpaceBeenPressed = { ball: false };
 
 function movePadAndBall() {
+  window.addEventListener("keydown", function (e) {
+    e.preventDefault();
 
+    if (e.code === "Space") hasSpaceBeenPressed.ball = true;
 
-    window.addEventListener("keydown", function (e) {
+    let pad = document.querySelector(".pad");
+    let ball = document.querySelector(".ball");
+    let padStyle = window.getComputedStyle(pad);
+    let ballStyle = window.getComputedStyle(ball);
+    let padStart = parseInt(padStyle.gridColumnStart);
+    let padEnd = parseInt(padStyle.gridColumnEnd);
+    let ballStart = parseInt(ballStyle.gridColumnStart);
+    console.log(ballStyle.top);
+    if (e.key === "ArrowRight" && padStart < 19 && !hasSpaceBeenPressed.ball) {
+      pad.style.gridColumnStart = padStart + 1;
+      pad.style.gridColumnEnd = padEnd + 1;
+      ball.style.gridColumnStart = ballStart + 1;
+    } else if (e.key === "ArrowRight" && padStart < 19) {
+      pad.style.gridColumnStart = padStart + 1;
+      pad.style.gridColumnEnd = padEnd + 1;
+    }
 
-        if (e.code === 'Space') hasSpaceBeenPressed.ball = true
+    if (e.key === "ArrowLeft" && padEnd > 6 && !hasSpaceBeenPressed.ball) {
+      pad.style.gridColumnStart = padStart - 1;
+      pad.style.gridColumnEnd = padEnd - 1;
+      ball.style.gridColumnStart = ballStart - 1;
+    } else if (e.key === "ArrowLeft" && padEnd > 6) {
+      pad.style.gridColumnStart = padStart - 1;
+      pad.style.gridColumnEnd = padEnd - 1;
+    }
+  });
 
-        let pad = document.querySelector(".pad");
-        let ball = document.querySelector(".ball")
-        let padStyle = window.getComputedStyle(pad)
-        let ballStyle = window.getComputedStyle(ball)
-        let padStart = parseInt(padStyle.gridColumnStart)
-        let padEnd = parseInt(padStyle.gridColumnEnd)
-        let ballStart = parseInt(ballStyle.gridColumnStart)
-        console.log(ballStyle.top)
-        if (e.key === "ArrowRight" && padStart < 19 && !hasSpaceBeenPressed.ball) {
-            pad.style.gridColumnStart = padStart + 1;
-            pad.style.gridColumnEnd = padEnd + 1;
-            ball.style.gridColumnStart = ballStart + 1
-        } else if (e.key === "ArrowRight" && padStart < 19) {
-            pad.style.gridColumnStart = padStart + 1;
-            pad.style.gridColumnEnd = padEnd + 1;
-        }
-
-        if (e.key === "ArrowLeft" && padEnd > 6 && !hasSpaceBeenPressed.ball) {
-            pad.style.gridColumnStart = padStart - 1;
-            pad.style.gridColumnEnd = padEnd - 1;
-            ball.style.gridColumnStart = ballStart - 1
-        } else if (e.key === "ArrowLeft" && padEnd > 6) {
-            pad.style.gridColumnStart = padStart - 1;
-            pad.style.gridColumnEnd = padEnd - 1;
-        }
-    });
-
-    // grid-column-start: 10; /*x*/
-    // grid-column-end: 15;
+  // grid-column-start: 10; /*x*/
+  // grid-column-end: 15;
 }
 
 import { gameBoardRect } from "./ball.js";
 
-
-
 // export let hasSpaceBeenPressed = { ball: false }
-
 
 // function movePad() {
 //     let pad = document.querySelector('.pad')
@@ -74,8 +69,6 @@ import { gameBoardRect } from "./ball.js";
 //             pad.style.transform = `translateX(${matrix.m41 + 10}px)`
 //         }
 
-
-
 //     })
 // }
 
@@ -84,7 +77,5 @@ import { gameBoardRect } from "./ball.js";
 
 //     })
 // }
-
-
 
 export { movePadAndBall };
