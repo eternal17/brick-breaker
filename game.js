@@ -1,29 +1,28 @@
 // import { draw as drawBrick } from "./bricks.js";
 // import { drawBall as addBall, moveBall as ballMovement, checkWallCollision as wallCollision} from "./ball.js";
 // import { createPad as addPad, movePadAndBall as move } from "./pad.js";
-import { movePad } from "./pad.js";
+import { movePadAndBall } from "./pad.js";
 
-import Ball from "./ball.js";
-
-
-const ball = new Ball(document.getElementById("ball"));
+// import Ball from "./ball.js";
+import { hasSpaceBeenPressed } from "./pad.js";
+// const ball = new Ball(document.getElementById("ball"));
 let lastRenderTime;
 
 function main(time) {
   if (lastRenderTime != null) {
-    
+
     const secondsSinceLastRender = time - lastRenderTime;
-    ball.updateBallMovement(secondsSinceLastRender);
+    // ball.updateBallMovement(secondsSinceLastRender);
+
   }
   // if (secondsSinceLastRender < 1 / 4) return;
-  
+
   lastRenderTime = time;
   requestAnimationFrame(main);
 }
 
 requestAnimationFrame(main);
-movePad();
-
+movePadAndBall()
 // const gameBoard = document.getElementById("game-board");
 
 // drawBrick(gameBoard);
