@@ -19,29 +19,14 @@ function getCoords() {
   return { xcord, ycord };
 }
 
-function setX(value) {
+function setBallX(value) {
   ball.style.left = value + 'px'
 }
 
-function setY(value) {
+function setBallY(value) {
   ball.style.top = value + 'px'
 }
 
-//   get x() {
-//     return parseFloat(getComputedStyle(this.ballElement).getPropertyValue('--x'))
-//   }
-
-//   set x(value) {
-//     this.ballElement.style.setProperty('--x', value)
-//   }
-
-//   get y() {
-//     return parseFloat(getComputedStyle(this.ballElement).getPropertyValue('--y'))
-//   }
-
-//   set y(value) {
-//     this.ballElement.style.setProperty('--y', value)
-//   }
 
 
 
