@@ -3,7 +3,7 @@
 // import { createPad as addPad, movePadAndBall as move } from "./pad.js";
 import { ballTest } from "./ball.js";
 import { movePadAndBall } from "./pad.js";
-
+// import { getCoords } from "./ball.js";
 // import Ball from "./ball.js";
 import { hasSpaceBeenPressed } from "./pad.js";
 // const ball = new Ball(document.getElementById("ball"));
@@ -19,13 +19,25 @@ function main(time) {
   }
   // if (secondsSinceLastRender < 1 / 4) return;
 
-  
+
   lastRenderTime = time;
   requestAnimationFrame(main);
 }
 
 requestAnimationFrame(main);
 movePadAndBall()
+
+let spacePress = function (event) {
+  if (event.code === 'Space') {
+    console.log(getCoords())
+  }
+  document.removeEventListener('keydown', spacePress)
+}
+
+document.addEventListener('keydown', spacePress)
+
+
+
 // const gameBoard = document.getElementById("game-board");
 
 // drawBrick(gameBoard);

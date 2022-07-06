@@ -2,39 +2,48 @@ import { hasSpaceBeenPressed as beenPressed } from "./pad.js";
 let xcord;
 let ycord;
 
+const ball = document.querySelector(".ball");
+
+
 function ballTest() {
   if (hasSpaceBeenPressed.ball) {
     getCoords();
-    removeCSS();
   }
 }
 
+// get coordintes before space has been pressed
 function getCoords() {
-  let ball = document.querySelector(".ball");
   let ballRect = ball.getBoundingClientRect();
   xcord = ballRect.x;
   ycord = ballRect.y;
-
-  
   return { xcord, ycord };
 }
 
-function removeCSS() {
-  let ball = document.querySelector(".ball");
-  ball.style.gridRowStart = '1';
-  ball.style.gridColumnStart = '1';
-
-  //ball.style.removeProperty("grid-row-start")
-  //ball.style.removeProperty("grid-column-start")
-
-  
-console.log(ball.getBoundingClientRect());
-
-  // ball.style.setProperty("grid-column-start", null);
-  // ball.style.setProperty("grid-column-start", null);
-
-  //document.getElementById(ball).style.backgroundColor = 'pink';
+function setX(value) {
+  ball.style.left = value + 'px'
 }
+
+function setY(value) {
+  ball.style.top = value + 'px'
+}
+
+//   get x() {
+//     return parseFloat(getComputedStyle(this.ballElement).getPropertyValue('--x'))
+//   }
+
+//   set x(value) {
+//     this.ballElement.style.setProperty('--x', value)
+//   }
+
+//   get y() {
+//     return parseFloat(getComputedStyle(this.ballElement).getPropertyValue('--y'))
+//   }
+
+//   set y(value) {
+//     this.ballElement.style.setProperty('--y', value)
+//   }
+
+
 
 export { ballTest };
 
