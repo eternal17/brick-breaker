@@ -21,9 +21,11 @@ function getCoords() {
 
 function removeCSS() {
   let ball = document.querySelector(".ball");
-  ball.style.removeProperty("height")
-  ball.style.removeProperty("grid-row-start")
-  ball.style.removeProperty("grid-column-start")
+  ball.style.gridRowStart = '1';
+  ball.style.gridColumnStart = '1';
+
+  //ball.style.removeProperty("grid-row-start")
+  //ball.style.removeProperty("grid-column-start")
 
   
 console.log(ball.getBoundingClientRect());
@@ -33,6 +35,7 @@ console.log(ball.getBoundingClientRect());
 
   //document.getElementById(ball).style.backgroundColor = 'pink';
 }
+
 export { ballTest };
 
 // let collided = false
