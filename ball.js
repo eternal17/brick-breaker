@@ -13,29 +13,31 @@ let firstX = 0;
 let secondX = 0;
 let difference;
 
-setInterval(ballDirectionOne, 10);
-setInterval(ballDirectionTwo, 100);
 
 function ballDirectionOne(gameBoard) {
   let ball = document.querySelector(".ball");
   let ballRect = ball.getBoundingClientRect();
-
   firstX = ballRect.x;
+  return firstX
+ // console.log('first', firstX)
 }
 
 function ballDirectionTwo(gameBoard) {
   let ball = document.querySelector(".ball");
   let ballRect = ball.getBoundingClientRect();
-  secondX = ballRect.x;
+  secondX = ballRect.x
+
+  if (secondX - firstX){
+    console.log('less than zero');
+  }else{
+    console.log('greater than zero')
+  }
 }
 
-function diff() {
-  setInterval(ballDirectionOne, 10);
-  setInterval(ballDirectionTwo, 16);
-  console.log(firstX);
-  console.log(secondX);
-  return firstX - secondX;
-}
+setInterval(ballDirectionOne, 400);
+ setInterval(ballDirectionTwo, 500)
+
+
 
 // function ballDirectionTwo(gameBoard){
 
@@ -67,13 +69,7 @@ function moveBall(gameBoard) {
   let paddle = document.querySelector(".pad");
   let padRect = paddle.getBoundingClientRect();
 
-  if (
-    hasSpaceBeenPressed.ball &
-    !collidedRight &
-    !collidedTop &
-    !collidedLeft &
-    !collidedPad
-  ) {
+  if (hasSpaceBeenPressed.ball & !collidedRight & !collidedTop & !collidedLeft & !collidedPad) {
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow - 1;
   }
@@ -164,11 +160,7 @@ function checkPadCollision() {
   // );
   //console.log("ballBottom + 1", ballBottom + 1, "padRow", padRow);
 
-  if (
-    padLeft <= ballCStart - 1 &&
-    ballCStart <= padRight &&
-    ballBottom == padRow
-  ) {
+  if (padLeft <= ballCStart - 1 && ballCStart <= padRight && ballBottom == padRow) {
     collidedPad = true;
     collidedRight = false;
     collidedTop = false;
@@ -198,13 +190,4 @@ function deadBall() {
   }
 }
 
-export {
-  drawBall,
-  moveBall,
-  checkWallCollision,
-  checkPadCollision,
-  deadBall,
-  ballDirectionOne,
-  ballDirectionTwo,
-  diff,
-};
+export { drawBall, moveBall, checkWallCollision, checkPadCollision, deadBall, ballDirectionOne, ballDirectionTwo };
