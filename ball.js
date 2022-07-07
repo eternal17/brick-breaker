@@ -113,8 +113,27 @@ function checkPadCollision(){
 
   }
   
-
-
 }
+
+// function deadBall(){
+//   let ball = document.querySelector(".ball");
+//   let ballRect = ball.getBoundingClientRect();
+//   let ballValues = window.getComputedStyle(ball);
+//   let ballColumn = parseInt(ballValues.gridColumnStart);
+//   let ballRow = parseInt(ballValues.gridRowStart);
+
+//   let paddle = document.querySelector(".pad");
+//   let padRect = paddle.getBoundingClientRect()
+
+//   if(hasSpaceBeenPressed.ball){
+
+//     if (ballRect.bottom.toFixed(2) <  padRect.top.toFixed(2)) {
+//       location.reload();
+
+//   }
+
+//   }
+
+// }
 
 export { drawBall, moveBall, checkWallCollision ,checkPadCollision};

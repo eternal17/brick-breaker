@@ -14,7 +14,7 @@ function main(time) {
   ballMovement();
   checkWallCollision()
   checkPadCollision()
-
+  
   
   
 }
