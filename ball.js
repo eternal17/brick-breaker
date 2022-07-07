@@ -70,13 +70,8 @@ function checkWallCollision() {
   let ballRow = parseInt(ballValues.gridRowStart);
 
   let gameBoar = document.getElementById("game-board");
-
   let boardRect = gameBoar.getBoundingClientRect();
-  // console.log('boardX',boardRect);
-  // console.log('boardX',boardRect.top);
-  let mainball = document.querySelector(".ball");
-
-  let ballRect = mainball.getBoundingClientRect();
+  let ballRect = ball.getBoundingClientRect();
   //console.log(ballRect.y);
 
   if (ballRect.right.toFixed(2) == boardRect.right.toFixed(2)) {
@@ -121,18 +116,13 @@ function checkWallCollision() {
 
 function checkPadCollision() {
   let ball = document.querySelector(".ball");
-  let ballRect = ball.getBoundingClientRect();
   let ballValues = window.getComputedStyle(ball);
   let ballColumn = parseInt(ballValues.gridColumnStart);
   let ballRow = parseInt(ballValues.gridRowStart);
-
   let paddle = document.querySelector(".pad");
-  let padRect = paddle.getBoundingClientRect();
   let padValues = window.getComputedStyle(paddle);
-
   let ballBottom = parseInt(ballValues.gridRowStart);
   let ballCStart = parseInt(ballValues.gridColumnStart);
-
   let padLeft = parseInt(padValues.gridColumnStart);
   let padRight = parseInt(padValues.gridColumnEnd);
   let padRow = parseInt(padValues.gridRowStart);
@@ -157,9 +147,9 @@ function checkPadCollision() {
     ball.style.gridRowStart = ballRow - 1;
     ball.style.gridColumnStart = ballColumn - 1;
   } else if (collidedPad) {
-    // coontact with right side of paddle, moving to the right correctly
-    ball.style.gridRowStart = ballRow - 1;
+    // contact with right side of paddle, moving to the right correctly
     ball.style.gridColumnStart = ballColumn + 1;
+    ball.style.gridRowStart = ballRow - 1;
   }
 }
 
