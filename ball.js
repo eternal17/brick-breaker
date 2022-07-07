@@ -147,7 +147,7 @@ function checkPadCollision() {
     ball.style.gridRowStart = ballRow - 1;
     ball.style.gridColumnStart = ballColumn - 1;
   } else if (collidedPad) {
-    // contact with right side of paddle, moving to the right correctly
+    // contact with right side of paddle, however, moving one to the right first and then up.
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow - 1;
   }
