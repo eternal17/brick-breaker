@@ -55,7 +55,8 @@ function moveBall(gameBoard) {
     hasSpaceBeenPressed.ball &
     !collidedRight &
     !collidedTop &
-    !collidedLeft
+    !collidedLeft &
+    !collidedPad
   ) {
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow - 1;
@@ -129,25 +130,38 @@ function checkPadCollision() {
   let padRect = paddle.getBoundingClientRect();
   let padValues = window.getComputedStyle(paddle);
 
-  let ballBottom = parseInt(ballValues.gridRowStart)
-  let ballCStart = parseInt(ballValues.gridColumnStart)
-  
+  let ballBottom = parseInt(ballValues.gridRowStart);
+  let ballCStart = parseInt(ballValues.gridColumnStart);
 
-  let padLeft = parseInt(padValues.gridColumnStart)
+  let padLeft = parseInt(padValues.gridColumnStart);
   let padRight = parseInt(padValues.gridColumnEnd);
   let padRow = parseInt(padValues.gridRowStart);
 
+  let coll = false 
+  if (hasSpaceBeenPressed.ball)coll = true
+    console.log(
+      "padleft",
+      padLeft,
+      "ballCStart",
+      ballCStart,
+      "padright:",
+      padRight
+    );
+    console.log("ballBottom + 1", ballBottom + 1, "padRow", padRow);
 
-
-  if (hasSpaceBeenPressed.ball) {
-    console.log('ballBottom', ballBottom, 'ballCStart', ballCStart);
-    console.log('padleft', padLeft, 'padright:',padRight, 'padRow', padRow);
-    if (padLeft <= ballCStart && ballCStart <= padRight && ballBottom == padRow ) {
-      ball.style.gridColumnStart = ballColumn + 1;
-      ball.style.gridRowStart = ballRow - 1;
+    if (padLeft <= ballCStart -1 && ballCStart <= padRight && ballBottom == padRow  ) {
+      
+      collidedPad = true
+      collidedRight = false;
+      collidedTop = false;
+      collidedLeft = false;
+      
     }
+    if(collidedPad){
+    ball.style.gridRowStart = ballRow  - 1;
+    ball.style.gridColumnStart = ballColumn -1;
   }
-}
+  }
 
 // function deadBall(){
 //   let ball = document.querySelector(".ball");
