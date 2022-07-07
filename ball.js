@@ -1,11 +1,10 @@
-import { hasSpaceBeenPressed as beenPressed } from "./pad.js";
+import { hasSpaceBeenPressed } from "./pad.js";
 
 let collidedRight = false;
 let collidedTop = false;
 let collidedLeft = false;
 let collidedPad = false;
 
-console.log("been", beenPressed);
 
 function drawBall(gameBoard) {
   let newball = document.createElement("div");
@@ -15,11 +14,15 @@ function drawBall(gameBoard) {
 
 function moveBall(gameBoard) {
   let ball = document.querySelector(".ball");
+  let ballRect = ball.getBoundingClientRect();
   let ballValues = window.getComputedStyle(ball);
   let ballColumn = parseInt(ballValues.gridColumnStart);
   let ballRow = parseInt(ballValues.gridRowStart);
+  
+  let paddle = document.querySelector(".pad");
+  let padRect = paddle.getBoundingClientRect()
 
-  if (beenPressed.ball & !collidedRight & !collidedTop & !collidedLeft) {
+  if (hasSpaceBeenPressed.ball & !collidedRight & !collidedTop & !collidedLeft) {
    ball.style.gridColumnStart = ballColumn +1;
     ball.style.gridRowStart = ballRow  -1;
   }
@@ -27,9 +30,6 @@ function moveBall(gameBoard) {
 
 function checkWallCollision() {
   let ball = document.querySelector(".ball");
-  let paddle = document.querySelector(".pad");
-  let padRect = paddle.getBoundingClientRect()
-
   let ballValues = window.getComputedStyle(ball);
   let ballColumn = parseInt(ballValues.gridColumnStart);
   let ballRow = parseInt(ballValues.gridRowStart);
@@ -87,14 +87,34 @@ function checkWallCollision() {
 
 
 
-//   if(gameover){
-//   if (ballRect.bottom.toFixed(2) > padRect.top.toFixed(2)) {
-//     //document.location.reload()
-   
-//   }
-// }
-  
 
 }
 
-export { drawBall, moveBall, checkWallCollision };
+
+function checkPadCollision(){
+
+  let ball = document.querySelector(".ball");
+  let ballRect = ball.getBoundingClientRect();
+  let ballValues = window.getComputedStyle(ball);
+  let ballColumn = parseInt(ballValues.gridColumnStart);
+  let ballRow = parseInt(ballValues.gridRowStart);
+
+  let paddle = document.querySelector(".pad");
+  let padRect = paddle.getBoundingClientRect()
+
+  if(hasSpaceBeenPressed.ball){
+
+    if (ballRect.bottom.toFixed(2) === padRect.top.toFixed(2)) {
+      ball.style.gridColumnStart = ballColumn +1;
+      ball.style.gridRowStart = ballRow -1;
+
+  }
+
+
+  }
+  
+
+
+}
+
+export { drawBall, moveBall, checkWallCollision ,checkPadCollision};
