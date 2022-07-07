@@ -1,5 +1,5 @@
 import { draw as drawBrick } from "./bricks.js";
-import { drawBall as addBall, moveBall as ballMovement, checkWallCollision, checkPadCollision} from "./ball.js";
+import { drawBall as addBall, moveBall as ballMovement, checkWallCollision, checkPadCollision, ballDirectionOne, ballDirectionTwo, diff, deadBall} from "./ball.js";
 import { createPad as addPad, movePadAndBall as move } from "./pad.js";
 
 let lastRenderTime = 0;
@@ -14,7 +14,10 @@ function main(time) {
   ballMovement();
   checkWallCollision()
   checkPadCollision()
-  
+  deadBall()
+  // ballDirectionOne()
+  // ballDirectionTwo()
+  //console.log(diff())
 }
 
 requestAnimationFrame(main);

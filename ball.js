@@ -9,16 +9,32 @@ let movingRight = true;
 let movingLeft = false;
 let goingUp = true;
 let goindDown = false;
-let firstX;
-let secondX;
+let firstX = 0;
+let secondX = 0;
+let difference;
 
-function ballDirectionOne(ballDirectionTwo, gameBoard) {
+setInterval(ballDirectionOne, 10);
+setInterval(ballDirectionTwo, 100);
+
+function ballDirectionOne(gameBoard) {
   let ball = document.querySelector(".ball");
   let ballRect = ball.getBoundingClientRect();
 
-  let firstX = ballRect.x;
+  firstX = ballRect.x;
+}
 
-  ballDirectionOne();
+function ballDirectionTwo(gameBoard) {
+  let ball = document.querySelector(".ball");
+  let ballRect = ball.getBoundingClientRect();
+  secondX = ballRect.x;
+}
+
+function diff() {
+  setInterval(ballDirectionOne, 10);
+  setInterval(ballDirectionTwo, 16);
+  console.log(firstX);
+  console.log(secondX);
+  return firstX - secondX;
 }
 
 // function ballDirectionTwo(gameBoard){
@@ -87,7 +103,6 @@ function checkWallCollision() {
   }
 
   if (collidedRight) {
-    //change direction
     ball.style.gridColumnStart = ballColumn - 1;
     ball.style.gridRowStart = ballRow - 1;
   }
@@ -121,13 +136,13 @@ function checkWallCollision() {
 
 function checkPadCollision() {
   let ball = document.querySelector(".ball");
-  let ballRect = ball.getBoundingClientRect();
+  // let ballRect = ball.getBoundingClientRect();
   let ballValues = window.getComputedStyle(ball);
   let ballColumn = parseInt(ballValues.gridColumnStart);
   let ballRow = parseInt(ballValues.gridRowStart);
 
   let paddle = document.querySelector(".pad");
-  let padRect = paddle.getBoundingClientRect();
+  // let padRect = paddle.getBoundingClientRect();
   let padValues = window.getComputedStyle(paddle);
 
   let ballBottom = parseInt(ballValues.gridRowStart);
@@ -137,51 +152,59 @@ function checkPadCollision() {
   let padRight = parseInt(padValues.gridColumnEnd);
   let padRow = parseInt(padValues.gridRowStart);
 
-  let coll = false 
-  if (hasSpaceBeenPressed.ball)coll = true
-    console.log(
-      "padleft",
-      padLeft,
-      "ballCStart",
-      ballCStart,
-      "padright:",
-      padRight
-    );
-    console.log("ballBottom + 1", ballBottom + 1, "padRow", padRow);
+  // let coll = false
+  // if (hasSpaceBeenPressed.ball)coll = true
+  // console.log(
+  //   "padleft",
+  //   padLeft,
+  //   "ballCStart",
+  //   ballCStart,
+  //   "padright:",
+  //   padRight
+  // );
+  //console.log("ballBottom + 1", ballBottom + 1, "padRow", padRow);
 
-    if (padLeft <= ballCStart -1 && ballCStart <= padRight && ballBottom == padRow  ) {
-      
-      collidedPad = true
-      collidedRight = false;
-      collidedTop = false;
-      collidedLeft = false;
-      
+  if (
+    padLeft <= ballCStart - 1 &&
+    ballCStart <= padRight &&
+    ballBottom == padRow
+  ) {
+    collidedPad = true;
+    collidedRight = false;
+    collidedTop = false;
+    collidedLeft = false;
+  }
+  if (collidedPad) {
+    ball.style.gridRowStart = ballRow - 1;
+    ball.style.gridColumnStart = ballColumn - 1;
+  }
+}
+
+function deadBall() {
+  let ball = document.querySelector(".ball");
+  let ballValues = window.getComputedStyle(ball);
+
+  let paddle = document.querySelector(".pad");
+  let padValues = window.getComputedStyle(paddle);
+
+  let ballBottom = parseInt(ballValues.gridRowStart);
+
+  let padRow = parseInt(padValues.gridRowStart);
+
+  if (hasSpaceBeenPressed.ball) {
+    if (ballBottom == padRow + 1) {
+      window.location.reload();
     }
-    if(collidedPad){
-    ball.style.gridRowStart = ballRow  - 1;
-    ball.style.gridColumnStart = ballColumn -1;
   }
-  }
+}
 
-// function deadBall(){
-//   let ball = document.querySelector(".ball");
-//   let ballRect = ball.getBoundingClientRect();
-//   let ballValues = window.getComputedStyle(ball);
-//   let ballColumn = parseInt(ballValues.gridColumnStart);
-//   let ballRow = parseInt(ballValues.gridRowStart);
-
-//   let paddle = document.querySelector(".pad");
-//   let padRect = paddle.getBoundingClientRect()
-
-//   if(hasSpaceBeenPressed.ball){
-
-//     if (ballRect.bottom.toFixed(2) <  padRect.top.toFixed(2)) {
-//       location.reload();
-
-//   }
-
-//   }
-
-// }
-
-export { drawBall, moveBall, checkWallCollision, checkPadCollision };
+export {
+  drawBall,
+  moveBall,
+  checkWallCollision,
+  checkPadCollision,
+  deadBall,
+  ballDirectionOne,
+  ballDirectionTwo,
+  diff,
+};
