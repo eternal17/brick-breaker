@@ -1,152 +1,174 @@
-import { hasSpaceBeenPressed as beenPressed } from "./pad.js";
-let xcord;
-let ycord;
+import { hasSpaceBeenPressed } from "./pad.js";
 
-const ball = document.querySelector(".ball");
+let collidedRight = false;
+let collidedTop = false;
+let collidedLeft = false;
+let collidedPad = false;
+
+let movingRight = true
+let movingLeft = false
+let goingUp = true
+let goindDown =false
+let firstX
+let secondX
+
+function ballDirectionOne(ballDirectionTwo, gameBoard){
+let ball = document.querySelector(".ball");
+let ballRect = ball.getBoundingClientRect();
+
+let firstX = ballRect.x
+
+ballDirectionOne()
+
+}
+
+// function ballDirectionTwo(gameBoard){
+
+//   let ball = document.querySelector(".ball");
+//   let ballRect = ball.getBoundingClientRect();
+//   let secondX = ballRect.x
+  
+//   if((firstX - secondX) > 0 ){
+//     console.log('up');
+//   }else{
+//     console.log('down');
+//   }
+//   ballDirectionOne()
+// }
 
 
-function ballTest() {
-  if (hasSpaceBeenPressed.ball) {
-    getCoords();
+
+
+function drawBall(gameBoard) {
+  let newball = document.createElement("div");
+  newball.classList.add("ball");
+  gameBoard.appendChild(newball);
+}
+
+
+function moveBall(gameBoard) {
+  let ball = document.querySelector(".ball");
+  let ballRect = ball.getBoundingClientRect();
+  let ballValues = window.getComputedStyle(ball);
+  let ballColumn = parseInt(ballValues.gridColumnStart);
+  let ballRow = parseInt(ballValues.gridRowStart);
+  
+  let paddle = document.querySelector(".pad");
+  let padRect = paddle.getBoundingClientRect()
+
+  if (hasSpaceBeenPressed.ball & !collidedRight & !collidedTop & !collidedLeft) {
+   ball.style.gridColumnStart = ballColumn +1;
+    ball.style.gridRowStart = ballRow  -1;
   }
 }
 
-// get coordintes before space has been pressed
-function getCoords() {
+function checkWallCollision() {
+  let ball = document.querySelector(".ball");
+  let ballValues = window.getComputedStyle(ball);
+  let ballColumn = parseInt(ballValues.gridColumnStart);
+  let ballRow = parseInt(ballValues.gridRowStart);
+
+  let gameBoar = document.getElementById("game-board");
+
+  let boardRect = gameBoar.getBoundingClientRect();
+  // console.log('boardX',boardRect);
+  // console.log('boardX',boardRect.top);
+  let mainball = document.querySelector(".ball");
+  
+  let ballRect = mainball.getBoundingClientRect();
+  //console.log(ballRect.y);
+  
+  if (ballRect.right.toFixed(2) == boardRect.right.toFixed(2)) {
+    
+    collidedRight = true;
+    collidedTop = false;
+    collidedLeft = false;
+    collidedPad = false;
+  }
+
+  if (collidedRight) {
+    //change direction
+    ball.style.gridColumnStart = ballColumn - 1;
+    ball.style.gridRowStart = ballRow - 1;
+  }
+
+  if (ballRect.top.toFixed(2) == boardRect.top.toFixed(2)) {
+    collidedRight = false;
+    collidedTop = true;
+    collidedLeft = false;
+    collidedPad = false;
+  }
+
+  if (collidedTop) {
+    //change direction
+   ball.style.gridColumnStart = ballColumn - 1;
+    ball.style.gridRowStart = ballRow +1;
+  }
+
+  if (ballRect.left.toFixed(2) == boardRect.left.toFixed(2)) {
+    collidedRight = false;
+    collidedTop = false;
+    collidedLeft = true;
+    collidedPad = false;
+  }
+
+  if (collidedLeft) {
+    //change direction
+   ball.style.gridColumnStart = ballColumn +1;
+    ball.style.gridRowStart = ballRow +1;
+  }
+
+
+
+
+
+
+}
+
+
+function checkPadCollision(){
+
+  let ball = document.querySelector(".ball");
   let ballRect = ball.getBoundingClientRect();
-  xcord = ballRect.x;
-  ycord = ballRect.y;
-  return { xcord, ycord };
+  let ballValues = window.getComputedStyle(ball);
+  let ballColumn = parseInt(ballValues.gridColumnStart);
+  let ballRow = parseInt(ballValues.gridRowStart);
+
+  let paddle = document.querySelector(".pad");
+  let padRect = paddle.getBoundingClientRect()
+
+  if(hasSpaceBeenPressed.ball){
+
+    if (ballRect.bottom.toFixed(2) === padRect.top.toFixed(2)) {
+      ball.style.gridColumnStart = ballColumn +1;
+      ball.style.gridRowStart = ballRow -1;
+
+  }
+
+
+  }
+  
 }
 
-function setBallX(value) {
-  ball.style.left = value + 'px'
-}
-
-function setBallY(value) {
-  ball.style.top = value + 'px'
-}
-
-
-
-
-export { ballTest };
-
-// let collided = false
-
-// console.log("been", beenPressed);
-
-// function drawBall(gameBoard) {
-//   let newball = document.createElement("div");
-//   newball.classList.add("ball");
-//   gameBoard.appendChild(newball);
-// }
-
-// function moveBall(gameBoard) {
+// function deadBall(){
 //   let ball = document.querySelector(".ball");
+//   let ballRect = ball.getBoundingClientRect();
 //   let ballValues = window.getComputedStyle(ball);
 //   let ballColumn = parseInt(ballValues.gridColumnStart);
 //   let ballRow = parseInt(ballValues.gridRowStart);
 
-//   if (beenPressed.ball & !collided) {
-//     ball.style.gridColumnStart = ballColumn + 1;
-//     ball.style.gridRowStart = ballRow - 1;
-//   }
-// }
+//   let paddle = document.querySelector(".pad");
+//   let padRect = paddle.getBoundingClientRect()
 
-// function checkWallCollision() {
-//   let ball = document.querySelector(".ball");
-//   let ballValues = window.getComputedStyle(ball);
-//   let ballColumn = parseInt(ballValues.gridColumnStart);
-//   let ballRow = parseInt(ballValues.gridRowStart);
+//   if(hasSpaceBeenPressed.ball){
 
-//   let gameBoar = document.getElementById("game-board");
+//     if (ballRect.bottom.toFixed(2) <  padRect.top.toFixed(2)) {
+//       location.reload();
 
-//   let boardRect = gameBoar.getBoundingClientRect();
-//   // console.log('boardX',boardRect);
-//   // console.log('boardX',boardRect.top);
-//   let mainball = document.querySelector(".ball");
-
-//   let ballRect = mainball.getBoundingClientRect();
-//   // console.log('ballTop', ballRect.top);
-//   // console.log('ballRight', ballRect.right);
-//   // console.log('ballLeft', ballRect.left);
-//   // console.log('ballBottom', ballRect.bottom);
-//   if (ballRect.right.toFixed(2) == boardRect.right.toFixed(2)) {
-//     collided = true;
-//       }
-
-//       if (collided){//change direction
-//     ball.style.gridColumnStart = ballColumn - 1;
-//     ball.style.gridRowStart = ballRow - 1;
-//   }
-// }
-
-// export { drawBall, moveBall, checkWallCollision };
-
-const INITIAL_VELOCITY = 0.025;
-
-const gameBoard = document.querySelector("#game-board");
-export const gameBoardRect = gameBoard.getBoundingClientRect();
-import { hasSpaceBeenPressed } from "./pad.js";
-// export default class Ball {
-//   constructor(ballElement) {
-
-//     this.ballElement = ballElement
-
-//     // resetting the position of the ball everytime a new one is created
-//     this.reset()
 //   }
 
-//   get x() {
-//     return parseFloat(getComputedStyle(this.ballElement).getPropertyValue('--x'))
-//   }
-
-//   set x(value) {
-//     this.ballElement.style.setProperty('--x', value)
-//   }
-
-//   get y() {
-//     return parseFloat(getComputedStyle(this.ballElement).getPropertyValue('--y'))
-//   }
-
-//   set y(value) {
-//     this.ballElement.style.setProperty('--y', value)
-//   }
-
-//   rect() {
-//     return this.ballElement.getBoundingClientRect()
-//   }
-
-//   // need to figure out the reset position of the ball, ie on the middle of the pad
-//   reset() {
-//     this.x = 25
-//     this.y = 25
-//     this.direction = { x: 0 }
-
-//     // while loop may not be needed in our case as the ball should be moving mainly horizontally
-//     // while (Math.abs(this.direction.x) <= .2 || Math.abs(this.direction.y) >= 0.9) {
-//     // }
-//     const heading = randomNumberBetween(0, 2 * Math.PI)
-//     this.direction = { x: Math.cos(heading), y: Math.sin(heading) }
-//     this.velocity = INITIAL_VELOCITY
-//   }
-
-//   updateBallMovement(secondsSinceLastRender) {
-//     this.x += this.direction.x * this.velocity * secondsSinceLastRender
-//     this.y += this.direction.y * this.velocity * secondsSinceLastRender
-//     const rect = this.rect()
-//     // console.log(gameBoardRect)
-//     if (rect.right >= gameBoardRect.right || rect.left <= gameBoardRect.left) {
-//       this.direction.x *= -1
-//     }
-//     if (rect.bottom >= gameBoardRect.bottom || rect.top <= gameBoardRect.top) {
-//       this.direction.y *= -1
-//     }
 //   }
 
 // }
 
-function randomNumberBetween(min, max) {
-  return Math.random() * (max - min) + min;
-}
+export { drawBall, moveBall, checkWallCollision ,checkPadCollision};

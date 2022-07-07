@@ -1,62 +1,46 @@
-// import { draw as drawBrick } from "./bricks.js";
-// import { drawBall as addBall, moveBall as ballMovement, checkWallCollision as wallCollision} from "./ball.js";
-// import { createPad as addPad, movePadAndBall as move } from "./pad.js";
-import { ballTest } from "./ball.js";
-import { movePadAndBall } from "./pad.js";
-// import { getCoords } from "./ball.js";
-// import Ball from "./ball.js";
-import { hasSpaceBeenPressed } from "./pad.js";
-// const ball = new Ball(document.getElementById("ball"));
-let lastRenderTime;
+import { draw as drawBrick } from "./bricks.js";
+import { drawBall as addBall, moveBall as ballMovement, checkWallCollision, checkPadCollision} from "./ball.js";
+import { createPad as addPad, movePadAndBall as move } from "./pad.js";
+
+let lastRenderTime = 0;
+
 
 function main(time) {
-  if (lastRenderTime != null) {
-
-    const secondsSinceLastRender = time - lastRenderTime;
-    // ball.updateBallMovement(secondsSinceLastRender);
-
-    ballTest()
-  }
-  // if (secondsSinceLastRender < 1 / 4) return;
-
-
-  lastRenderTime = time;
   requestAnimationFrame(main);
+  const secondsSinceLastRender = (time - lastRenderTime) / 1000;
+  if (secondsSinceLastRender < 1/20 ) return;
+  lastRenderTime = time;
+  //console.log(secondsSinceLastRender);
+  ballMovement();
+  checkWallCollision()
+  checkPadCollision()
+  
 }
 
 requestAnimationFrame(main);
-movePadAndBall()
 
-let spacePress = function (event) {
-  if (event.code === 'Space') {
-    console.log(getCoords())
-  }
-  document.removeEventListener('keydown', spacePress)
-}
+const gameBoard = document.getElementById("game-board");
 
-document.addEventListener('keydown', spacePress)
+drawBrick(gameBoard);
+addBall(gameBoard);
+addPad(gameBoard);
+move();
 
 
 
-// const gameBoard = document.getElementById("game-board");
 
-// drawBrick(gameBoard);
-// addBall(gameBoard);
-// addPad(gameBoard);
-// move();
+// let mainball = document.querySelector('.ball');
+// //console.log(mainball);
+// let ballRect = mainball.getBoundingClientRect()
+// console.log('ballX', ballRect.left);
+// console.log('ballY', ballRect.top);
 
-// // let mainball = document.querySelector('.ball');
-// // //console.log(mainball);
-// // let ballRect = mainball.getBoundingClientRect()
-// // console.log('ballX', ballRect.left);
-// // console.log('ballY', ballRect.top);
+//ballPhysics(gameBoard)
 
-// //ballPhysics(gameBoard)
+// function draw() {
+//     //gameBoard.innerHTML = ''
+//     move();
+// }
+// draw();
 
-// // function draw() {
-// //     //gameBoard.innerHTML = ''
-// //     move();
-// // }
-// // draw();
-
-// function update() {}
+function update() {}
