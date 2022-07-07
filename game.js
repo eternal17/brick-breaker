@@ -15,8 +15,6 @@ function main(time) {
   checkWallCollision()
   checkPadCollision()
   
-  
-  
 }
 
 requestAnimationFrame(main);

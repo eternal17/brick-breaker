@@ -5,12 +5,46 @@ let collidedTop = false;
 let collidedLeft = false;
 let collidedPad = false;
 
+let movingRight = true
+let movingLeft = false
+let goingUp = true
+let goindDown =false
+let firstX
+let secondX
+
+function ballDirectionOne(ballDirectionTwo, gameBoard){
+let ball = document.querySelector(".ball");
+let ballRect = ball.getBoundingClientRect();
+
+let firstX = ballRect.x
+
+ballDirectionOne()
+
+}
+
+// function ballDirectionTwo(gameBoard){
+
+//   let ball = document.querySelector(".ball");
+//   let ballRect = ball.getBoundingClientRect();
+//   let secondX = ballRect.x
+  
+//   if((firstX - secondX) > 0 ){
+//     console.log('up');
+//   }else{
+//     console.log('down');
+//   }
+//   ballDirectionOne()
+// }
+
+
+
 
 function drawBall(gameBoard) {
   let newball = document.createElement("div");
   newball.classList.add("ball");
   gameBoard.appendChild(newball);
 }
+
 
 function moveBall(gameBoard) {
   let ball = document.querySelector(".ball");
@@ -40,9 +74,10 @@ function checkWallCollision() {
   // console.log('boardX',boardRect);
   // console.log('boardX',boardRect.top);
   let mainball = document.querySelector(".ball");
-
+  
   let ballRect = mainball.getBoundingClientRect();
-
+  //console.log(ballRect.y);
+  
   if (ballRect.right.toFixed(2) == boardRect.right.toFixed(2)) {
     
     collidedRight = true;
