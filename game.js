@@ -12,9 +12,11 @@ function main(time) {
   if (secondsSinceLastRender < 1/6 ) return;
   lastRenderTime = time;
   ballMovement();
+
   checkWallCollision()
   checkPadCollision()
   deadBall()
+  ballDirectionOne()
 
 }
 
