@@ -19,7 +19,6 @@ function ballDirectionOne(gameBoard) {
   let ballRect = ball.getBoundingClientRect();
   firstX = ballRect.x;
   return firstX
- // console.log('first', firstX)
 }
 
 function ballDirectionTwo(gameBoard) {
@@ -34,24 +33,6 @@ function ballDirectionTwo(gameBoard) {
   }
 }
 
-setInterval(ballDirectionOne, 400);
- setInterval(ballDirectionTwo, 500)
-
-
-
-// function ballDirectionTwo(gameBoard){
-
-//   let ball = document.querySelector(".ball");
-//   let ballRect = ball.getBoundingClientRect();
-//   let secondX = ballRect.x
-
-//   if((firstX - secondX) > 0 ){
-//     console.log('up');
-//   }else{
-//     console.log('down');
-//   }
-//   ballDirectionOne()
-// }
 
 function drawBall(gameBoard) {
   let newball = document.createElement("div");
@@ -70,7 +51,7 @@ function moveBall(gameBoard) {
   let padRect = paddle.getBoundingClientRect();
 
   if (hasSpaceBeenPressed.ball & !collidedRight & !collidedTop & !collidedLeft & !collidedPad) {
-    ball.style.gridColumnStart = ballColumn + 1;
+    ball.style.gridColumnStart = ballColumn + 1; 
     ball.style.gridRowStart = ballRow - 1;
   }
 }
@@ -84,8 +65,7 @@ function checkWallCollision() {
   let gameBoar = document.getElementById("game-board");
 
   let boardRect = gameBoar.getBoundingClientRect();
-  // console.log('boardX',boardRect);
-  // console.log('boardX',boardRect.top);
+
   let mainball = document.querySelector(".ball");
 
   let ballRect = mainball.getBoundingClientRect();
@@ -132,13 +112,11 @@ function checkWallCollision() {
 
 function checkPadCollision() {
   let ball = document.querySelector(".ball");
-  // let ballRect = ball.getBoundingClientRect();
   let ballValues = window.getComputedStyle(ball);
   let ballColumn = parseInt(ballValues.gridColumnStart);
   let ballRow = parseInt(ballValues.gridRowStart);
 
   let paddle = document.querySelector(".pad");
-  // let padRect = paddle.getBoundingClientRect();
   let padValues = window.getComputedStyle(paddle);
 
   let ballBottom = parseInt(ballValues.gridRowStart);
@@ -148,17 +126,7 @@ function checkPadCollision() {
   let padRight = parseInt(padValues.gridColumnEnd);
   let padRow = parseInt(padValues.gridRowStart);
 
-  // let coll = false
-  // if (hasSpaceBeenPressed.ball)coll = true
-  // console.log(
-  //   "padleft",
-  //   padLeft,
-  //   "ballCStart",
-  //   ballCStart,
-  //   "padright:",
-  //   padRight
-  // );
-  //console.log("ballBottom + 1", ballBottom + 1, "padRow", padRow);
+
 
   if (padLeft <= ballCStart - 1 && ballCStart <= padRight && ballBottom == padRow) {
     collidedPad = true;

@@ -9,7 +9,7 @@ function main(time) {
 
   requestAnimationFrame(main);
   const secondsSinceLastRender = (time - lastRenderTime) / 1000;
-  if (secondsSinceLastRender < 1/20 ) return;
+  if (secondsSinceLastRender < 1/6 ) return;
   lastRenderTime = time;
   //console.log(secondsSinceLastRender);
   ballMovement();
@@ -18,9 +18,7 @@ function main(time) {
   deadBall()
 
 }
-// setInterval(ballDirectionOne, 3500)
-// setInterval(ballDirectionTwo, 6500);
-// console.log(diff())
+
 
 requestAnimationFrame(main);
 
@@ -32,20 +30,5 @@ addPad(gameBoard);
 move();
 
 
-
-
-// let mainball = document.querySelector('.ball');
-// //console.log(mainball);
-// let ballRect = mainball.getBoundingClientRect()
-// console.log('ballX', ballRect.left);
-// console.log('ballY', ballRect.top);
-
-//ballPhysics(gameBoard)
-
-// function draw() {
-//     //gameBoard.innerHTML = ''
-//     move();
-// }
-// draw();
 
 function update() {}
