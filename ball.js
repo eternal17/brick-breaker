@@ -112,6 +112,8 @@ function checkWallCollision() {
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow + 1;
   }
+
+
 }
 
 function checkPadCollision() {
@@ -151,27 +153,33 @@ function checkPadCollision() {
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow - 1;
   }
+
 }
 
-// function deadBall(){
-//   let ball = document.querySelector(".ball");
-//   let ballRect = ball.getBoundingClientRect();
-//   let ballValues = window.getComputedStyle(ball);
-//   let ballColumn = parseInt(ballValues.gridColumnStart);
-//   let ballRow = parseInt(ballValues.gridRowStart);
 
-//   let paddle = document.querySelector(".pad");
-//   let padRect = paddle.getBoundingClientRect()
 
-//   if(hasSpaceBeenPressed.ball){
+export function isGameOver() {
+  const ball = document.querySelector(".ball");
+  const ballValues = window.getComputedStyle(ball);
+  const ballRow = parseInt(ballValues.gridRowStart);
 
-//     if (ballRect.bottom.toFixed(2) <  padRect.top.toFixed(2)) {
-//       location.reload();
+  const paddle = document.querySelector('.pad')
+  const paddleValues = window.getComputedStyle(paddle)
+  const paddleRow = parseInt(paddleValues.gridRowStart)
+  // let gameStatus = document.querySelector('#game-status')
+  // console.log('ballrow', ballRow, 'paddlerow', paddleRow)
+  // if (ballRow > paddleRow) {
+  //   gameStatus.innerHTML = 'Game Over'
+  //   return
+  // }
+  return ballRow > paddleRow
+}
 
-//   }
-
-//   }
-
-// }
+export function resetBall() {
+  const ball = document.querySelector(".ball");
+  // const ballValues = window.getComputedStyle(ball);
+  ball.style.gridRowStart = 21
+  ball.style.gridColumnStart = 12
+}
 
 export { drawBall, moveBall, checkWallCollision, checkPadCollision };
