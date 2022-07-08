@@ -9,31 +9,30 @@ let movingRight = true;
 let movingLeft = false;
 let goingUp = true;
 let goindDown = false;
-let firstX;
-let secondX;
+let firstX = 0;
+let secondX = 0;
+let difference;
 
-function ballDirectionOne(ballDirectionTwo, gameBoard) {
+
+function ballDirectionOne(gameBoard) {
   let ball = document.querySelector(".ball");
   let ballRect = ball.getBoundingClientRect();
-
-  let firstX = ballRect.x;
-
-  ballDirectionOne();
+  firstX = ballRect.x;
+  return firstX
 }
 
-// function ballDirectionTwo(gameBoard){
+function ballDirectionTwo(gameBoard) {
+  let ball = document.querySelector(".ball");
+  let ballRect = ball.getBoundingClientRect();
+  secondX = ballRect.x
 
-//   let ball = document.querySelector(".ball");
-//   let ballRect = ball.getBoundingClientRect();
-//   let secondX = ballRect.x
+  if (secondX - firstX){
+    console.log('less than zero');
+  }else{
+    console.log('greater than zero')
+  }
+}
 
-//   if((firstX - secondX) > 0 ){
-//     console.log('up');
-//   }else{
-//     console.log('down');
-//   }
-//   ballDirectionOne()
-// }
 
 function drawBall(gameBoard) {
   let newball = document.createElement("div");
@@ -51,14 +50,8 @@ function moveBall(gameBoard) {
   let paddle = document.querySelector(".pad");
   let padRect = paddle.getBoundingClientRect();
 
-  if (
-    hasSpaceBeenPressed.ball &
-    !collidedRight &
-    !collidedTop &
-    !collidedLeft &
-    !collidedPad
-  ) {
-    ball.style.gridColumnStart = ballColumn + 1;
+  if (hasSpaceBeenPressed.ball & !collidedRight & !collidedTop & !collidedLeft & !collidedPad) {
+    ball.style.gridColumnStart = ballColumn + 1; 
     ball.style.gridRowStart = ballRow - 1;
   }
 }
@@ -82,7 +75,6 @@ function checkWallCollision() {
   }
 
   if (collidedRight) {
-    //change direction
     ball.style.gridColumnStart = ballColumn - 1;
     ball.style.gridRowStart = ballRow - 1;
   }
@@ -180,6 +172,25 @@ export function resetBall() {
   // const ballValues = window.getComputedStyle(ball);
   ball.style.gridRowStart = 21
   ball.style.gridColumnStart = 12
+
 }
 
-export { drawBall, moveBall, checkWallCollision, checkPadCollision };
+function deadBall() {
+  let ball = document.querySelector(".ball");
+  let ballValues = window.getComputedStyle(ball);
+
+  let paddle = document.querySelector(".pad");
+  let padValues = window.getComputedStyle(paddle);
+
+  let ballBottom = parseInt(ballValues.gridRowStart);
+
+  let padRow = parseInt(padValues.gridRowStart);
+
+  if (hasSpaceBeenPressed.ball) {
+    if (ballBottom == padRow + 1) {
+      window.location.reload();
+    }
+  }
+}
+
+export { drawBall, moveBall, checkWallCollision, checkPadCollision, deadBall, ballDirectionOne, ballDirectionTwo };
