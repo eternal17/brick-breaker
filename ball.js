@@ -7,15 +7,15 @@ let collidedPad = false;
 
 let movingRight = true;
 let movingLeft = false;
-let goingUp = true;
-let goindDown = false;
+let goingUp = false;
+let goingDown = false;
 let firstX = 0;
 let secondX = 0;
 let difference;
 
-// let obj = {}
-let a
-let b
+let obj = {};
+let a;
+let b;
 
 function ballDirectionOne(gameBoard) {
   let ball = document.querySelector(".ball");
@@ -25,33 +25,38 @@ function ballDirectionOne(gameBoard) {
   let ballValues = window.getComputedStyle(ball);
   let boardValues = window.getComputedStyle(game);
 
-  let numberOfRows = boardValues.gridTemplateRows.split(' ').length
+  let numberOfRows = boardValues.gridTemplateRows.split(" ").length;
 
+  //console.log(obj);
 
   if (ballValues.gridColumnStart == numberOfRows - 2 || ballValues.gridColumnStart == 2) {
-    obj['a'] = (parseInt(ballValues.gridRowStart))
+    obj["a"] = parseInt(ballValues.gridRowStart);
   }
-  if (ballValues.gridColumnStart == numberOfRows - 1 || ballValues.gridColumnStart == 1 && obj.hasOwnProperty('a')) {
+  if (ballValues.gridColumnStart == numberOfRows - 1 || (ballValues.gridColumnStart == 1 && obj.hasOwnProperty("a"))) {
     // still adding the b in before a for some reason.
-    obj['b'] = (parseInt(ballValues.gridRowStart))
-  }
-  console.log(obj)
-
-
-  if (obj.a > obj.b) {
-    // going up logic
-
-
-    obj = {}
-  } else if (obj.a < obj.b) {
-
-    // going down logic
-    console.log('going down');
-    obj = {}
+    if (Object.keys(obj).length == 1) {
+      obj["b"] = parseInt(ballValues.gridRowStart);
+    }
   }
 
+  if (Object.keys(obj).length == 2) {
+    console.log("object", obj);
+    if (obj.a > obj.b) {
+      // going up logic
+      goingUp = true;
+      goingDown = false;
+      console.log("going up");
 
+      obj = {};
+    } else if (obj.a < obj.b) {
+      goingDown = true;
+      goingUp = false;
 
+      // going down logic
+      console.log("going down");
+      obj = {};
+    }
+  }
 
   //firstX = ballRect.x;
   // firstX = ballValues.gridRowStart
@@ -65,9 +70,9 @@ function ballDirectionTwo(gameBoard) {
   let ballValues = window.getComputedStyle(ball);
 
   //firstX = ballRect.x;
-  secondX = ballValues.gridRowStart
+  secondX = ballValues.gridRowStart;
   // secondX = ballRect.x;
-  console.log('secondX', secondX);
+  console.log("secondX", secondX);
 }
 
 // function diff() {
@@ -102,7 +107,6 @@ function moveBall(gameBoard) {
   let paddle = document.querySelector(".pad");
   let padRect = paddle.getBoundingClientRect();
 
-
   // first movement off the pad
   if (hasSpaceBeenPressed.ball & !collidedRight & !collidedTop & !collidedLeft & !collidedPad) {
     ball.style.gridColumnStart = ballColumn + 1;
@@ -120,7 +124,6 @@ function checkWallCollision() {
   let boardRect = gameBoar.getBoundingClientRect();
   let ballRect = ball.getBoundingClientRect();
 
-
   if (ballRect.right.toFixed(2) == boardRect.right.toFixed(2)) {
     collidedRight = true;
     collidedTop = false;
@@ -129,8 +132,13 @@ function checkWallCollision() {
   }
 
   if (collidedRight) {
-    ball.style.gridColumnStart = ballColumn - 1;
-    ball.style.gridRowStart = ballRow - 1;
+    if (goingUp) {
+      ball.style.gridColumnStart = ballColumn - 1;
+      ball.style.gridRowStart = ballRow - 1;
+    } else if (goingDown) {
+      ball.style.gridColumnStart = ballColumn - 1;
+      ball.style.gridRowStart = ballRow + 1;
+    }
   }
 
   if (ballRect.top.toFixed(2) == boardRect.top.toFixed(2)) {
@@ -155,8 +163,14 @@ function checkWallCollision() {
 
   if (collidedLeft) {
     //change direction
+    if(goingDown){
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow + 1;
+    }else if (goingUp){
+      ball.style.gridColumnStart = ballColumn + 1;
+      ball.style.gridRowStart = ballRow - 1;
+
+    }
   }
 }
 

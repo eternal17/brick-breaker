@@ -15,8 +15,8 @@ function main(time) {
 
   checkWallCollision()
   checkPadCollision()
-  // deadBall()
   ballDirectionOne()
+  deadBall()
 
 }
 
