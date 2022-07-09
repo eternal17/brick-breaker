@@ -1,9 +1,12 @@
 import { hasSpaceBeenPressed } from "./pad.js";
 
 let collidedRight = false;
-let collidedTop = false;
+//let collidedTop = false;
 let collidedLeft = false;
 let collidedPad = false;
+
+let collTopRight = false;
+let collTopLeft = false;
 
 let movingRight = true;
 let movingLeft = false;
@@ -108,7 +111,7 @@ function moveBall(gameBoard) {
   let padRect = paddle.getBoundingClientRect();
 
   // first movement off the pad
-  if (hasSpaceBeenPressed.ball & !collidedRight & !collidedTop & !collidedLeft & !collidedPad) {
+  if (hasSpaceBeenPressed.ball & !collidedRight & !collTopRight & !collTopLeft & !collidedLeft & !collidedPad) {
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow - 1;
   }
@@ -126,7 +129,8 @@ function checkWallCollision() {
 
   if (ballRect.right.toFixed(2) == boardRect.right.toFixed(2)) {
     collidedRight = true;
-    collidedTop = false;
+    collTopRight = false;
+    collTopLeft = false;
     collidedLeft = false;
     collidedPad = false;
   }
@@ -142,34 +146,52 @@ function checkWallCollision() {
   }
 
   if (ballRect.top.toFixed(2) == boardRect.top.toFixed(2)) {
-    collidedRight = false;
-    collidedTop = true;
-    collidedLeft = false;
-    collidedPad = false;
+    if (collidedRight) {
+      collidedRight = false;
+      collTopRight = true;
+      collTopLeft = false;
+      collidedLeft = false;
+      collidedPad = false;
+    }
+    if (collidedLeft) {
+      collidedRight = false;
+      collTopRight = false;
+      collTopLeft = true;
+      collidedLeft = false;
+      collidedPad = false;
+    }
   }
 
-  if (collidedTop) {
-    //change direction
-    ball.style.gridColumnStart = ballColumn - 1;
-    ball.style.gridRowStart = ballRow + 1;
-  }
+    if (collTopRight) {
+      //change direction
+      ball.style.gridColumnStart = ballColumn - 1;
+      ball.style.gridRowStart = ballRow + 1;
+    }
+
+    if(collTopLeft){
+      ball.style.gridColumnStart = ballColumn + 1;
+      ball.style.gridRowStart = ballRow + 1;
+
+
+    }
+  
 
   if (ballRect.left.toFixed(2) == boardRect.left.toFixed(2)) {
     collidedRight = false;
-    collidedTop = false;
+    collTopRight = false;
+    collTopLeft = false;
     collidedLeft = true;
     collidedPad = false;
   }
 
   if (collidedLeft) {
     //change direction
-    if(goingDown){
-    ball.style.gridColumnStart = ballColumn + 1;
-    ball.style.gridRowStart = ballRow + 1;
-    }else if (goingUp){
+    if (goingDown) {
+      ball.style.gridColumnStart = ballColumn + 1;
+      ball.style.gridRowStart = ballRow + 1;
+    } else if (goingUp) {
       ball.style.gridColumnStart = ballColumn + 1;
       ball.style.gridRowStart = ballRow - 1;
-
     }
   }
 }
@@ -194,8 +216,8 @@ function checkPadCollision() {
   // with these checks the edge of the pad is not being accounted for when it comes down on the diagonal
   if (padLeft <= ballCStart && ballCStart <= padRight && ballBottom == padRow) {
     collidedPad = true;
-    collidedRight = false;
-    collidedTop = false;
+    collTopRight = false;
+    collTopLeft = false
     collidedLeft = false;
   }
 
