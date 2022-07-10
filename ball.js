@@ -152,8 +152,7 @@ function checkWallCollision() {
       collTopLeft = false;
       collidedLeft = false;
       collidedPad = false;
-    }
-    if (collidedLeft) {
+    }else if (collidedLeft) {
       collidedRight = false;
       collTopRight = false;
       collTopLeft = true;
@@ -209,8 +208,6 @@ function checkPadCollision() {
   let padRight = parseInt(padValues.gridColumnEnd);
   let padRow = parseInt(padValues.gridRowStart);
 
-  let coll = false;
-  if (hasSpaceBeenPressed.ball) coll = true;
 
   // need to see which pad sqaure is being hit and move the ball in the diagonal
   // with these checks the edge of the pad is not being accounted for when it comes down on the diagonal
