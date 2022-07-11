@@ -221,6 +221,7 @@ function checkPadCollision() {
     collTopRight = false;
     collTopLeft = false
     collidedLeft = false;
+    // added collided right
     collidedRight = false
   }
 
