@@ -1,4 +1,4 @@
-import { draw as drawBrick } from "./bricks.js";
+import { brickCollision, draw as drawBrick } from "./bricks.js";
 import { drawBall as addBall, moveBall as ballMovement, checkWallCollision, checkPadCollision, ballDirectionOne, deadBall } from "./ball.js";
 import { createPad as addPad, movePadAndBall as move } from "./pad.js";
 
@@ -16,6 +16,7 @@ function main(time) {
   ballDirectionOne()
   checkWallCollision()
   checkPadCollision()
+  brickCollision()
   deadBall()
 
 }

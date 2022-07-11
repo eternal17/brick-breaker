@@ -2,13 +2,15 @@ import { hasSpaceBeenPressed } from "./pad.js";
 
 let collidedRight = false;
 let collidedLeft = false;
-let collidedPad = false;
-
 let collTopRight = false;
 let collTopLeft = false;
 
 let goingUp = false;
 let goingDown = false;
+
+let collidedPadLeft = false
+let collidedPadRight = false
+
 
 
 let obj = {};
@@ -79,7 +81,7 @@ function moveBall(gameBoard) {
   let padRect = paddle.getBoundingClientRect();
 
   // first movement off the pad
-  if (hasSpaceBeenPressed.ball & !collidedRight & !collTopRight & !collTopLeft & !collidedLeft & !collidedPad) {
+  if (hasSpaceBeenPressed.ball & !collidedRight & !collTopRight & !collTopLeft & !collidedLeft & !collidedPadLeft & !collidedPadRight ) {
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow - 1;
   }
@@ -101,7 +103,9 @@ function checkWallCollision() {
     collTopRight = false;
     collTopLeft = false;
     collidedLeft = false;
-    collidedPad = false;
+    collidedPadLeft = false
+ collidedPadRight = false
+
   }
 
   if (collidedRight) {
@@ -121,13 +125,15 @@ function checkWallCollision() {
       collTopRight = true;
       collTopLeft = false;
       collidedLeft = false;
-      collidedPad = false;
+      collidedPadLeft = false
+      collidedPadRight = false
     } else if (collidedLeft) {
       collidedRight = false;
       collTopRight = false;
       collTopLeft = true;
       collidedLeft = false;
-      collidedPad = false;
+      collidedPadLeft = false
+      collidedPadRight = false
     }
   }
 
@@ -152,7 +158,8 @@ function checkWallCollision() {
     collTopRight = false;
     collTopLeft = false;
     collidedLeft = true;
-    collidedPad = false;
+    collidedPadLeft = false
+    collidedPadRight = false
   }
 
   if (collidedLeft) {
@@ -183,23 +190,35 @@ function checkPadCollision() {
 
   // need to see which pad sqaure is being hit and move the ball in the diagonal
   // with these checks the edge of the pad is not being accounted for when it comes down on the diagonal
+  const leftSideofPaddle = Math.round((padRight - padLeft) / 2 + padLeft);
 
-  if (padLeft <= ballColStart && ballColStart <= padRight && ballBottom == padRow) {
-    collidedPad = true;
-    collTopRight = false;
+  if (padLeft <= ballColStart &&  ballColStart <= leftSideofPaddle && ballBottom == padRow) {
+    collidedPadLeft = true
+    collidedPadRight = false   
+     collTopRight = false;
     collTopLeft = false
     collidedLeft = false;
     // added collided right
     collidedRight = false
   }
 
-  const leftSideofPaddle = Math.round((padRight - padLeft) / 2 + padLeft);
+  if(ballColStart > leftSideofPaddle && ballColStart <= padRight && ballBottom == padRow){
+    collidedPadLeft = false
+    collidedPadRight = true   
+     collTopRight = false;
+    collTopLeft = false
+    collidedLeft = false;
+    // added collided right
+    collidedRight = false
+  }
+
   // contact with left side and middle of paddle, ball coming down onto paddle
-  if (collidedPad && ballColStart <= leftSideofPaddle) {
+  if (collidedPadLeft) {
+
     ball.style.gridRowStart = ballRow - 1;
     ball.style.gridColumnStart = ballColumn - 1;
   }
-  if (collidedPad && ballColStart > leftSideofPaddle) {
+  if (collidedPadRight) {
     // contact with right side of paddle, however, moving one to the right first and then up.
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow - 1;
@@ -248,4 +267,4 @@ function deadBall() {
   }
 }
 
-export { drawBall, moveBall, checkWallCollision, checkPadCollision, deadBall, ballDirectionOne };
+export { drawBall, moveBall, checkWallCollision, checkPadCollision, deadBall, ballDirectionOne, collidedPadLeft, collidedPadRight, collTopLeft, collTopRight, collidedLeft, collidedRight };
