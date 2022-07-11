@@ -1,5 +1,5 @@
 import { draw as drawBrick } from "./bricks.js";
-import { drawBall as addBall, moveBall as ballMovement, checkWallCollision, checkPadCollision, ballDirectionOne, ballDirectionTwo, deadBall } from "./ball.js";
+import { drawBall as addBall, moveBall as ballMovement, checkWallCollision, checkPadCollision, ballDirectionOne, deadBall } from "./ball.js";
 import { createPad as addPad, movePadAndBall as move } from "./pad.js";
 
 let lastRenderTime = 0;
@@ -24,7 +24,7 @@ function main(time) {
 requestAnimationFrame(main);
 
 const gameBoard = document.getElementById("game-board");
-
+console.log(gameBoard.getBoundingClientRect())
 drawBrick(gameBoard);
 addBall(gameBoard);
 addPad(gameBoard);

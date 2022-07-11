@@ -8,8 +8,8 @@ let collidedPad = false;
 let collTopRight = false;
 let collTopLeft = false;
 
-let movingRight = true;
-let movingLeft = false;
+// let movingRight = true;
+// let movingLeft = false;
 let goingUp = false;
 let goingDown = false;
 let firstX = 0;
@@ -32,6 +32,8 @@ function ballDirectionOne(gameBoard) {
 
   //console.log(obj);
 
+
+  // checking here if the ball is going up or down, on the right or left side.
   if (ballValues.gridColumnStart == numberOfRows - 2 || ballValues.gridColumnStart == 2) {
     obj["a"] = parseInt(ballValues.gridRowStart);
   }
@@ -67,16 +69,16 @@ function ballDirectionOne(gameBoard) {
   // return firstX;
 }
 
-function ballDirectionTwo(gameBoard) {
-  let ball = document.querySelector(".ball");
-  let ballRect = ball.getBoundingClientRect();
-  let ballValues = window.getComputedStyle(ball);
+// function ballDirectionTwo(gameBoard) {
+//   let ball = document.querySelector(".ball");
+//   let ballRect = ball.getBoundingClientRect();
+//   let ballValues = window.getComputedStyle(ball);
 
-  //firstX = ballRect.x;
-  secondX = ballValues.gridRowStart;
-  // secondX = ballRect.x;
-  console.log("secondX", secondX);
-}
+//   //firstX = ballRect.x;
+//   secondX = ballValues.gridRowStart;
+//   // secondX = ballRect.x;
+//   console.log("secondX", secondX);
+// }
 
 // function diff() {
 //   setInterval(ballDirectionOne, 10);
@@ -127,6 +129,7 @@ function checkWallCollision() {
   let boardRect = gameBoar.getBoundingClientRect();
   let ballRect = ball.getBoundingClientRect();
 
+  // may have an issue here, as the right wall still hasnt been touched
   if (ballRect.right.toFixed(2) == boardRect.right.toFixed(2)) {
     collidedRight = true;
     collTopRight = false;
@@ -152,7 +155,7 @@ function checkWallCollision() {
       collTopLeft = false;
       collidedLeft = false;
       collidedPad = false;
-    }else if (collidedLeft) {
+    } else if (collidedLeft) {
       collidedRight = false;
       collTopRight = false;
       collTopLeft = true;
@@ -161,19 +164,21 @@ function checkWallCollision() {
     }
   }
 
-    if (collTopRight) {
-      //change direction
-      ball.style.gridColumnStart = ballColumn - 1;
-      ball.style.gridRowStart = ballRow + 1;
-    }
+  // ball coming from right wall
+  if (collTopRight) {
+    //change direction
+    ball.style.gridColumnStart = ballColumn - 1;
+    ball.style.gridRowStart = ballRow + 1;
+  }
 
-    if(collTopLeft){
-      ball.style.gridColumnStart = ballColumn + 1;
-      ball.style.gridRowStart = ballRow + 1;
+  // ball coming from left wall
+  if (collTopLeft) {
+    ball.style.gridColumnStart = ballColumn + 1;
+    ball.style.gridRowStart = ballRow + 1;
 
 
-    }
-  
+  }
+
 
   if (ballRect.left.toFixed(2) == boardRect.left.toFixed(2)) {
     collidedRight = false;
@@ -216,6 +221,7 @@ function checkPadCollision() {
     collTopRight = false;
     collTopLeft = false
     collidedLeft = false;
+    collidedRight = false
   }
 
   const leftSideofPaddle = Math.round((padRight - padLeft) / 2 + padLeft);
@@ -230,29 +236,29 @@ function checkPadCollision() {
   }
 }
 
-export function isGameOver() {
-  const ball = document.querySelector(".ball");
-  const ballValues = window.getComputedStyle(ball);
-  const ballRow = parseInt(ballValues.gridRowStart);
+// export function isGameOver() {
+//   const ball = document.querySelector(".ball");
+//   const ballValues = window.getComputedStyle(ball);
+//   const ballRow = parseInt(ballValues.gridRowStart);
 
-  const paddle = document.querySelector(".pad");
-  const paddleValues = window.getComputedStyle(paddle);
-  const paddleRow = parseInt(paddleValues.gridRowStart);
-  // let gameStatus = document.querySelector('#game-status')
-  // console.log('ballrow', ballRow, 'paddlerow', paddleRow)
-  // if (ballRow > paddleRow) {
-  //   gameStatus.innerHTML = 'Game Over'
-  //   return
-  // }
-  return ballRow > paddleRow;
-}
+//   const paddle = document.querySelector(".pad");
+//   const paddleValues = window.getComputedStyle(paddle);
+//   const paddleRow = parseInt(paddleValues.gridRowStart);
+//   // let gameStatus = document.querySelector('#game-status')
+//   // console.log('ballrow', ballRow, 'paddlerow', paddleRow)
+//   // if (ballRow > paddleRow) {
+//   //   gameStatus.innerHTML = 'Game Over'
+//   //   return
+//   // }
+//   return ballRow > paddleRow;
+// }
 
-export function resetBall() {
-  const ball = document.querySelector(".ball");
-  // const ballValues = window.getComputedStyle(ball);
-  ball.style.gridRowStart = 21;
-  ball.style.gridColumnStart = 12;
-}
+// export function resetBall() {
+//   const ball = document.querySelector(".ball");
+//   // const ballValues = window.getComputedStyle(ball);
+//   ball.style.gridRowStart = 21;
+//   ball.style.gridColumnStart = 12;
+// }
 
 function deadBall() {
   let ball = document.querySelector(".ball");
@@ -272,4 +278,4 @@ function deadBall() {
   }
 }
 
-export { drawBall, moveBall, checkWallCollision, checkPadCollision, deadBall, ballDirectionOne, ballDirectionTwo };
+export { drawBall, moveBall, checkWallCollision, checkPadCollision, deadBall, ballDirectionOne };
