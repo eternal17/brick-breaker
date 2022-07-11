@@ -1,7 +1,6 @@
 import { hasSpaceBeenPressed } from "./pad.js";
 
 let collidedRight = false;
-//let collidedTop = false;
 let collidedLeft = false;
 let collidedPad = false;
 
@@ -176,7 +175,7 @@ function checkPadCollision() {
   let paddle = document.querySelector(".pad");
   let padValues = window.getComputedStyle(paddle);
   let ballBottom = parseInt(ballValues.gridRowStart);
-  let ballCStart = parseInt(ballValues.gridColumnStart);
+  let ballColStart = parseInt(ballValues.gridColumnStart);
   let padLeft = parseInt(padValues.gridColumnStart);
   let padRight = parseInt(padValues.gridColumnEnd);
   let padRow = parseInt(padValues.gridRowStart);
@@ -184,7 +183,8 @@ function checkPadCollision() {
 
   // need to see which pad sqaure is being hit and move the ball in the diagonal
   // with these checks the edge of the pad is not being accounted for when it comes down on the diagonal
-  if (padLeft <= ballCStart && ballCStart <= padRight && ballBottom == padRow) {
+
+  if (padLeft <= ballColStart && ballColStart <= padRight && ballBottom == padRow) {
     collidedPad = true;
     collTopRight = false;
     collTopLeft = false
@@ -195,10 +195,11 @@ function checkPadCollision() {
 
   const leftSideofPaddle = Math.round((padRight - padLeft) / 2 + padLeft);
   // contact with left side and middle of paddle, ball coming down onto paddle
-  if (collidedPad && ballCStart <= leftSideofPaddle) {
+  if (collidedPad && ballColStart <= leftSideofPaddle) {
     ball.style.gridRowStart = ballRow - 1;
     ball.style.gridColumnStart = ballColumn - 1;
-  } else if (collidedPad) {
+  }
+  if (collidedPad && ballColStart > leftSideofPaddle) {
     // contact with right side of paddle, however, moving one to the right first and then up.
     ball.style.gridColumnStart = ballColumn + 1;
     ball.style.gridRowStart = ballRow - 1;

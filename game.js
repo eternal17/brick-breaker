@@ -13,9 +13,9 @@ function main(time) {
   lastRenderTime = time;
   ballMovement();
 
+  ballDirectionOne()
   checkWallCollision()
   checkPadCollision()
-  ballDirectionOne()
   deadBall()
 
 }
