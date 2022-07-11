@@ -8,17 +8,11 @@ let collidedPad = false;
 let collTopRight = false;
 let collTopLeft = false;
 
-// let movingRight = true;
-// let movingLeft = false;
 let goingUp = false;
 let goingDown = false;
-let firstX = 0;
-let secondX = 0;
-let difference;
+
 
 let obj = {};
-let a;
-let b;
 
 function ballDirectionOne(gameBoard) {
   let ball = document.querySelector(".ball");
@@ -68,33 +62,6 @@ function ballDirectionOne(gameBoard) {
   // console.log("firstX", firstX);
   // return firstX;
 }
-
-// function ballDirectionTwo(gameBoard) {
-//   let ball = document.querySelector(".ball");
-//   let ballRect = ball.getBoundingClientRect();
-//   let ballValues = window.getComputedStyle(ball);
-
-//   //firstX = ballRect.x;
-//   secondX = ballValues.gridRowStart;
-//   // secondX = ballRect.x;
-//   console.log("secondX", secondX);
-// }
-
-// function diff() {
-//   setInterval(ballDirectionOne, 10);
-//   setInterval(ballDirectionTwo, 16);
-//   console.log(firstX);
-//   console.log(secondX);
-//   return firstX - secondX;
-//   if (secondX - firstX){
-//     console.log('less than zero');
-//   }else{
-//     console.log('greater than zero')
-//   }
-// }
-
-//setInterval(ballDirectionOne, 50);
-//setInterval(ballDirectionTwo, 800);
 
 function drawBall(gameBoard) {
   let newball = document.createElement("div");
@@ -148,6 +115,7 @@ function checkWallCollision() {
     }
   }
 
+  // colliding top of gameboard
   if (ballRect.top.toFixed(2) == boardRect.top.toFixed(2)) {
     if (collidedRight) {
       collidedRight = false;
@@ -179,7 +147,7 @@ function checkWallCollision() {
 
   }
 
-
+  // colliding left wall
   if (ballRect.left.toFixed(2) == boardRect.left.toFixed(2)) {
     collidedRight = false;
     collTopRight = false;
