@@ -1,33 +1,36 @@
-import { brickCollision, draw as drawBrick } from "./bricks.js";
-import { drawBall as addBall, moveBall as ballMovement, checkWallCollision, checkPadCollision, ballDirectionOne, deadBall } from "./ball.js";
-import { createPad as addPad, movePadAndBall as move } from "./pad.js";
+const gameBoard = document.querySelector(".game-board");
+const gameBoardRect = gameBoard.getBoundingClientRect()
 
-let lastRenderTime = 0;
+const paddle_width = 100
+const paddle_margin_bottom = 50
+const paddle_height = 20
 
-
-function main(time) {
-
-  requestAnimationFrame(main);
-  const secondsSinceLastRender = (time - lastRenderTime) / 1000;
-  if (secondsSinceLastRender < 1 / 6) return;
-  lastRenderTime = time;
-  ballMovement();
-
-  ballDirectionOne()
-  checkWallCollision()
-  checkPadCollision()
-  brickCollision()
-  deadBall()
-
+const paddle = {
+  // x value is 
+  x: gameBoardRect.width / 2 - paddle_width / 2,
+  // y value is the top left corner value of the paddle
+  y: gameBoardRect.height - paddle_margin_bottom - paddle_height,
+  width: paddle_width,
+  height: paddle_height,
+  xMovement: 5
+}
+// draw paddle 
+function drawPaddle() {
+  let pad = document.createElement('div')
+  pad.classList.add('pad')
+  pad.style.left = paddle.x + 'px'
+  pad.style.top = paddle.y + 'px'
+  pad.style.width = paddle.width + 'px'
+  pad.style.height = paddle.height + 'px'
+  pad.style.backgroundColor = 'red'
+  pad.style.position = 'absolute'
+  gameBoard.append(pad)
 }
 
 
-requestAnimationFrame(main);
 
-const gameBoard = document.getElementById("game-board");
-console.log(gameBoard.getBoundingClientRect())
-drawBrick(gameBoard);
-addBall(gameBoard);
-addPad(gameBoard);
-move();
+// console.log(pad.getBoundingClientRect())
 
+
+
+drawPaddle()

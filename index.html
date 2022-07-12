@@ -2,7 +2,6 @@
 page. You can use a different file name, however, you would have to make sure to include
 the file name in every url. 
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,8 +9,7 @@ the file name in every url.
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brick Breaker</title>
-
+    <title>Bricks</title>
     <style>
         body {
             height: 100vh;
@@ -23,59 +21,18 @@ the file name in every url.
             background-color: white;
         }
 
-        #game-board {
-            background-color: black;
-            width: 70vmin;
-            height: 70vmin;
-            display: grid;
+        .game-board {
+            height: 500px;
+            width: 400px;
+            border: 5px solid blue;
             position: absolute;
-
-            /* this is going to be useful to clarify the dimensions of the part of 
-            the screen that is playable, grid by grid */
-            grid-template-rows: repeat(23, 1fr);
-            grid-template-columns: repeat(23, 1fr);
-        }
-
-        /* The elements below will eventually be filled with the needed style attributes */
-        .pad {
-            background-color: white;
-            border: .25vmin solid blue;
-            grid-row-start: 22;
-            grid-column-start: 10;
-            /*x*/
-            grid-column-end: 15;
-            border-radius: 10px
-        }
-
-        .ball {
-            background-color: purple;
-            border: .25vmin solid blue;
-            border-radius: 50%;
-            /* height: 15px;
-            width: 15px; */
-            grid-row-start: 21;
-            grid-column-start: 12;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-
-
-        }
-
-        .brick {
-            background-color: green;
-            border: .25vmin solid red;
         }
     </style>
-
     <script src="game.js" defer type="module"></script>
 </head>
 
 <body>
-    <div id="game-status"></div>
-    <div id="game-board"></div>
-    </div>
+    <div class="game-board"></div>
 </body>
 
 </html>
