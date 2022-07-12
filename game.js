@@ -9,6 +9,7 @@ const gameCompStyles = window.getComputedStyle(gameBoard);
 const paddle_width = 100;
 const paddle_margin_bottom = 50;
 const paddle_height = 20;
+const middle_buffer = 10 
 
 const pad = document.createElement("div");
 const padCompStyles = window.getComputedStyle(pad);
@@ -27,7 +28,7 @@ const paddle = {
   y: gameBoardRect.height - paddle_margin_bottom - paddle_height,
   width: paddle_width,
   height: paddle_height,
-  xMovement: 6,
+  xMovement: 10,
 };
 
 // draw paddle
@@ -107,16 +108,52 @@ function ballWallCollision() {
   }
 
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
-  if (ballRect.bottom >= padRect.bottom) {
+  if (ballRect.bottom > padRect.top) {
     location.reload()
   }
 }
+
+
+
+
+function padCollision(){
+  const ballRect = ballDiv.getBoundingClientRect()
+  const padRect = pad.getBoundingClientRect();
+  const padFloor = ballRect.bottom + parseInt(gameCompStyles.border) >= padRect.top 
+
+  // console.log(ballRect);
+//checking if the ball has hit the left 40% of the paddle
+  if (padFloor && padRect.x < ballRect.right &&  ballRect.right< padRect.x + paddle_width/2 - middle_buffer )  {
+    // console.log(padRect.left, ballRect.left, padRect.width/2);
+    ball.deltaY = -Math.abs(ball.deltaY)
+    ball.deltaX = -Math.abs(ball.deltaX)
+
+  }
+
+
+  //checking if the ball has hit the right 40% of the paddle
+  if (padFloor&& padRect.right > ballRect.left &&  ballRect.left > padRect.x + paddle_width/2 + middle_buffer )  {
+    console.log(padRect.left, ballRect.left, padRect.width/2);
+    ball.deltaY = -Math.abs(ball.deltaY)
+    ball.deltaX = Math.abs(ball.deltaX)
+
+  }
+
+  if(padFloor)
+
+
+
+
+}
+
+
 
 function gameLoop() {
   drawPaddle();
   drawBall();
   movePaddle();
   moveBall()
+  padCollision()
   ballWallCollision()
 
   requestAnimationFrame(gameLoop);
