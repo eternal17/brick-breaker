@@ -1,25 +1,21 @@
-
 // gameboard variables
 const gameBoard = document.querySelector(".game-board");
 const gameBoardRect = gameBoard.getBoundingClientRect();
 const gameCompStyles = window.getComputedStyle(gameBoard);
 
-
 // paddle variables
 const paddle_width = 100;
 const paddle_margin_bottom = 50;
 const paddle_height = 20;
-const middle_buffer = 10 
+const middle_buffer = 10;
 
 const pad = document.createElement("div");
 const padCompStyles = window.getComputedStyle(pad);
 
 // ball variables
-const ballDiv = document.createElement('div')
-const ballRadius = 10
+const ballDiv = document.createElement("div");
+const ballRadius = 10;
 const ballCompStyles = window.getComputedStyle(ballDiv);
-
-
 
 const paddle = {
   // x value is
@@ -28,7 +24,7 @@ const paddle = {
   y: gameBoardRect.height - paddle_margin_bottom - paddle_height,
   width: paddle_width,
   height: paddle_height,
-  xMovement: 10,
+  xMovement: 20,
 };
 
 // draw paddle
@@ -56,95 +52,117 @@ function movePaddle() {
   });
 }
 
-
 const ball = {
   x: gameBoardRect.width / 2 - ballRadius,
   y: paddle.y - 2 * ballRadius,
   // the speed value can eventually change
-  speed: 3,
+  speed: 5,
   radius: ballRadius,
-  // these are the properties that x and y change by. 
-  deltaX: 2,
-  deltaY: -2
-}
+  // these are the properties that x and y change by.
+  deltaX: 4 * (Math.random() * 2 - 1),
+  deltaY: -4,
+};
 
 function drawBall() {
-  ballDiv.classList.add('ball')
-  ballDiv.style.top = ball.y + 'px'
-  ballDiv.style.left = ball.x + 'px'
-  ballDiv.style.height = '20px'
-  ballDiv.style.width = '20px'
-  ballDiv.style.borderRadius = '10px'
-  ballDiv.style.position = 'absolute'
-  ballDiv.style.backgroundColor = 'green'
-  gameBoard.append(ballDiv)
+  ballDiv.classList.add("ball");
+  ballDiv.style.top = ball.y + "px";
+  ballDiv.style.left = ball.x + "px";
+  ballDiv.style.height = "20px";
+  ballDiv.style.width = "20px";
+  ballDiv.style.borderRadius = "10px";
+  ballDiv.style.position = "absolute";
+  ballDiv.style.backgroundColor = "green";
+  gameBoard.append(ballDiv);
 }
 
 function moveBall() {
-  ball.x += ball.deltaX
-  ball.y += ball.deltaY
-
+  ball.x += ball.deltaX;
+  ball.y += ball.deltaY;
 }
 
-// CHECK WHY WE NEED THESE VARIABLES 
-
+// CHECK WHY WE NEED THESE VARIABLES
 
 function ballWallCollision() {
   // if ball hits right side of the wall
-  const ballRect = ballDiv.getBoundingClientRect()
+  const ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
   // collided with right side
   if (ballRect.right + parseInt(gameCompStyles.border) >= gameBoardRect.right) {
-    ball.deltaX = -Math.abs(ball.deltaX)
+    ball.deltaX = -Math.abs(ball.deltaX);
   }
   // collided with top
   if (ballRect.top - parseInt(gameCompStyles.border) <= gameBoardRect.top) {
-    ball.deltaY = Math.abs(ball.deltaY)
+    ball.deltaY = Math.abs(ball.deltaY);
   }
 
-  // collided with left 
+  // collided with left
   if (ballRect.left - parseInt(gameCompStyles.border) <= gameBoardRect.left) {
-    ball.deltaX = Math.abs(ball.deltaX)
+    ball.deltaX = Math.abs(ball.deltaX);
   }
 
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
-  if (ballRect.bottom > padRect.top) {
-    location.reload()
+  if (ballRect.bottom -ballRect.width > padRect.top + padRect.height) {
+     location.reload();
   }
 }
 
 
-
-
-function padCollision(){
-  const ballRect = ballDiv.getBoundingClientRect()
+function padCollision() {
+  const ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
-  const padFloor = ballRect.bottom + parseInt(gameCompStyles.border) >= padRect.top 
+  const padFloor = ballRect.bottom + parseInt(gameCompStyles.border) >= padRect.top;
 
-  // console.log(ballRect);
-//checking if the ball has hit the left 40% of the paddle
-  if (padFloor && padRect.x < ballRect.right &&  ballRect.right< padRect.x + paddle_width/2 - middle_buffer )  {
-    // console.log(padRect.left, ballRect.left, padRect.width/2);
-    ball.deltaY = -Math.abs(ball.deltaY)
-    ball.deltaX = -Math.abs(ball.deltaX)
+  //&& ballRect.right < padRect.x + paddle_width / 2 - middle_buffer
+  // if (padFloor && padRect.x  - padRect.width< ballRect.x && padRect.right > ballRect.left) {
 
+  //   //checking if the ball has hit the left 40% of the paddle
+  //   if (ballRect.left + ballRect.width >= padRect.left  &&  ballRect.left + ballRect.width <padRect.left + paddle_width * 0.4  ) {
+  //     console.log('left' , ballRect.left, ballRect.width, padRect.left);
+  //     ball.deltaY = -Math.abs(ball.deltaY);
+  //     ball.deltaX = -Math.abs(ball.deltaX);
+
+  //   } else if (ballRect.right - ballRect.width <= padRect.right && ballRect.left > padRect.right -paddle_width * 0.4 ) {
+  //     console.log('right', ballRect.right, ballRect.width, padRect.right);
+  //     ball.deltaY = -Math.abs(ball.deltaY);
+  //     ball.deltaX = Math.abs(ball.deltaX);
+
+  //     //console.log('right', padRect.x, padRect.left, ballRect.x , ballRect.bottom);
+
+  //   } else if(ballRect.left < padRect.left - ballRect.width || ballRect.right < padRect.right + ballRect.width ){
+  //     console.log('out of bounds');
+
+  //   }else{
+  //     console.log('middle');
+
+  //   }
+  // }
+
+  //added + ballRect.height
+  if (
+    ballRect.x < padRect.x + padRect.width &&
+    ballRect.x > padRect.x &&
+    padRect.y < padRect.y + padRect.height &&
+    ballRect.y + ballRect.height > padRect.y
+  ) {
+    console.log("hi");
+
+    // CHECK WHERE THE ballRect HIT THE PADDLE
+    let collidePoint = ballRect.x - (padRect.x + padRect.width / 2);
+
+    // NORMALIZE THE VALUES
+    collidePoint = collidePoint / (padRect.width / 2);
+
+    // CALCULATE THE ANGLE OF THE ballRect
+    let angle = (collidePoint * Math.PI) / 3;
+
+    ball.deltaX = ball.speed * Math.sin(angle);
+    ball.deltaY = -ball.speed * Math.cos(angle);
+
+    console.log(ball.deltaX);
+    console.log(ball.deltaY);
   }
-
-
-  //checking if the ball has hit the right 40% of the paddle
-  if (padFloor&& padRect.right > ballRect.left &&  ballRect.left > padRect.x + paddle_width/2 + middle_buffer )  {
-    console.log(padRect.left, ballRect.left, padRect.width/2);
-    ball.deltaY = -Math.abs(ball.deltaY)
-    ball.deltaX = Math.abs(ball.deltaX)
-
-  }
-
-  if(padFloor)
-
-
-
-
 }
+
 
 
 
@@ -152,9 +170,9 @@ function gameLoop() {
   drawPaddle();
   drawBall();
   movePaddle();
-  moveBall()
-  padCollision()
-  ballWallCollision()
+  moveBall();
+  padCollision();
+  ballWallCollision();
 
   requestAnimationFrame(gameLoop);
 }
