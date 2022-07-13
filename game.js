@@ -24,7 +24,7 @@ const paddle = {
   y: gameBoardRect.height - paddle_margin_bottom - paddle_height,
   width: paddle_width,
   height: paddle_height,
-  xMovement: 10,
+  xMovement: 20,
 };
 
 // draw paddle
@@ -56,10 +56,10 @@ const ball = {
   x: gameBoardRect.width / 2 - ballRadius,
   y: paddle.y - 2 * ballRadius,
   // the speed value can eventually change
-  speed: 3,
+  speed: 5,
   radius: ballRadius,
   // these are the properties that x and y change by.
-  deltaX: 4,
+  deltaX: 4 * (Math.random() * 2 - 1),
   deltaY: -4,
 };
 
@@ -101,38 +101,71 @@ function ballWallCollision() {
   }
 
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
-  if (ballRect.bottom > padRect.top) {
-    location.reload();
+  if (ballRect.bottom -ballRect.width > padRect.top + padRect.height) {
+     location.reload();
   }
 }
+/*
+else if(ballRect.left>= padRect.left + padRect.width * 0.4 && ballRect.right <= padRect.right -paddle_width * 0.4 ){
+      console.log('middle');
+      ball.deltaY = -Math.abs(ball.deltaY);
+      ball.deltaX = Math.abs(ball.deltaX);
+    }
+  */
 
 function padCollision() {
   const ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
   const padFloor = ballRect.bottom + parseInt(gameCompStyles.border) >= padRect.top;
 
-  // console.log(ballRect);
+  //&& ballRect.right < padRect.x + paddle_width / 2 - middle_buffer
+  // if (padFloor && padRect.x  - padRect.width< ballRect.x && padRect.right > ballRect.left) {
 
-//&& ballRect.right < padRect.x + paddle_width / 2 - middle_buffer  
-  if (padFloor && padRect.x  - padRect.width< ballRect.x && padRect.right > ballRect.left) {
-   
-    //checking if the ball has hit the left 40% of the paddle
-    if (ballRect.left + ballRect.width >= padRect.left  &&  ballRect.left + ballRect.width <=padRect.left + paddle_width * 0.4  ) {
-      console.log('left' , ballRect.left, ballRect.width, padRect.left);
-      ball.deltaY = -Math.abs(ball.deltaY);
-      ball.deltaX = -Math.abs(ball.deltaX);
+  //   //checking if the ball has hit the left 40% of the paddle
+  //   if (ballRect.left + ballRect.width >= padRect.left  &&  ballRect.left + ballRect.width <padRect.left + paddle_width * 0.4  ) {
+  //     console.log('left' , ballRect.left, ballRect.width, padRect.left);
+  //     ball.deltaY = -Math.abs(ball.deltaY);
+  //     ball.deltaX = -Math.abs(ball.deltaX);
 
-    } else if (ballRect.right - ballRect.width <= padRect.right && ballRect.left >= padRect.right -paddle_width * 0.4 ) {
-      console.log('right', ballRect.right, ballRect.width, padRect.right);
-      ball.deltaY = -Math.abs(ball.deltaY);
-      ball.deltaX = Math.abs(ball.deltaX);
+  //   } else if (ballRect.right - ballRect.width <= padRect.right && ballRect.left > padRect.right -paddle_width * 0.4 ) {
+  //     console.log('right', ballRect.right, ballRect.width, padRect.right);
+  //     ball.deltaY = -Math.abs(ball.deltaY);
+  //     ball.deltaX = Math.abs(ball.deltaX);
 
-      //console.log('right', padRect.x, padRect.left, ballRect.x , ballRect.bottom);
+  //     //console.log('right', padRect.x, padRect.left, ballRect.x , ballRect.bottom);
 
+  //   } else if(ballRect.left < padRect.left - ballRect.width || ballRect.right < padRect.right + ballRect.width ){
+  //     console.log('out of bounds');
 
-    } else if(   ){
+  //   }else{
+  //     console.log('middle');
 
-    }
+  //   }
+  // }
+
+  //added + ballRect.height
+  if (
+    ballRect.x < padRect.x + padRect.width &&
+    ballRect.x > padRect.x &&
+    padRect.y < padRect.y + padRect.height &&
+    ballRect.y + ballRect.height > padRect.y
+  ) {
+    console.log("hi");
+
+    // CHECK WHERE THE ballRect HIT THE PADDLE
+    let collidePoint = ballRect.x - (padRect.x + padRect.width / 2);
+
+    // NORMALIZE THE VALUES
+    collidePoint = collidePoint / (padRect.width / 2);
+
+    // CALCULATE THE ANGLE OF THE ballRect
+    let angle = (collidePoint * Math.PI) / 3;
+
+    ball.deltaX = ball.speed * Math.sin(angle);
+    ball.deltaY = -ball.speed * Math.cos(angle);
+
+    console.log(ball.deltaX);
+    console.log(ball.deltaY);
   }
 }
 
