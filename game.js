@@ -7,7 +7,6 @@ const gameCompStyles = window.getComputedStyle(gameBoard);
 const paddle_width = 100;
 const paddle_margin_bottom = 50;
 const paddle_height = 20;
-const middle_buffer = 10;
 
 const pad = document.createElement("div");
 const padCompStyles = window.getComputedStyle(pad);
@@ -27,6 +26,9 @@ const paddle = {
   xMovement: 20,
 };
 
+
+
+
 // draw paddle
 function drawPaddle() {
   pad.classList.add("pad");
@@ -34,7 +36,7 @@ function drawPaddle() {
   pad.style.top = paddle.y + "px";
   pad.style.width = paddle.width + "px";
   pad.style.height = paddle.height + "px";
-  pad.style.backgroundColor = "red";
+  pad.style.backgroundColor = "white";
   pad.style.position = "absolute";
   gameBoard.append(pad);
 }
@@ -71,7 +73,7 @@ function drawBall() {
   ballDiv.style.width = "20px";
   ballDiv.style.borderRadius = "10px";
   ballDiv.style.position = "absolute";
-  ballDiv.style.backgroundColor = "green";
+  ballDiv.style.backgroundColor = "silver";
   gameBoard.append(ballDiv);
 }
 
@@ -81,7 +83,6 @@ function moveBall() {
 }
 
 // CHECK WHY WE NEED THESE VARIABLES
-
 function ballWallCollision() {
   // if ball hits right side of the wall
   const ballRect = ballDiv.getBoundingClientRect();
@@ -101,11 +102,10 @@ function ballWallCollision() {
   }
 
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
-  if (ballRect.bottom -ballRect.width > padRect.top + padRect.height) {
-     location.reload();
+  if (ballRect.bottom - ballRect.height > padRect.bottom ) {
+    location.reload();
   }
 }
-
 
 function padCollision() {
   const ballRect = ballDiv.getBoundingClientRect();
@@ -164,13 +164,84 @@ function padCollision() {
 }
 
 
+//brick variables
+const brick_width = 100;
+const brick_height = 20;
+const brick_rows = 3
+const brick_column = 3
+const brick_buffer = (gameBoardRect.width - brick_width*brick_rows) / brick_rows -2
+let styleLeft = 15
+let styleTop = 50 
 
+
+let bricks = {
+  width: brick_width,
+  height: brick_height,
+  rows : brick_rows,
+  columns : brick_column,
+  style_left : styleLeft,
+  style_top : styleTop,
+};
+
+
+
+function createBricks() {
+
+  const docFrag = document.createDocumentFragment();
+  
+  let id = 1
+
+  for (let i =0 ; i < bricks.columns ; i++){
+
+    for (let i =0 ; i < bricks.columns ; i++){
+      let brick = document.createElement("div");
+      brick.classList.add("brick");
+      brick.style.left = styleLeft + 'px';
+      brick.style.top = styleTop + 'px';
+      brick.style.height = bricks.height + 'px';
+      brick.style.width = bricks.width + 'px';
+      brick.style.backgroundColor = "red";
+      brick.style.position = "absolute";
+      brick.id = id
+      id++
+      console.log(styleLeft);
+     styleLeft += brick_width + brick_buffer
+      docFrag.appendChild(brick);
+      
+    }
+    styleLeft = 15
+    styleTop += 50
+
+  }
+
+return docFrag
+
+}
+
+function drawBricks(){
+  let brickFrags = createBricks()
+gameBoard.appendChild(brickFrags)
+}
+
+
+
+
+
+let game_started = false
+
+window.addEventListener("keydown", function (e) {
+
+  if (e.code === 'Space') game_started = true 
+
+})
+
+drawBricks();
 
 function gameLoop() {
   drawPaddle();
   drawBall();
   movePaddle();
-  moveBall();
+  if(game_started) moveBall();
   padCollision();
   ballWallCollision();
 
