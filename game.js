@@ -144,7 +144,6 @@ function padCollision() {
     padRect.y < padRect.y + padRect.height &&
     ballRect.y + ballRect.height > padRect.y
   ) {
-    console.log("hi");
 
     // CHECK WHERE THE ballRect HIT THE PADDLE
     let collidePoint = ballRect.x - (padRect.x + padRect.width / 2);
@@ -158,8 +157,8 @@ function padCollision() {
     ball.deltaX = ball.speed * Math.sin(angle);
     ball.deltaY = -ball.speed * Math.cos(angle);
 
-    console.log(ball.deltaX);
-    console.log(ball.deltaY);
+    // console.log(ball.deltaX);
+    // console.log(ball.deltaY);
   }
 }
 
@@ -204,7 +203,7 @@ function createBricks() {
       brick.style.position = "absolute";
       brick.id = id
       id++
-      console.log(styleLeft);
+      // console.log(styleLeft);
      styleLeft += brick_width + brick_buffer
       docFrag.appendChild(brick);
       
@@ -224,6 +223,34 @@ gameBoard.appendChild(brickFrags)
 }
 
 
+function brickCollision() {
+  
+  let gameBall = document.querySelector(".ball");
+  let gameBricks = document.querySelectorAll(".brick");
+
+  
+  let gameBallValues = window.getComputedStyle(gameBall);
+  
+  for(let i = 0 ; i < gameBricks.length ; i++ ){
+    
+    let brickValues = window.getComputedStyle(gameBricks[i])
+    
+    // console.log(gameBallValues.top);
+    
+    if (gameBallValues.top< brickValues.top){
+      console.log('has entered condition');
+      // gameBricks[i].classList.remove('brick')
+      gameBricks[i].top += 1000
+      
+      
+    }
+  }
+  
+  
+}
+
+
+
 
 
 
@@ -235,6 +262,7 @@ window.addEventListener("keydown", function (e) {
 
 })
 
+//behaves funky within the game loop, frames stable nevertheless
 drawBricks();
 
 function gameLoop() {
@@ -244,6 +272,7 @@ function gameLoop() {
   if(game_started) moveBall();
   padCollision();
   ballWallCollision();
+  brickCollision()
 
   requestAnimationFrame(gameLoop);
 }
