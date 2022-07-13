@@ -1,1 +1,3 @@
-Throttle gamepad
+Throttle gamepadb
+
+gameboardrect.left not working as desired for starting brick positions
