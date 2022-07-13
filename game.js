@@ -105,13 +105,7 @@ function ballWallCollision() {
      location.reload();
   }
 }
-/*
-else if(ballRect.left>= padRect.left + padRect.width * 0.4 && ballRect.right <= padRect.right -paddle_width * 0.4 ){
-      console.log('middle');
-      ball.deltaY = -Math.abs(ball.deltaY);
-      ball.deltaX = Math.abs(ball.deltaX);
-    }
-  */
+
 
 function padCollision() {
   const ballRect = ballDiv.getBoundingClientRect();
@@ -168,6 +162,9 @@ function padCollision() {
     console.log(ball.deltaY);
   }
 }
+
+
+
 
 function gameLoop() {
   drawPaddle();
