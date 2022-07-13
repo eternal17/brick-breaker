@@ -26,66 +26,8 @@ const paddle = {
   xMovement: 20,
 };
 
-console.log(gameBoardRect);
-
-//brick variables
-const brick_width = 100;
-const brick_height = 20;
-const brick_rows = 3
-const brick_column = 3
-const brick_buffer = (gameBoardRect.width - brick_width*brick_rows) / brick_rows -2
-let styleLeft = 15
-let styleTop = 50 
 
 
-let bricks = {
-  width: brick_width,
-  height: brick_height,
-  rows : brick_rows,
-  columns : brick_column,
-  style_left : styleLeft,
-  style_top : styleTop,
-};
-
-
-
-function createBricks() {
-
-  const docFrag = document.createDocumentFragment();
-  
-  let id = 1
-
-  for (let i =0 ; i < bricks.columns ; i++){
-
-    for (let i =0 ; i < bricks.columns ; i++){
-      let brick = document.createElement("div");
-      brick.classList.add("brick");
-      brick.style.left = styleLeft + 'px';
-      brick.style.top = styleTop + 'px';
-      brick.style.height = bricks.height + 'px';
-      brick.style.width = bricks.width + 'px';
-      brick.style.backgroundColor = "red";
-      brick.style.position = "absolute";
-      brick.id = id
-      id++
-      console.log(styleLeft);
-     styleLeft += brick_width + brick_buffer
-      docFrag.appendChild(brick);
-      
-    }
-    styleLeft = 15
-    styleTop += 50
-
-  }
-
-return docFrag
-
-}
-
-function drawBricks(){
-  let brickFrags = createBricks()
-gameBoard.appendChild(brickFrags)
-}
 
 // draw paddle
 function drawPaddle() {
@@ -220,6 +162,70 @@ function padCollision() {
     console.log(ball.deltaY);
   }
 }
+
+
+//brick variables
+const brick_width = 100;
+const brick_height = 20;
+const brick_rows = 3
+const brick_column = 3
+const brick_buffer = (gameBoardRect.width - brick_width*brick_rows) / brick_rows -2
+let styleLeft = 15
+let styleTop = 50 
+
+
+let bricks = {
+  width: brick_width,
+  height: brick_height,
+  rows : brick_rows,
+  columns : brick_column,
+  style_left : styleLeft,
+  style_top : styleTop,
+};
+
+
+
+function createBricks() {
+
+  const docFrag = document.createDocumentFragment();
+  
+  let id = 1
+
+  for (let i =0 ; i < bricks.columns ; i++){
+
+    for (let i =0 ; i < bricks.columns ; i++){
+      let brick = document.createElement("div");
+      brick.classList.add("brick");
+      brick.style.left = styleLeft + 'px';
+      brick.style.top = styleTop + 'px';
+      brick.style.height = bricks.height + 'px';
+      brick.style.width = bricks.width + 'px';
+      brick.style.backgroundColor = "red";
+      brick.style.position = "absolute";
+      brick.id = id
+      id++
+      console.log(styleLeft);
+     styleLeft += brick_width + brick_buffer
+      docFrag.appendChild(brick);
+      
+    }
+    styleLeft = 15
+    styleTop += 50
+
+  }
+
+return docFrag
+
+}
+
+function drawBricks(){
+  let brickFrags = createBricks()
+gameBoard.appendChild(brickFrags)
+}
+
+
+
+
 
 let game_started = false
 
