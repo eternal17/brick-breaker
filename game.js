@@ -28,6 +28,7 @@ const ballCompStyles = window.getComputedStyle(ballDiv);
 
 //brick variables
 const brick = document.createElement("div");
+const docFrag = document.createDocumentFragment();
 
 // draw paddle
 function drawPaddle() {
@@ -84,9 +85,11 @@ function moveBall() {
 
 // CHECK WHY WE NEED THESE VARIABLES
 function ballWallCollision() {
-  // if ball hits right side of the wall
+//tried make the below two variables global but causes errors 
   const ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
+
+
   // collided with right side
   if (ballRect.right + parseInt(gameCompStyles.border) >= gameBoardRect.right) {
     ball.deltaX = -Math.abs(ball.deltaX);
@@ -107,10 +110,13 @@ function ballWallCollision() {
   }
 }
 
+
 function padCollision() {
+  //also tried making the below two variables global but causes errors 
   const ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
-  const padFloor = ballRect.bottom + parseInt(gameCompStyles.border) >= padRect.top;
+
+  //const padFloor = ballRect.bottom + parseInt(gameCompStyles.border) >= padRect.top;
 
   //&& ballRect.right < padRect.x + paddle_width / 2 - middle_buffer
   // if (padFloor && padRect.x  - padRect.width< ballRect.x && padRect.right > ballRect.left) {
@@ -180,12 +186,12 @@ let bricks = {
 };
 
 function createBricks() {
-  const docFrag = document.createDocumentFragment();
+
 
   let id = 1;
 
   for (let i = 0; i < bricks.columns; i++) {
-    for (let i = 0; i < bricks.columns; i++) {
+    for (let i = 0; i < bricks.rows; i++) {
       let brick = document.createElement("div");
       brick.classList.add("brick");
       brick.style.left = styleLeft + "px";
@@ -213,23 +219,23 @@ function drawBricks() {
 }
 
 function brickCollision() {
-  //let gameBall = document.querySelector(".ball");
 
-  // let gameBallValues = window.getComputedStyle(gameBall);
 
   let gameBricks = document.getElementsByClassName("brick");
 
   for (let i = 0; i < gameBricks.length; i++) {
     const ballRect = ballDiv.getBoundingClientRect();
 
-    //let brickRect = gameBricks[i].getBoundingClientRect
 
-    if (ballRect.top <  gameBricks[i].getBoundingClientRect().bottom) {
+    //bottom of brick collision
+    if (ballRect.top <  gameBricks[i].getBoundingClientRect().bottom  && 
+    ballRect.left >= gameBricks[i].getBoundingClientRect().left &&
+    ballRect.right <= gameBricks[i].getBoundingClientRect().right)  {
       // gameBricks[i].classList.remove('brick')
       gameBricks[i].style.top = "1px";
+      gameBricks[i].remove()
 
-
-    ball.deltaX = Math.abs(ball.deltaX) 
+   // ball.deltaX = Math.abs(ball.deltaX) 
     ball.deltaY = Math.abs(ball.deltaY);
 
     }

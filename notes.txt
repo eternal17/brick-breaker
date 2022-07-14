@@ -1,3 +1,7 @@
-Throttle gamepadb
+Throttle gamepad -- framereate issues
 
 gameboardrect.left not working as desired for starting brick positions
+
+Ball doesn't always reset properly below pad
+
+translate/transform for pad movement and possibly ball,to improve performance/frame rate
