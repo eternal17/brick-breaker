@@ -174,7 +174,7 @@ function createBricks() {
       brick.style.position = "absolute";
       brick.id = id;
       id++;
-      
+
       styleLeft += brick_width + brick_buffer;
       docFrag.appendChild(brick);
     }
@@ -222,10 +222,20 @@ function brickCollision() {
     } else if (
       ballRect.left < gameBricks[i].getBoundingClientRect().left &&
       ballRect.right > gameBricks[i].getBoundingClientRect().left &&
+      ((ballRect.top + ballRect.height > gameBricks[i].getBoundingClientRect().top && ballRect.bottom <=  gameBricks[i].getBoundingClientRect().bottom) ||
+        (ballRect.bottom  - ballRect.height < gameBricks[i].getBoundingClientRect().bottom && ballRect.bottom < gameBricks[i].getBoundingClientRect().top))
+    ) {
+       console.log('hit left');
+      ball.deltaX = Math.abs(ball.deltaX) * -1;
+
+      //right of brick collision
+    } else if (
+      ballRect.right > gameBricks[i].getBoundingClientRect().right &&
+      ballRect.left < gameBricks[i].getBoundingClientRect().right &&
       ((ballRect.top < gameBricks[i].getBoundingClientRect().bottom && ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom) ||
         (ballRect.bottom > gameBricks[i].getBoundingClientRect().top && ballRect.top < gameBricks[i].getBoundingClientRect().top))
     ) {
-      console.log('hit left');
+       console.log('hit right');
       ball.deltaX = Math.abs(ball.deltaX) * -1;
     }
   }
