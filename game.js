@@ -162,7 +162,7 @@ let bricks = {
 function createBricks() {
   let id = 1;
 
-  for (let i = 0; i < bricks.columns; i++) {
+  for (let i = 0; i < bricks.columns-1; i++) {
     for (let i = 0; i < bricks.rows; i++) {
       let brick = document.createElement("div");
       brick.classList.add("brick");
@@ -179,7 +179,7 @@ function createBricks() {
       docFrag.appendChild(brick);
     }
     styleLeft = 15;
-    styleTop += 50;
+    styleTop += 150;
   }
 
   return docFrag;
@@ -196,9 +196,11 @@ function brickCollision() {
   for (let i = 0; i < gameBricks.length; i++) {
     const ballRect = ballDiv.getBoundingClientRect();
 
-    //      ballRect.top<= gameBricks[i].getBoundingClientRect().bottom + ballRect.height * 0.98 &&
 
 
+    if(ball.deltaY >0 ){
+      console.log('going down');
+    }
     //bottom of brick collision
     if (
       ball.deltaY < 0 &&
@@ -208,21 +210,17 @@ function brickCollision() {
       ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
 
     ) {
-      // gameBricks[i].classList.remove('brick')
-      // gameBricks[i].style.top = "1px";
+  
       gameBricks[i].remove();
-
-      // ball.deltaX = Math.abs(ball.deltaX)
       ball.deltaY = Math.abs(ball.deltaY);
 
       //top of brick collison
     } else if (
-      ballRect.top + ballRect.height < gameBricks[i].getBoundingClientRect().top * 1.01 &&
-     // ballRect.top < gameBricks[i].getBoundingClientRect().top &&
+      ball.deltaY > 0 &&
+      ballRect.top <  gameBricks[i].getBoundingClientRect().top  &&
       ballRect.bottom >= gameBricks[i].getBoundingClientRect().top &&
-      ballRect.left >= gameBricks[i].getBoundingClientRect().left &&
-      ballRect.right <= gameBricks[i].getBoundingClientRect().right &&
-      ball.deltaY > 0
+      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
+      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
     ) {
       console.log('hit top?');
       gameBricks[i].remove();
