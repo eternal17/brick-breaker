@@ -30,6 +30,9 @@ const ballCompStyles = window.getComputedStyle(ballDiv);
 const brick = document.createElement("div");
 const docFrag = document.createDocumentFragment();
 
+//game start boolean
+let game_started = false;
+
 // draw paddle
 function drawPaddle() {
   pad.classList.add("pad");
@@ -85,10 +88,9 @@ function moveBall() {
 
 // CHECK WHY WE NEED THESE VARIABLES
 function ballWallCollision() {
-//tried make the below two variables global but causes errors 
+  //tried make the below two variables global but causes errors
   const ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
-
 
   // collided with right side
   if (ballRect.right + parseInt(gameCompStyles.border) >= gameBoardRect.right) {
@@ -110,38 +112,10 @@ function ballWallCollision() {
   }
 }
 
-
 function padCollision() {
-  //also tried making the below two variables global but causes errors 
+  //also tried making the below two variables global but causes errors
   const ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
-
-  //const padFloor = ballRect.bottom + parseInt(gameCompStyles.border) >= padRect.top;
-
-  //&& ballRect.right < padRect.x + paddle_width / 2 - middle_buffer
-  // if (padFloor && padRect.x  - padRect.width< ballRect.x && padRect.right > ballRect.left) {
-
-  //   //checking if the ball has hit the left 40% of the paddle
-  //   if (ballRect.left + ballRect.width >= padRect.left  &&  ballRect.left + ballRect.width <padRect.left + paddle_width * 0.4  ) {
-  //     console.log('left' , ballRect.left, ballRect.width, padRect.left);
-  //     ball.deltaY = -Math.abs(ball.deltaY);
-  //     ball.deltaX = -Math.abs(ball.deltaX);
-
-  //   } else if (ballRect.right - ballRect.width <= padRect.right && ballRect.left > padRect.right -paddle_width * 0.4 ) {
-  //     console.log('right', ballRect.right, ballRect.width, padRect.right);
-  //     ball.deltaY = -Math.abs(ball.deltaY);
-  //     ball.deltaX = Math.abs(ball.deltaX);
-
-  //     //console.log('right', padRect.x, padRect.left, ballRect.x , ballRect.bottom);
-
-  //   } else if(ballRect.left < padRect.left - ballRect.width || ballRect.right < padRect.right + ballRect.width ){
-  //     console.log('out of bounds');
-
-  //   }else{
-  //     console.log('middle');
-
-  //   }
-  // }
 
   //added + ballRect.height
   if (
@@ -186,8 +160,6 @@ let bricks = {
 };
 
 function createBricks() {
-
-
   let id = 1;
 
   for (let i = 0; i < bricks.columns; i++) {
@@ -219,31 +191,45 @@ function drawBricks() {
 }
 
 function brickCollision() {
-
-
   let gameBricks = document.getElementsByClassName("brick");
 
   for (let i = 0; i < gameBricks.length; i++) {
     const ballRect = ballDiv.getBoundingClientRect();
 
+    //      ballRect.top<= gameBricks[i].getBoundingClientRect().bottom + ballRect.height * 0.98 &&
+
 
     //bottom of brick collision
-    if (ballRect.top <  gameBricks[i].getBoundingClientRect().bottom  && 
-    ballRect.left >= gameBricks[i].getBoundingClientRect().left &&
-    ballRect.right <= gameBricks[i].getBoundingClientRect().right)  {
+    if (
+      ball.deltaY < 0 &&
+      ballRect.bottom + ballRect.height> gameBricks[i].getBoundingClientRect().bottom &&
+      ballRect.top<= gameBricks[i].getBoundingClientRect().bottom  &&
+      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
+      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
+
+    ) {
       // gameBricks[i].classList.remove('brick')
-      gameBricks[i].style.top = "1px";
-      gameBricks[i].remove()
+      // gameBricks[i].style.top = "1px";
+      gameBricks[i].remove();
 
-   // ball.deltaX = Math.abs(ball.deltaX) 
-    ball.deltaY = Math.abs(ball.deltaY);
+      // ball.deltaX = Math.abs(ball.deltaX)
+      ball.deltaY = Math.abs(ball.deltaY);
 
+      //top of brick collison
+    } else if (
+      ballRect.top + ballRect.height < gameBricks[i].getBoundingClientRect().top * 1.01 &&
+     // ballRect.top < gameBricks[i].getBoundingClientRect().top &&
+      ballRect.bottom >= gameBricks[i].getBoundingClientRect().top &&
+      ballRect.left >= gameBricks[i].getBoundingClientRect().left &&
+      ballRect.right <= gameBricks[i].getBoundingClientRect().right &&
+      ball.deltaY > 0
+    ) {
+      console.log('hit top?');
+      gameBricks[i].remove();
+      ball.deltaY = -Math.abs(ball.deltaY);
     }
   }
 }
-
-
-let game_started = false;
 
 window.addEventListener("keydown", function (e) {
   if (e.code === "Space") game_started = true;
