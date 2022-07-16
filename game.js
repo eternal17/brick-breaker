@@ -43,7 +43,10 @@ let livesbox = document.querySelector(".lives");
 livesbox.innerHTML = "&#10084".repeat(maxlives);
 
 //pause state
-let paused = false
+let paused = false;
+const pausediv = document.getElementById('pauseDiv')
+gameBoard.append(pausediv)
+
 
 // draw paddle
 function drawPaddle() {
@@ -133,7 +136,7 @@ function deadBall() {
   let ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
-  if (ballRect.bottom  > padRect.bottom) {
+  if (ballRect.bottom > padRect.bottom) {
     location.reload();
   }
 }
@@ -274,29 +277,25 @@ function brickCollision() {
   }
 }
 
-function togglePause()
-{
-    if (!paused)
-    {
-        paused = true;
-      } else if (paused)
-      {
-        paused= false;
-        gameLoop()
-    }
+function togglePause() {
+  if (!paused) {
+    pausediv.style.display='block'
+    paused = true;
+  } else if (paused) {
+    pausediv.style.display= 'none'
+    paused = false;
 
+    gameLoop();
+  }
 }
 
-window.addEventListener('keydown', function (e) {
-  e.preventDefault()
-  if (e.code === 'KeyP') togglePause(); console.log(e.code); console.log(paused);
-
-  });
-
-
+window.addEventListener("keydown", function (e) {
+  e.preventDefault();
+  if (e.code === "KeyP") togglePause();
+});
 
 window.addEventListener("keydown", function (e) {
-  e.preventDefault()
+  e.preventDefault();
   if (e.code === "Space") game_started = true;
 });
 
@@ -304,7 +303,7 @@ window.addEventListener("keydown", function (e) {
 drawBricks();
 
 function gameLoop() {
-  if(paused) return
+  if (paused) return;
   scoreboard.innerHTML = score;
   drawPaddle();
   drawBall();
@@ -319,4 +318,3 @@ function gameLoop() {
 }
 
 requestAnimationFrame(gameLoop);
-

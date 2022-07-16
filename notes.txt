@@ -21,7 +21,7 @@ Added a static ball state to moveball() , may/may not want to seperate it
 
 //FROM/FOR AUDIT
 
-Start/Pause/Continue/Restartoptions
+Start/Pause/Continue/Restart options
 Countdown
 Lives
 Points
