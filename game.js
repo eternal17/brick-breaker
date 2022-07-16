@@ -42,6 +42,9 @@ let maxlives = 3;
 let livesbox = document.querySelector(".lives");
 livesbox.innerHTML = "&#10084".repeat(maxlives);
 
+//pause state
+let paused = false
+
 // draw paddle
 function drawPaddle() {
   pad.classList.add("pad");
@@ -170,7 +173,7 @@ const brick_height = 20;
 const brick_rows = 3;
 const brick_column = 6;
 const brick_buffer = (gameBoardRect.width - brick_width * brick_rows) / brick_rows - 2;
-let styleLeft = 15;
+let styleLeft = 35;
 let styleTop = 50;
 
 let bricks = {
@@ -201,13 +204,12 @@ function createBricks() {
       styleLeft += brick_width + brick_buffer;
       docFrag.appendChild(brick);
     }
-    styleLeft = 15;
+    styleLeft = 35;
     styleTop += 25;
   }
 
   return docFrag;
 }
-
 function drawBricks() {
   let brickFrags = createBricks();
   gameBoard.appendChild(brickFrags);
@@ -240,7 +242,6 @@ function brickCollision() {
       ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
     ) {
       score += 1;
-
       gameBricks[i].remove();
       ball.deltaY = -Math.abs(ball.deltaY);
 
@@ -273,15 +274,37 @@ function brickCollision() {
   }
 }
 
+function togglePause()
+{
+    if (!paused)
+    {
+        paused = true;
+      } else if (paused)
+      {
+        paused= false;
+        gameLoop()
+    }
+
+}
+
+window.addEventListener('keydown', function (e) {
+  e.preventDefault()
+  if (e.code === 'KeyP') togglePause(); console.log(e.code); console.log(paused);
+
+  });
+
 
 
 window.addEventListener("keydown", function (e) {
+  e.preventDefault()
   if (e.code === "Space") game_started = true;
 });
 
 //behaves funky within the game loop, frames stable nevertheless
 drawBricks();
+
 function gameLoop() {
+  if(paused) return
   scoreboard.innerHTML = score;
   drawPaddle();
   drawBall();
@@ -296,3 +319,4 @@ function gameLoop() {
 }
 
 requestAnimationFrame(gameLoop);
+
