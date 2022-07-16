@@ -11,11 +11,6 @@ const paddle_height = 20;
 const pad = document.createElement("div");
 const padCompStyles = window.getComputedStyle(pad);
 
-// ball variables
-const ballDiv = document.createElement("div");
-const ballRadius = 10;
-const ballCompStyles = window.getComputedStyle(ballDiv);
-
 const paddle = {
   // x value is
   x: gameBoardRect.width / 2 - paddle_width / 2,
@@ -26,8 +21,21 @@ const paddle = {
   xMovement: 20,
 };
 
+// ball variables
+const ballDiv = document.createElement("div");
+const ballRadius = 10;
+const ballCompStyles = window.getComputedStyle(ballDiv);
 
+//brick variables
+const brick = document.createElement("div");
+const docFrag = document.createDocumentFragment();
 
+//game start boolean
+let game_started = false;
+
+//scoreboard
+let scoreboard = document.querySelector(".scoreboard")
+let score = 0 
 
 // draw paddle
 function drawPaddle() {
@@ -84,9 +92,10 @@ function moveBall() {
 
 // CHECK WHY WE NEED THESE VARIABLES
 function ballWallCollision() {
-  // if ball hits right side of the wall
+  //tried make the below two variables global but causes errors
   const ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
+
   // collided with right side
   if (ballRect.right + parseInt(gameCompStyles.border) >= gameBoardRect.right) {
     ball.deltaX = -Math.abs(ball.deltaX);
@@ -102,40 +111,15 @@ function ballWallCollision() {
   }
 
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
-  if (ballRect.bottom - ballRect.height > padRect.bottom ) {
+  if (ballRect.bottom - ballRect.height > padRect.bottom) {
     location.reload();
   }
 }
 
 function padCollision() {
+  //also tried making the below two variables global but causes errors
   const ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
-  const padFloor = ballRect.bottom + parseInt(gameCompStyles.border) >= padRect.top;
-
-  //&& ballRect.right < padRect.x + paddle_width / 2 - middle_buffer
-  // if (padFloor && padRect.x  - padRect.width< ballRect.x && padRect.right > ballRect.left) {
-
-  //   //checking if the ball has hit the left 40% of the paddle
-  //   if (ballRect.left + ballRect.width >= padRect.left  &&  ballRect.left + ballRect.width <padRect.left + paddle_width * 0.4  ) {
-  //     console.log('left' , ballRect.left, ballRect.width, padRect.left);
-  //     ball.deltaY = -Math.abs(ball.deltaY);
-  //     ball.deltaX = -Math.abs(ball.deltaX);
-
-  //   } else if (ballRect.right - ballRect.width <= padRect.right && ballRect.left > padRect.right -paddle_width * 0.4 ) {
-  //     console.log('right', ballRect.right, ballRect.width, padRect.right);
-  //     ball.deltaY = -Math.abs(ball.deltaY);
-  //     ball.deltaX = Math.abs(ball.deltaX);
-
-  //     //console.log('right', padRect.x, padRect.left, ballRect.x , ballRect.bottom);
-
-  //   } else if(ballRect.left < padRect.left - ballRect.width || ballRect.right < padRect.right + ballRect.width ){
-  //     console.log('out of bounds');
-
-  //   }else{
-  //     console.log('middle');
-
-  //   }
-  // }
 
   //added + ballRect.height
   if (
@@ -144,8 +128,6 @@ function padCollision() {
     padRect.y < padRect.y + padRect.height &&
     ballRect.y + ballRect.height > padRect.y
   ) {
-    console.log("hi");
-
     // CHECK WHERE THE ballRect HIT THE PADDLE
     let collidePoint = ballRect.x - (padRect.x + padRect.width / 2);
 
@@ -158,92 +140,135 @@ function padCollision() {
     ball.deltaX = ball.speed * Math.sin(angle);
     ball.deltaY = -ball.speed * Math.cos(angle);
 
-    console.log(ball.deltaX);
-    console.log(ball.deltaY);
+    // console.log(ball.deltaX);
+    // console.log(ball.deltaY);
   }
 }
 
-
 //brick variables
-const brick_width = 100;
+const brick_width = 60;
 const brick_height = 20;
-const brick_rows = 3
-const brick_column = 3
-const brick_buffer = (gameBoardRect.width - brick_width*brick_rows) / brick_rows -2
-let styleLeft = 15
-let styleTop = 50 
-
+const brick_rows = 3;
+const brick_column = 6;
+const brick_buffer = (gameBoardRect.width - brick_width * brick_rows) / brick_rows - 2;
+let styleLeft = 15;
+let styleTop = 50;
 
 let bricks = {
   width: brick_width,
   height: brick_height,
-  rows : brick_rows,
-  columns : brick_column,
-  style_left : styleLeft,
-  style_top : styleTop,
+  rows: brick_rows,
+  columns: brick_column,
+  style_left: styleLeft,
+  style_top: styleTop,
 };
 
-
-
 function createBricks() {
+  let id = 1;
 
-  const docFrag = document.createDocumentFragment();
-  
-  let id = 1
-
-  for (let i =0 ; i < bricks.columns ; i++){
-
-    for (let i =0 ; i < bricks.columns ; i++){
+  for (let i = 0; i < bricks.columns; i++) {
+    for (let i = 0; i < bricks.rows; i++) {
       let brick = document.createElement("div");
       brick.classList.add("brick");
-      brick.style.left = styleLeft + 'px';
-      brick.style.top = styleTop + 'px';
-      brick.style.height = bricks.height + 'px';
-      brick.style.width = bricks.width + 'px';
+      brick.style.left = styleLeft + "px";
+      brick.style.top = styleTop + "px";
+      brick.style.height = bricks.height + "px";
+      brick.style.width = bricks.width + "px";
       brick.style.backgroundColor = "red";
       brick.style.position = "absolute";
-      brick.id = id
-      id++
-      console.log(styleLeft);
-     styleLeft += brick_width + brick_buffer
-      docFrag.appendChild(brick);
-      
-    }
-    styleLeft = 15
-    styleTop += 50
+      brick.id = id;
+      id++;
 
+      styleLeft += brick_width + brick_buffer;
+      docFrag.appendChild(brick);
+    }
+    styleLeft = 15;
+    styleTop += 25;
   }
 
-return docFrag
-
+  return docFrag;
 }
 
-function drawBricks(){
-  let brickFrags = createBricks()
-gameBoard.appendChild(brickFrags)
+function drawBricks() {
+  let brickFrags = createBricks();
+  gameBoard.appendChild(brickFrags);
 }
 
+function brickCollision() {
+  let gameBricks = document.getElementsByClassName("brick");
 
+  for (let i = 0; i < gameBricks.length; i++) {
+    const ballRect = ballDiv.getBoundingClientRect();
 
+    //bottom of brick collision
+    if (
+      ball.deltaY < 0 &&
+      ballRect.bottom + ballRect.height > gameBricks[i].getBoundingClientRect().bottom &&
+      ballRect.top <= gameBricks[i].getBoundingClientRect().bottom &&
+      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
+      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
+    ) {
+      score += 1
+      gameBricks[i].remove();
+      ball.deltaY = Math.abs(ball.deltaY);
 
+      //top of brick collison
+    } else if (
+      ball.deltaY > 0 &&
+      ballRect.top < gameBricks[i].getBoundingClientRect().top &&
+      ballRect.bottom >= gameBricks[i].getBoundingClientRect().top &&
+      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
+      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
+    ) {
+      score += 1
 
-let game_started = false
+      gameBricks[i].remove();
+      ball.deltaY = -Math.abs(ball.deltaY);
+
+      //left of brick collision
+    } else if (
+      ballRect.left < gameBricks[i].getBoundingClientRect().left &&
+      ballRect.right > gameBricks[i].getBoundingClientRect().left &&
+      ((ballRect.top + ballRect.height > gameBricks[i].getBoundingClientRect().top && ballRect.bottom <=  gameBricks[i].getBoundingClientRect().bottom) ||
+        (ballRect.bottom  - ballRect.height < gameBricks[i].getBoundingClientRect().bottom && ballRect.bottom < gameBricks[i].getBoundingClientRect().top))
+    ) {
+
+       console.log('hit left');
+       score += 1
+
+      ball.deltaX = Math.abs(ball.deltaX) * -1;
+
+      //right of brick collision
+    } else if (
+      ballRect.right > gameBricks[i].getBoundingClientRect().right &&
+      ballRect.left < gameBricks[i].getBoundingClientRect().right &&
+      ((ballRect.top < gameBricks[i].getBoundingClientRect().bottom && ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom) ||
+        (ballRect.bottom > gameBricks[i].getBoundingClientRect().top && ballRect.top < gameBricks[i].getBoundingClientRect().top))
+    ) {
+       console.log('hit right');
+       score += 1
+
+      ball.deltaX = Math.abs(ball.deltaX) * -1;
+    }
+  }
+}
 
 window.addEventListener("keydown", function (e) {
+  if (e.code === "Space") game_started = true;
+});
 
-  if (e.code === 'Space') game_started = true 
-
-})
-
+//behaves funky within the game loop, frames stable nevertheless
 drawBricks();
 
 function gameLoop() {
+  scoreboard.innerHTML = score
   drawPaddle();
   drawBall();
   movePaddle();
-  if(game_started) moveBall();
+  if (game_started) moveBall();
   padCollision();
   ballWallCollision();
+  brickCollision();
 
   requestAnimationFrame(gameLoop);
 }
