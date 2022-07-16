@@ -44,9 +44,8 @@ livesbox.innerHTML = "&#10084".repeat(maxlives);
 
 //pause state
 let paused = false;
-const pausediv = document.getElementById('pauseDiv')
-gameBoard.append(pausediv)
-
+const pausediv = document.getElementById("pauseDiv");
+gameBoard.append(pausediv);
 
 // draw paddle
 function drawPaddle() {
@@ -132,12 +131,17 @@ function ballWallCollision() {
   }
 }
 
+function gameOver() {
+  if (maxlives == 1) console.log("game over");
+  else maxlives -= 1 ; console.log('one less');
+}
+
 function deadBall() {
   let ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
   if (ballRect.bottom > padRect.bottom) {
-    location.reload();
+    gameOver()
   }
 }
 
@@ -164,9 +168,6 @@ function padCollision() {
 
     ball.deltaX = ball.speed * Math.sin(angle);
     ball.deltaY = -ball.speed * Math.cos(angle);
-
-    // console.log(ball.deltaX);
-    // console.log(ball.deltaY);
   }
 }
 
@@ -279,12 +280,11 @@ function brickCollision() {
 
 function togglePause() {
   if (!paused) {
-    pausediv.style.display='block'
+    pausediv.style.display = "block";
     paused = true;
   } else if (paused) {
-    pausediv.style.display= 'none'
+    pausediv.style.display = "none";
     paused = false;
-
     gameLoop();
   }
 }
