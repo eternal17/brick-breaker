@@ -13,7 +13,9 @@ Use opacity instead of remove ?
 
 
 TODO:
-LEFT DOESN'T WORK properly, possibly right too 
+LEFT brick collision doesn't work properly, possibly right too 
+
+Added a static ball state to moveball() , may/may not want to seperate it 
 
 
 

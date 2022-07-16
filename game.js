@@ -34,8 +34,13 @@ const docFrag = document.createDocumentFragment();
 let game_started = false;
 
 //scoreboard
-let scoreboard = document.querySelector(".scoreboard")
-let score = 0 
+let scoreboard = document.querySelector(".scoreboard");
+let score = 0;
+
+//lives
+let maxlives = 3;
+let livesbox = document.querySelector(".lives");
+livesbox.innerHTML = "&#10084".repeat(maxlives);
 
 // draw paddle
 function drawPaddle() {
@@ -53,10 +58,15 @@ function drawPaddle() {
 function movePaddle() {
   document.addEventListener("keydown", function (event) {
     const padRect = pad.getBoundingClientRect();
+    const ballRect = ballDiv.getBoundingClientRect();
 
     if (event.key == "ArrowRight" && padRect.right + parseInt(gameCompStyles.border) < gameBoardRect.right) {
+      if (!game_started) ball.x = parseInt(ballCompStyles.left) + paddle.xMovement;
+
       paddle.x = parseInt(padCompStyles.left) + paddle.xMovement;
     } else if (event.key == "ArrowLeft" && padRect.left - parseInt(gameCompStyles.border) > gameBoardRect.left) {
+      if (!game_started) ball.x = parseInt(ballCompStyles.left) - paddle.xMovement;
+
       paddle.x = parseInt(padCompStyles.left) - paddle.xMovement;
     }
   });
@@ -90,6 +100,11 @@ function moveBall() {
   ball.y += ball.deltaY;
 }
 
+function ballStart() {
+  const padRect = pad.getBoundingClientRect();
+  ball.x += paddle.xMovement;
+}
+
 // CHECK WHY WE NEED THESE VARIABLES
 function ballWallCollision() {
   //tried make the below two variables global but causes errors
@@ -109,9 +124,13 @@ function ballWallCollision() {
   if (ballRect.left - parseInt(gameCompStyles.border) <= gameBoardRect.left) {
     ball.deltaX = Math.abs(ball.deltaX);
   }
+}
 
+function deadBall() {
+  let ballRect = ballDiv.getBoundingClientRect();
+  const padRect = pad.getBoundingClientRect();
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
-  if (ballRect.bottom - ballRect.height > padRect.bottom) {
+  if (ballRect.bottom  > padRect.bottom) {
     location.reload();
   }
 }
@@ -174,7 +193,7 @@ function createBricks() {
       brick.style.top = styleTop + "px";
       brick.style.height = bricks.height + "px";
       brick.style.width = bricks.width + "px";
-      brick.style.backgroundColor = "red";
+      brick.style.backgroundColor = "pink";
       brick.style.position = "absolute";
       brick.id = id;
       id++;
@@ -208,7 +227,7 @@ function brickCollision() {
       ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
       ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
     ) {
-      score += 1
+      score += 1;
       gameBricks[i].remove();
       ball.deltaY = Math.abs(ball.deltaY);
 
@@ -220,7 +239,7 @@ function brickCollision() {
       ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
       ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
     ) {
-      score += 1
+      score += 1;
 
       gameBricks[i].remove();
       ball.deltaY = -Math.abs(ball.deltaY);
@@ -229,12 +248,13 @@ function brickCollision() {
     } else if (
       ballRect.left < gameBricks[i].getBoundingClientRect().left &&
       ballRect.right > gameBricks[i].getBoundingClientRect().left &&
-      ((ballRect.top + ballRect.height > gameBricks[i].getBoundingClientRect().top && ballRect.bottom <=  gameBricks[i].getBoundingClientRect().bottom) ||
-        (ballRect.bottom  - ballRect.height < gameBricks[i].getBoundingClientRect().bottom && ballRect.bottom < gameBricks[i].getBoundingClientRect().top))
+      ((ballRect.top + ballRect.height > gameBricks[i].getBoundingClientRect().top &&
+        ballRect.bottom <= gameBricks[i].getBoundingClientRect().bottom) ||
+        (ballRect.bottom - ballRect.height < gameBricks[i].getBoundingClientRect().bottom &&
+          ballRect.bottom < gameBricks[i].getBoundingClientRect().top))
     ) {
-
-       console.log('hit left');
-       score += 1
+      console.log("hit left");
+      score += 1;
 
       ball.deltaX = Math.abs(ball.deltaX) * -1;
 
@@ -245,13 +265,15 @@ function brickCollision() {
       ((ballRect.top < gameBricks[i].getBoundingClientRect().bottom && ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom) ||
         (ballRect.bottom > gameBricks[i].getBoundingClientRect().top && ballRect.top < gameBricks[i].getBoundingClientRect().top))
     ) {
-       console.log('hit right');
-       score += 1
+      console.log("hit right");
+      score += 1;
 
       ball.deltaX = Math.abs(ball.deltaX) * -1;
     }
   }
 }
+
+
 
 window.addEventListener("keydown", function (e) {
   if (e.code === "Space") game_started = true;
@@ -259,9 +281,8 @@ window.addEventListener("keydown", function (e) {
 
 //behaves funky within the game loop, frames stable nevertheless
 drawBricks();
-
 function gameLoop() {
-  scoreboard.innerHTML = score
+  scoreboard.innerHTML = score;
   drawPaddle();
   drawBall();
   movePaddle();
@@ -269,6 +290,7 @@ function gameLoop() {
   padCollision();
   ballWallCollision();
   brickCollision();
+  deadBall();
 
   requestAnimationFrame(gameLoop);
 }
