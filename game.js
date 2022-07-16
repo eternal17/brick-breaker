@@ -33,6 +33,10 @@ const docFrag = document.createDocumentFragment();
 //game start boolean
 let game_started = false;
 
+//scoreboard
+let scoreboard = document.querySelector(".scoreboard")
+let score = 0 
+
 // draw paddle
 function drawPaddle() {
   pad.classList.add("pad");
@@ -204,6 +208,7 @@ function brickCollision() {
       ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
       ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
     ) {
+      score += 1
       gameBricks[i].remove();
       ball.deltaY = Math.abs(ball.deltaY);
 
@@ -215,6 +220,8 @@ function brickCollision() {
       ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
       ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
     ) {
+      score += 1
+
       gameBricks[i].remove();
       ball.deltaY = -Math.abs(ball.deltaY);
 
@@ -225,7 +232,10 @@ function brickCollision() {
       ((ballRect.top + ballRect.height > gameBricks[i].getBoundingClientRect().top && ballRect.bottom <=  gameBricks[i].getBoundingClientRect().bottom) ||
         (ballRect.bottom  - ballRect.height < gameBricks[i].getBoundingClientRect().bottom && ballRect.bottom < gameBricks[i].getBoundingClientRect().top))
     ) {
+
        console.log('hit left');
+       score += 1
+
       ball.deltaX = Math.abs(ball.deltaX) * -1;
 
       //right of brick collision
@@ -236,6 +246,8 @@ function brickCollision() {
         (ballRect.bottom > gameBricks[i].getBoundingClientRect().top && ballRect.top < gameBricks[i].getBoundingClientRect().top))
     ) {
        console.log('hit right');
+       score += 1
+
       ball.deltaX = Math.abs(ball.deltaX) * -1;
     }
   }
@@ -249,6 +261,7 @@ window.addEventListener("keydown", function (e) {
 drawBricks();
 
 function gameLoop() {
+  scoreboard.innerHTML = score
   drawPaddle();
   drawBall();
   movePaddle();

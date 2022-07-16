@@ -12,6 +12,10 @@ Use opacity instead of remove ?
 
 
 
+TODO:
+LEFT DOESN'T WORK properly, possibly right too 
+
+
 
 //FROM/FOR AUDIT
 
