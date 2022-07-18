@@ -11,14 +11,17 @@ const paddle_height = 20;
 const pad = document.createElement("div");
 const padCompStyles = window.getComputedStyle(pad);
 
-const paddle = {
-  // x value is
+let paddle = {
+  // start is used to track the translated values
+  start: 0,
   x: gameBoardRect.width / 2 - paddle_width / 2,
   // y value is the top left corner value of the paddle
   y: gameBoardRect.height - paddle_margin_bottom - paddle_height,
   width: paddle_width,
   height: paddle_height,
   xMovement: 20,
+  right: false,
+  left: false,
 };
 
 // ball variables
@@ -59,22 +62,49 @@ function drawPaddle() {
   gameBoard.append(pad);
 }
 
-//move pad, uses gameboard border as a parameter
-function movePaddle() {
+
+
+//toggles boolean used within movePaddle function
+function movePaddleBool() {
   document.addEventListener("keydown", function (event) {
     const padRect = pad.getBoundingClientRect();
-    const ballRect = ballDiv.getBoundingClientRect();
 
     if (event.key == "ArrowRight" && padRect.right + parseInt(gameCompStyles.border) < gameBoardRect.right) {
-      if (!game_started) ball.x = parseInt(ballCompStyles.left) + paddle.xMovement;
-
-      paddle.x = parseInt(padCompStyles.left) + paddle.xMovement;
+      event.preventDefault();
+      paddle.right = true;
     } else if (event.key == "ArrowLeft" && padRect.left - parseInt(gameCompStyles.border) > gameBoardRect.left) {
-      if (!game_started) ball.x = parseInt(ballCompStyles.left) - paddle.xMovement;
-
-      paddle.x = parseInt(padCompStyles.left) - paddle.xMovement;
+      event.preventDefault();
+      paddle.left = true;
     }
   });
+}
+
+//translates paddle on the X axis
+function movePaddle() {
+  if (paddle.right) {
+    paddle.start += paddle.xMovement;
+
+    if (!game_started) {
+      ballDiv.style.transform = `translateX(${paddle.start}px)`;
+      pad.style.transform = `translateX(${paddle.start}px)`;
+      paddle.right = false;
+    }
+
+    pad.style.transform = `translate(${paddle.start}px)`;
+    paddle.right = false;
+  }
+
+  if (paddle.left) {
+    paddle.start -= paddle.xMovement;
+    if (!game_started) {
+      ballDiv.style.transform = `translate(${paddle.start}px)`;
+      pad.style.transform = `translate(${paddle.start}px)`;
+      paddle.left = false;
+    }
+
+    pad.style.transform = `translate(${paddle.start}px)`;
+    paddle.left = false;
+  }
 }
 
 const ball = {
@@ -132,16 +162,20 @@ function ballWallCollision() {
 }
 
 function gameOver() {
+  location.reload();
   if (maxlives == 1) console.log("game over");
-  else maxlives -= 1 ; console.log('one less');
+  else maxlives -= 1;
+  console.log("one less");
 }
 
 function deadBall() {
   let ballRect = ballDiv.getBoundingClientRect();
   const padRect = pad.getBoundingClientRect();
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
-  if (ballRect.bottom > padRect.bottom) {
-    gameOver()
+  if (ballRect.top > padRect.bottom) {
+    console.log("---------------TTTTT---------");
+    console.log(ballRect.top, padRect.bottom);
+    gameOver();
   }
 }
 
@@ -307,6 +341,7 @@ function gameLoop() {
   scoreboard.innerHTML = score;
   drawPaddle();
   drawBall();
+  movePaddleBool();
   movePaddle();
   if (game_started) moveBall();
   padCollision();
