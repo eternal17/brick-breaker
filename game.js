@@ -63,18 +63,18 @@ function drawPaddle() {
 console.log(game_started);
 console.log('start', paddle.start);
 
+
 //move pad, uses gameboard border as a parameter
 function movePaddle() {
   document.addEventListener("keydown", function (event) {
     
     const padRect = pad.getBoundingClientRect();
     const ballRect = ballDiv.getBoundingClientRect();
-    if (event.repeat) return 
     
     if (event.key == "ArrowRight" && padRect.right + parseInt(gameCompStyles.border) < gameBoardRect.right) {
 
       paddle.start += paddle.xMovement;
-      console.log(event.key);
+      console.log('rightstart', paddle.start);
       
       if (!game_started) {
         ballDiv.style.transform = `translate(${paddle.start}px)`;
@@ -82,15 +82,20 @@ function movePaddle() {
       }
       
       pad.style.transform = `translate(${paddle.start}px)`;
-      //event.preventDefault()
+      event.preventDefault()
+    
     } else if (event.key == "ArrowLeft" && padRect.left - parseInt(gameCompStyles.border) > gameBoardRect.left) {
+      console.log('leftstart', paddle.start);
+
+      
       paddle.start -= paddle.xMovement;
-
+      
       console.log(event.key);
-
+      
       if (!game_started) {
         ballDiv.style.transform = `translate(${paddle.start}px)`; 
         pad.style.transform = `translate(${paddle.start}px)`;
+        event.preventDefault()
       }
 
       pad.style.transform = `translate(${paddle.start}px)`;
