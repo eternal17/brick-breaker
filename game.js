@@ -12,14 +12,16 @@ const pad = document.createElement("div");
 const padCompStyles = window.getComputedStyle(pad);
 
 let paddle = {
-  // x value is
+  // start is used to track the translated values
   start: 0,
   x: gameBoardRect.width / 2 - paddle_width / 2,
   // y value is the top left corner value of the paddle
   y: gameBoardRect.height - paddle_margin_bottom - paddle_height,
   width: paddle_width,
   height: paddle_height,
-  xMovement: 0.03,
+  xMovement: 20,
+  right: false,
+  left: false,
 };
 
 // ball variables
@@ -60,47 +62,49 @@ function drawPaddle() {
   gameBoard.append(pad);
 }
 
-console.log(game_started);
-console.log('start', paddle.start);
 
 
-//move pad, uses gameboard border as a parameter
-function movePaddle() {
+//toggles boolean used within movePaddle function
+function movePaddleBool() {
   document.addEventListener("keydown", function (event) {
-    
     const padRect = pad.getBoundingClientRect();
-    const ballRect = ballDiv.getBoundingClientRect();
-    
+
     if (event.key == "ArrowRight" && padRect.right + parseInt(gameCompStyles.border) < gameBoardRect.right) {
-
-      paddle.start += paddle.xMovement;
-      console.log('rightstart', paddle.start);
-      
-      if (!game_started) {
-        ballDiv.style.transform = `translate(${paddle.start}px)`;
-        pad.style.transform = `translate(${paddle.start}px)`;
-      }
-      
-      pad.style.transform = `translate(${paddle.start}px)`;
-      event.preventDefault()
-    
+      event.preventDefault();
+      paddle.right = true;
     } else if (event.key == "ArrowLeft" && padRect.left - parseInt(gameCompStyles.border) > gameBoardRect.left) {
-      console.log('leftstart', paddle.start);
-
-      
-      paddle.start -= paddle.xMovement;
-      
-      console.log(event.key);
-      
-      if (!game_started) {
-        ballDiv.style.transform = `translate(${paddle.start}px)`; 
-        pad.style.transform = `translate(${paddle.start}px)`;
-        event.preventDefault()
-      }
-
-      pad.style.transform = `translate(${paddle.start}px)`;
+      event.preventDefault();
+      paddle.left = true;
     }
   });
+}
+
+//translates paddle on the X axis
+function movePaddle() {
+  if (paddle.right) {
+    paddle.start += paddle.xMovement;
+
+    if (!game_started) {
+      ballDiv.style.transform = `translateX(${paddle.start}px)`;
+      pad.style.transform = `translateX(${paddle.start}px)`;
+      paddle.right = false;
+    }
+
+    pad.style.transform = `translate(${paddle.start}px)`;
+    paddle.right = false;
+  }
+
+  if (paddle.left) {
+    paddle.start -= paddle.xMovement;
+    if (!game_started) {
+      ballDiv.style.transform = `translate(${paddle.start}px)`;
+      pad.style.transform = `translate(${paddle.start}px)`;
+      paddle.left = false;
+    }
+
+    pad.style.transform = `translate(${paddle.start}px)`;
+    paddle.left = false;
+  }
 }
 
 const ball = {
@@ -337,6 +341,7 @@ function gameLoop() {
   scoreboard.innerHTML = score;
   drawPaddle();
   drawBall();
+  movePaddleBool();
   movePaddle();
   if (game_started) moveBall();
   padCollision();
