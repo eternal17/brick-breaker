@@ -28,6 +28,8 @@ let paddle = {
 const ballDiv = document.createElement("div");
 const ballRadius = 10;
 const ballCompStyles = window.getComputedStyle(ballDiv);
+const defaultValue = "translate(0,0)";
+ballDiv.setAttribute('transform', defaultValue);
 
 //brick variables
 const brick = document.createElement("div");
@@ -62,7 +64,8 @@ function drawPaddle() {
   gameBoard.append(pad);
 }
 
-
+//endgame variables
+let ballout = false;
 
 //toggles boolean used within movePaddle function
 function movePaddleBool() {
@@ -162,10 +165,22 @@ function ballWallCollision() {
 }
 
 function gameOver() {
-  location.reload();
-  if (maxlives == 1) console.log("game over");
-  else maxlives -= 1;
-  console.log("one less");
+  if (ballout) {
+    if (maxlives == 1) {
+      ballout = false
+      console.log("game over");
+    } else {
+      ballDiv.style.top = ball.x
+      ballDiv.style.left =ball.y
+      maxlives -= 1;
+      game_started = false
+      ballout = false;
+    livesbox.innerHTML = "&#10084".repeat(maxlives);
+    console.log(ball.x, ball.y);
+  }
+  ballout = false
+}
+ballout = false;
 }
 
 function deadBall() {
@@ -173,9 +188,8 @@ function deadBall() {
   const padRect = pad.getBoundingClientRect();
   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
   if (ballRect.top > padRect.bottom) {
-    console.log("---------------TTTTT---------");
-    console.log(ballRect.top, padRect.bottom);
-    gameOver();
+    ballout = true;
+   // gameOver();
   }
 }
 
@@ -209,7 +223,7 @@ function padCollision() {
 const brick_width = 60;
 const brick_height = 20;
 const brick_rows = 3;
-const brick_column = 6;
+const brick_column = 5;
 const brick_buffer = (gameBoardRect.width - brick_width * brick_rows) / brick_rows - 2;
 let styleLeft = 35;
 let styleTop = 50;
@@ -348,6 +362,7 @@ function gameLoop() {
   ballWallCollision();
   brickCollision();
   deadBall();
+  gameOver();
 
   requestAnimationFrame(gameLoop);
 }
