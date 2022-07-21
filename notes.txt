@@ -36,3 +36,8 @@ Try using the Dev Tool/performance and the option rendering with the layer ON, i
 
 Can you confirm that the paint/layers is being used as little as possible?
 */
+
+Ball reset: 
+- ball will reset on paddle but only in the postion before the game started. (moving paddle before start of game)
+- then it will move to the middle once the paddle had moved
+- its taking the position of the paddle when the game has started
