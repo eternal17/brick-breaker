@@ -64,9 +64,6 @@ function drawPaddle() {
   gameBoard.append(pad);
 }
 
-//endgame variables
-let ballout = false;
-
 //toggles boolean used within movePaddle function
 function movePaddleBool() {
   document.addEventListener("keydown", function (event) {
@@ -165,47 +162,17 @@ function ballWallCollision() {
 
   // if the ball hits goes past the paddle (i.e lose a life), all the logic for what happens should be here
   if (ballRect.top > padRect.bottom) {
-    // ballout = true;
 
     // reset the ball to middle of pad
     ball.x = gameBoardRect.width / 2 - ballRadius
     ball.y = paddle.y - 2 * ballRadius
+    ballDiv.style.transform = `translateX(${paddle.start}px)`
     maxlives -= 1
     livesbox.innerHTML = "&#10084".repeat(maxlives);
-    // ballout = true
     game_started = false
 
   }
 }
-
-// function gameOver() {
-//   if (ballout) {
-//     if (maxlives == 1) {
-//       ballout = false
-//       console.log("game over");
-//     } else {
-//       ballDiv.style.top = ball.x
-//       ballDiv.style.left = ball.y
-//       maxlives -= 1;
-//       game_started = false
-//       ballout = false;
-//       livesbox.innerHTML = "&#10084".repeat(maxlives);
-//       console.log(ball.x, ball.y);
-//     }
-//     ballout = false
-//   }
-//   ballout = false;
-// }
-
-// function deadBall() {
-//   let ballRect = ballDiv.getBoundingClientRect();
-//   const padRect = pad.getBoundingClientRect();
-//   // if ball goes past pad/ hits bottom of gameboard, you lose ; gameover or lose life
-//   if (ballRect.top > padRect.bottom) {
-//     ballout = true;
-//     // gameOver();
-//   }
-// }
 
 function padCollision() {
   //also tried making the below two variables global but causes errors
@@ -375,9 +342,6 @@ function gameLoop() {
   padCollision();
   ballWallCollision();
   brickCollision();
-  // deadBall();
-  // gameOver();
-
   requestAnimationFrame(gameLoop);
 }
 
