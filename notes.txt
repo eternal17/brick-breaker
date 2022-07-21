@@ -38,5 +38,4 @@ Can you confirm that the paint/layers is being used as little as possible?
 */
 
 
-
 frontend - either use vmin/vmax or pixels
