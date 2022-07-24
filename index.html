@@ -10,8 +10,8 @@ the file name in every url.
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <title>Bricks</title>
     <style>
         body {
@@ -33,7 +33,7 @@ the file name in every url.
         }
 
         .scoreboard {
-             top: 20px;
+            top: 20px;
             height: 80px;
             width: 80px;
             color: white;
@@ -43,9 +43,9 @@ the file name in every url.
             font-size: 2.5vw;
 
 
-        align-items: center;
-        display: flex;
-        font-family: 'Press Start 2P', cursive;
+            align-items: center;
+            display: flex;
+            font-family: 'Press Start 2P', cursive;
 
             border: 5px solid rgb(32, 32, 158);
             background-color: rgb(10, 10, 10);
@@ -55,8 +55,8 @@ the file name in every url.
         }
 
         .lives {
-             top: 20px;
-             left: 500px;
+            top: 20px;
+            left: 500px;
             height: 80px;
             width: 80px;
             color: red;
@@ -65,10 +65,9 @@ the file name in every url.
             justify-content: center;
             font-size: 2.5vw;
 
-
-        align-items: center;
-        display: flex;
-        font-family: 'Press Start 2P', cursive;
+            align-items: center;
+            display: flex;
+            font-family: 'Press Start 2P', cursive;
 
             border: 5px solid rgb(32, 32, 158);
             background-color: rgb(10, 10, 10);
@@ -78,19 +77,29 @@ the file name in every url.
         }
 
         #pauseDiv {
-  width: 100%;
-  padding: 50px 0;
-  text-align: center;
-  margin-top: 20px;
-  font-family: 'Press Start 2P', cursive;
-  color: white;
-  position: absolute;
-  display: none;
-  top: 180px;
+            top: 50%;
+            width: 100%;
+            text-align: center;
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            position: absolute;
+            display: none;
+        }
 
-}
-
-
+        #game-over {
+            position: absolute;
+            top: 45%;
+            left: 25%;
+            width: 50%;
+            height: 20%;
+            text-align: center;
+            font-family: 'Press Start 2P', cursive;
+            display: none;
+            color: white;
+            flex-direction: column;
+            border: 2px solid rgb(32, 32, 158);
+            justify-content: space-evenly;
+        }
     </style>
     <script src="game.js" defer type="module"></script>
 </head>
@@ -101,10 +110,16 @@ the file name in every url.
     <div class="scoreboard"></div>
 
     <div id="pauseDiv">
-GAME PAUSED        
-</div>
+        GAME PAUSED
+    </div>
 
-    <div class="game-board"></div>
+    <div class="game-board">
+        <div id="game-over">
+            <span>Game Over!</span>
+            <span id="final-score">Score:</span>
+            <span id="reset" style="cursor: pointer;">Restart</span>
+        </div>
+    </div>
 </body>
 
 </html>

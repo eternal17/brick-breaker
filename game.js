@@ -38,6 +38,8 @@ const docFrag = document.createDocumentFragment();
 //game start boolean
 let game_started = false;
 
+// gameover - no lives left
+let game_over = false
 //scoreboard
 let scoreboard = document.querySelector(".scoreboard");
 let score = 0;
@@ -171,6 +173,20 @@ function ballWallCollision() {
     livesbox.innerHTML = "&#10084".repeat(maxlives);
     game_started = false
 
+  }
+}
+
+function gameOver() {
+  const youLoseDiv = document.querySelector('#game-over')
+  let scoreSpan = document.querySelector('#final-score')
+  let resetGameSpan = document.querySelector('#reset')
+  if (maxlives === 0) {
+    game_over = true
+    youLoseDiv.style.display = "flex";
+    scoreSpan.innerHTML = `Score:${score}`
+    resetGameSpan.addEventListener('click', () => {
+      window.location.reload('true')
+    })
   }
 }
 
@@ -342,7 +358,10 @@ function gameLoop() {
   padCollision();
   ballWallCollision();
   brickCollision();
-  requestAnimationFrame(gameLoop);
+  gameOver()
+  if (!game_over) {
+    requestAnimationFrame(gameLoop);
+  }
 }
 
 requestAnimationFrame(gameLoop);
