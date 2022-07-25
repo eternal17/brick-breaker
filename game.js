@@ -46,7 +46,7 @@ let score = 0;
 
 //lives
 let maxlives = 3;
-let livesComp = 2
+let livesComp = 2;
 let livesbox = document.querySelector(".lives");
 livesbox.innerHTML = "&#10084".repeat(maxlives);
 
@@ -58,6 +58,8 @@ const pausediv = document.getElementById("pauseDiv");
 //timer
 let timer = 0;
 let timeDiv = document.querySelector(".time ");
+let firstTime = 0;
+let a = false;
 
 // draw paddle
 function drawPaddle() {
@@ -357,40 +359,29 @@ window.addEventListener("keydown", function (e) {
 //behaves funky within the game loop, frames stable nevertheless
 drawBricks();
 
-let firstTime = 0;
-
-
 //one time function
 function updateTime(time) {
   updateTime = function () {};
   firstTime = time;
 }
 
- let a = false;
-
-
-
 function gameLoop(time) {
   if (paused) {
-    a = true
+    a = true;
     return;
   }
 
-  
-  //timer when spaused
-  if(!paused && a == true){
-    a = false
-    firstTime  = performance.now()/1000 
+  //timer when paused
+  if (!paused && a == true) {
+    a = false;
+    firstTime = performance.now() / 1000;
   }
-
 
   //out of bounds/deadball, psuedo-stops timer
-  if(game_started && maxlives == livesComp){
-    livesComp --
-    firstTime = performance.now()/1000 
+  if (game_started && maxlives == livesComp) {
+    livesComp--;
+    firstTime = performance.now() / 1000;
   }
-
-  
 
   scoreboard.innerHTML = score;
   drawPaddle();
@@ -400,7 +391,6 @@ function gameLoop(time) {
   timeDiv.innerHTML = timer;
 
   if (game_started) {
-
     moveBall();
     updateTime(time / 1000);
 
@@ -411,7 +401,7 @@ function gameLoop(time) {
   }
 
   padCollision();
-  ballWallCollision(performance.now()/1000 );
+  ballWallCollision(performance.now() / 1000);
   brickCollision();
   gameOver();
   if (!game_over) {
