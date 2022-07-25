@@ -81,13 +81,18 @@ the file name in every url.
         }
 
         #pauseDiv {
-            top: 50%;
-            width: 100%;
-            text-align: center;
+            top: 45%;
+            left: 10%;
+            width: 80%;
+            height: 25%;
+            justify-content: space-around;
+            align-items: center;
             font-family: 'Press Start 2P', cursive;
             color: white;
             position: absolute;
             display: none;
+            flex-direction: column;
+            border: 5px solid rgb(32, 32, 158);
         }
 
         #game-over {
@@ -116,7 +121,9 @@ the file name in every url.
     </div>
     <div class="game-board">
         <div id="pauseDiv">
-            GAME PAUSED
+            <span id="paused">GAME PAUSED</span>
+            <span id="continue">Continue (press P)</span>
+            <span id="reset">Restart (press R)</span>
         </div>
         <div id="game-over">
             <span>Game Over!</span>

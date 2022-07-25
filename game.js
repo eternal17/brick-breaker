@@ -179,7 +179,6 @@ function ballWallCollision() {
 function gameOver() {
   const youLoseDiv = document.querySelector('#game-over')
   let scoreSpan = document.querySelector('#final-score')
-  let resetGameSpan = document.querySelector('#reset')
   if (maxlives === 0) {
     game_over = true
     youLoseDiv.style.display = "flex";
@@ -220,10 +219,10 @@ function padCollision() {
 //brick variables
 const brick_width = 60;
 const brick_height = 20;
-const brick_rows = 3;
+const brick_rows = 4;
 const brick_column = 5;
 const brick_buffer = (gameBoardRect.width - brick_width * brick_rows) / brick_rows - 2;
-let styleLeft = 35;
+let styleLeft = 20;
 let styleTop = 50;
 
 let bricks = {
@@ -254,8 +253,8 @@ function createBricks() {
       styleLeft += brick_width + brick_buffer;
       docFrag.appendChild(brick);
     }
-    styleLeft = 35;
-    styleTop += 55;
+    styleLeft = 20;
+    styleTop += 25;
   }
 
   return docFrag;
@@ -271,10 +270,6 @@ function brickCollision() {
   for (let i = 0; i < gameBricks.length; i++) {
     const ballRect = ballDiv.getBoundingClientRect();
 
-    if (ballRect.top <= gameBricks[i].getBoundingClientRect().bottom
-    ) {
-      console.log('1', ballRect.top);
-    }
 
     //bottom of brick collision
     if (
@@ -340,8 +335,13 @@ function brickCollision() {
 
 function togglePause() {
   if (!paused) {
-    pausediv.style.display = "block";
+    pausediv.style.display = "flex";
     paused = true;
+    window.addEventListener('keydown', e => {
+      if (e.code === 'KeyR') {
+        window.location.reload('true')
+      }
+    })
   } else if (paused) {
     pausediv.style.display = "none";
     paused = false;
