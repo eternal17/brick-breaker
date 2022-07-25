@@ -10,8 +10,8 @@ the file name in every url.
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <title>Bricks</title>
     <style>
         body {
@@ -32,79 +32,98 @@ the file name in every url.
             background-color: rgb(10, 10, 10);
         }
 
-        .scoreboard {
-             top: 20px;
+        .top-stats {
+            position: absolute;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            top: 20px;
+            height: 150px;
+            width: 400px;
+        }
+
+        .top-stats .scoreboard {
             height: 80px;
             width: 80px;
             color: white;
             text-align: justify;
-            font-size: 8vw;
             justify-content: center;
-            font-size: 2.5vw;
-
-
-        align-items: center;
-        display: flex;
-        font-family: 'Press Start 2P', cursive;
-
+            font-size: 26px;
+            align-items: center;
+            display: flex;
+            font-family: 'Press Start 2P', cursive;
             border: 5px solid rgb(32, 32, 158);
             background-color: rgb(10, 10, 10);
-            position: absolute;
-            align-self: flex-start;
-
         }
 
         .lives {
-             top: 20px;
-             left: 500px;
             height: 80px;
             width: 80px;
             color: red;
-            text-align: justify;
-            font-size: 8vw;
+            display: flex;
             justify-content: center;
-            font-size: 2.5vw;
-
-
-        align-items: center;
-        display: flex;
-        font-family: 'Press Start 2P', cursive;
-
+            font-size: 26px;
+            align-items: center;
+            font-family: 'Press Start 2P', cursive;
             border: 5px solid rgb(32, 32, 158);
             background-color: rgb(10, 10, 10);
-            position: absolute;
-            align-self: flex-start;
+        }
 
+        .time {
+            height: 80px;
+            width: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Press Start 2P', cursive;
+            border: 5px solid rgb(32, 32, 158);
+            background-color: rgb(10, 10, 10);
         }
 
         #pauseDiv {
-  width: 100%;
-  padding: 50px 0;
-  text-align: center;
-  margin-top: 20px;
-  font-family: 'Press Start 2P', cursive;
-  color: white;
-  position: absolute;
-  display: none;
-  top: 180px;
+            top: 50%;
+            width: 100%;
+            text-align: center;
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            position: absolute;
+            display: none;
+        }
 
-}
-
-
+        #game-over {
+            position: absolute;
+            top: 45%;
+            left: 25%;
+            width: 50%;
+            height: 20%;
+            text-align: center;
+            font-family: 'Press Start 2P', cursive;
+            display: none;
+            color: white;
+            flex-direction: column;
+            border: 2px solid rgb(32, 32, 158);
+            justify-content: space-evenly;
+        }
     </style>
     <script src="game.js" defer type="module"></script>
 </head>
 
 <body>
-    <div class="lives"></div>
-
-    <div class="scoreboard"></div>
-
-    <div id="pauseDiv">
-GAME PAUSED        
-</div>
-
-    <div class="game-board"></div>
+    <div class="top-stats">
+        <div class="time"></div>
+        <div class="scoreboard"></div>
+        <div class="lives"></div>
+    </div>
+    <div class="game-board">
+        <div id="pauseDiv">
+            GAME PAUSED
+        </div>
+        <div id="game-over">
+            <span>Game Over!</span>
+            <span id="final-score">Score:</span>
+            <span id="reset">Restart (press R)</span>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -38,6 +38,8 @@ const docFrag = document.createDocumentFragment();
 //game start boolean
 let game_started = false;
 
+// gameover - no lives left
+let game_over = false
 //scoreboard
 let scoreboard = document.querySelector(".scoreboard");
 let score = 0;
@@ -50,7 +52,7 @@ livesbox.innerHTML = "&#10084".repeat(maxlives);
 //pause state
 let paused = false;
 const pausediv = document.getElementById("pauseDiv");
-gameBoard.append(pausediv);
+// gameBoard.append(pausediv);
 
 // draw paddle
 function drawPaddle() {
@@ -174,6 +176,22 @@ function ballWallCollision() {
   }
 }
 
+function gameOver() {
+  const youLoseDiv = document.querySelector('#game-over')
+  let scoreSpan = document.querySelector('#final-score')
+  let resetGameSpan = document.querySelector('#reset')
+  if (maxlives === 0) {
+    game_over = true
+    youLoseDiv.style.display = "flex";
+    scoreSpan.innerHTML = `Score:${score}`
+    window.addEventListener('keydown', e => {
+      if (e.code === 'KeyR') {
+        window.location.reload('true')
+      }
+    })
+  }
+}
+
 function padCollision() {
   //also tried making the below two variables global but causes errors
   const ballRect = ballDiv.getBoundingClientRect();
@@ -254,14 +272,20 @@ function brickCollision() {
   for (let i = 0; i < gameBricks.length; i++) {
     const ballRect = ballDiv.getBoundingClientRect();
 
+    if (ballRect.top <= gameBricks[i].getBoundingClientRect().bottom
+    ) {
+      console.log('1', ballRect.top);
+    }
+
     //bottom of brick collision
     if (
       ball.deltaY < 0 &&
-      ballRect.bottom + ballRect.height > gameBricks[i].getBoundingClientRect().bottom &&
+      ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom &&
       ballRect.top <= gameBricks[i].getBoundingClientRect().bottom &&
-      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
-      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
+      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRadius &&
+      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRadius
     ) {
+      console.log("hit bottom");
       score += 1;
       gameBricks[i].remove();
       ball.deltaY = Math.abs(ball.deltaY);
@@ -271,38 +295,46 @@ function brickCollision() {
       ball.deltaY > 0 &&
       ballRect.top < gameBricks[i].getBoundingClientRect().top &&
       ballRect.bottom >= gameBricks[i].getBoundingClientRect().top &&
-      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRect.width &&
-      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRect.width
+      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRadius &&
+      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRadius
     ) {
+      console.log("hit top");
       score += 1;
       gameBricks[i].remove();
       ball.deltaY = -Math.abs(ball.deltaY);
 
-      //left of brick collision
-    } else if (
-      ballRect.left < gameBricks[i].getBoundingClientRect().left &&
-      ballRect.right > gameBricks[i].getBoundingClientRect().left &&
-      ((ballRect.top + ballRect.height > gameBricks[i].getBoundingClientRect().top &&
-        ballRect.bottom <= gameBricks[i].getBoundingClientRect().bottom) ||
-        (ballRect.bottom - ballRect.height < gameBricks[i].getBoundingClientRect().bottom &&
-          ballRect.bottom < gameBricks[i].getBoundingClientRect().top))
-    ) {
-      console.log("hit left");
-      score += 1;
-
-      ball.deltaX = Math.abs(ball.deltaX) * -1;
-
       //right of brick collision
     } else if (
       ballRect.right > gameBricks[i].getBoundingClientRect().right &&
-      ballRect.left < gameBricks[i].getBoundingClientRect().right &&
-      ((ballRect.top < gameBricks[i].getBoundingClientRect().bottom && ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom) ||
-        (ballRect.bottom > gameBricks[i].getBoundingClientRect().top && ballRect.top < gameBricks[i].getBoundingClientRect().top))
+      ballRect.left <= gameBricks[i].getBoundingClientRect().right &&
+      ((ballRect.top < gameBricks[i].getBoundingClientRect().top && ballRect.bottom > gameBricks[i].getBoundingClientRect().top) ||
+        (ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom && ballRect.top < gameBricks[i].getBoundingClientRect().bottom))
     ) {
       console.log("hit right");
+      gameBricks[i].remove();
+
       score += 1;
 
-      ball.deltaX = Math.abs(ball.deltaX) * -1;
+      console.log("right1", ball.deltaX);
+
+      ball.deltaX = Math.abs(ball.deltaX);
+
+
+
+      //left of brick collision
+    } else if (
+      ballRect.left < gameBricks[i].getBoundingClientRect().left &&
+      ballRect.right >= gameBricks[i].getBoundingClientRect().left &&
+      ((ballRect.top < gameBricks[i].getBoundingClientRect().top && ballRect.bottom > gameBricks[i].getBoundingClientRect().top) ||
+        (ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom && ballRect.top < gameBricks[i].getBoundingClientRect().bottom))
+    ) {
+      console.log("hit left");
+      gameBricks[i].remove();
+
+      score += 1;
+
+      ball.deltaX = -Math.abs(ball.deltaX);
+
     }
   }
 }
@@ -342,7 +374,10 @@ function gameLoop() {
   padCollision();
   ballWallCollision();
   brickCollision();
-  requestAnimationFrame(gameLoop);
+  gameOver()
+  if (!game_over) {
+    requestAnimationFrame(gameLoop);
+  }
 }
 
 requestAnimationFrame(gameLoop);
