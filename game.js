@@ -346,3 +346,22 @@ window.addEventListener("keydown", function (e) {
 
 //behaves funky within the game loop, frames stable nevertheless
 drawBricks();
+
+function gameLoop() {
+  if (paused) return;
+  scoreboard.innerHTML = score;
+  drawPaddle();
+  drawBall();
+  movePaddleBool();
+  movePaddle();
+  if (game_started) moveBall();
+  padCollision();
+  ballWallCollision();
+  brickCollision();
+  gameOver()
+  if (!game_over) {
+    requestAnimationFrame(gameLoop);
+  }
+}
+
+requestAnimationFrame(gameLoop);
