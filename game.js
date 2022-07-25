@@ -365,7 +365,7 @@ function updateTime(time) {
   firstTime = time;
 }
 
-function gameLoop(time) {
+function gameLoop() {
   if (paused) {
     a = true;
     return;
@@ -392,11 +392,11 @@ function gameLoop(time) {
 
   if (game_started) {
     moveBall();
-    updateTime(time / 1000);
+    updateTime(performance.now() / 1000);
 
-    if (time / 1000 > firstTime) {
+    if (performance.now() / 1000 > firstTime) {
       firstTime++;
-      timer += 1;
+      timer ++;
     }
   }
 
