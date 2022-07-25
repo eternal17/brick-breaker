@@ -184,8 +184,10 @@ function gameOver() {
     game_over = true
     youLoseDiv.style.display = "flex";
     scoreSpan.innerHTML = `Score:${score}`
-    resetGameSpan.addEventListener('click', () => {
-      window.location.reload('true')
+    window.addEventListener('keydown', e => {
+      if (e.code === 'KeyR') {
+        window.location.reload('true')
+      }
     })
   }
 }
