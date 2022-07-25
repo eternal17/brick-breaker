@@ -52,7 +52,7 @@ livesbox.innerHTML = "&#10084".repeat(maxlives);
 //pause state
 let paused = false;
 const pausediv = document.getElementById("pauseDiv");
-gameBoard.append(pausediv);
+// gameBoard.append(pausediv);
 
 // draw paddle
 function drawPaddle() {
@@ -346,22 +346,3 @@ window.addEventListener("keydown", function (e) {
 
 //behaves funky within the game loop, frames stable nevertheless
 drawBricks();
-
-function gameLoop() {
-  if (paused) return;
-  scoreboard.innerHTML = score;
-  drawPaddle();
-  drawBall();
-  movePaddleBool();
-  movePaddle();
-  if (game_started) moveBall();
-  padCollision();
-  ballWallCollision();
-  brickCollision();
-  gameOver()
-  if (!game_over) {
-    requestAnimationFrame(gameLoop);
-  }
-}
-
-requestAnimationFrame(gameLoop);
