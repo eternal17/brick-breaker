@@ -29,7 +29,7 @@ const ballDiv = document.createElement("div");
 const ballRadius = 10;
 const ballCompStyles = window.getComputedStyle(ballDiv);
 const defaultValue = "translate(0,0)";
-ballDiv.setAttribute('transform', defaultValue);
+ballDiv.setAttribute("transform", defaultValue);
 
 //brick variables
 const brick = document.createElement("div");
@@ -39,13 +39,14 @@ const docFrag = document.createDocumentFragment();
 let game_started = false;
 
 // gameover - no lives left
-let game_over = false
+let game_over = false;
 //scoreboard
 let scoreboard = document.querySelector(".scoreboard");
 let score = 0;
 
 //lives
 let maxlives = 3;
+let livesComp = 2
 let livesbox = document.querySelector(".lives");
 livesbox.innerHTML = "&#10084".repeat(maxlives);
 
@@ -53,6 +54,10 @@ livesbox.innerHTML = "&#10084".repeat(maxlives);
 let paused = false;
 const pausediv = document.getElementById("pauseDiv");
 // gameBoard.append(pausediv);
+
+//timer
+let timer = 0;
+let timeDiv = document.querySelector(".time ");
 
 // draw paddle
 function drawPaddle() {
@@ -164,30 +169,28 @@ function ballWallCollision() {
 
   // if the ball hits goes past the paddle (i.e lose a life), all the logic for what happens should be here
   if (ballRect.top > padRect.top) {
-
     // reset the ball to middle of pad
-    ball.x = gameBoardRect.width / 2 - ballRadius
-    ball.y = paddle.y - 2 * ballRadius
-    ballDiv.style.transform = `translateX(${paddle.start}px)`
-    maxlives -= 1
+    ball.x = gameBoardRect.width / 2 - ballRadius;
+    ball.y = paddle.y - 2 * ballRadius;
+    ballDiv.style.transform = `translateX(${paddle.start}px)`;
+    maxlives -= 1;
     livesbox.innerHTML = "&#10084".repeat(maxlives);
-    game_started = false
-
+    game_started = false;
   }
 }
 
 function gameOver() {
-  const youLoseDiv = document.querySelector('#game-over')
-  let scoreSpan = document.querySelector('#final-score')
+  const youLoseDiv = document.querySelector("#game-over");
+  let scoreSpan = document.querySelector("#final-score");
   if (maxlives === 0) {
-    game_over = true
+    game_over = true;
     youLoseDiv.style.display = "flex";
-    scoreSpan.innerHTML = `Score:${score}`
-    window.addEventListener('keydown', e => {
-      if (e.code === 'KeyR') {
-        window.location.reload('true')
+    scoreSpan.innerHTML = `Score:${score}`;
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "KeyR") {
+        window.location.reload("true");
       }
-    })
+    });
   }
 }
 
@@ -197,11 +200,7 @@ function padCollision() {
   const padRect = pad.getBoundingClientRect();
 
   //added + ballRect.height
-  if (
-    ballRect.x < padRect.x + padRect.width &&
-    ballRect.x + ballRadius * 2 > padRect.x &&
-    ballRect.bottom >= padRect.top
-  ) {
+  if (ballRect.x < padRect.x + padRect.width && ballRect.x + ballRadius * 2 > padRect.x && ballRect.bottom >= padRect.top) {
     // CHECK WHERE THE ballRect HIT THE PADDLE
     let collidePoint = ballRect.x - (padRect.x + padRect.width / 2);
 
@@ -270,7 +269,6 @@ function brickCollision() {
   for (let i = 0; i < gameBricks.length; i++) {
     const ballRect = ballDiv.getBoundingClientRect();
 
-
     //bottom of brick collision
     if (
       ball.deltaY < 0 &&
@@ -313,8 +311,6 @@ function brickCollision() {
 
       ball.deltaX = Math.abs(ball.deltaX);
 
-
-
       //left of brick collision
     } else if (
       ballRect.left < gameBricks[i].getBoundingClientRect().left &&
@@ -328,7 +324,6 @@ function brickCollision() {
       score += 1;
 
       ball.deltaX = -Math.abs(ball.deltaX);
-
     }
   }
 }
@@ -337,11 +332,11 @@ function togglePause() {
   if (!paused) {
     pausediv.style.display = "flex";
     paused = true;
-    window.addEventListener('keydown', e => {
-      if (e.code === 'KeyR') {
-        window.location.reload('true')
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "KeyR") {
+        window.location.reload("true");
       }
-    })
+    });
   } else if (paused) {
     pausediv.style.display = "none";
     paused = false;
@@ -362,18 +357,63 @@ window.addEventListener("keydown", function (e) {
 //behaves funky within the game loop, frames stable nevertheless
 drawBricks();
 
-function gameLoop() {
-  if (paused) return;
+let firstTime = 0;
+
+
+//one time function
+function updateTime(time) {
+  updateTime = function () {};
+  firstTime = time;
+}
+
+ let a = false;
+
+
+
+function gameLoop(time) {
+  if (paused) {
+    a = true
+    return;
+  }
+
+  
+  //timer when spaused
+  if(!paused && a == true){
+    a = false
+    firstTime  = performance.now()/1000 
+  }
+
+
+  //out of bounds/deadball, psuedo-stops timer
+  if(game_started && maxlives == livesComp){
+    livesComp --
+    firstTime = performance.now()/1000 
+  }
+
+  
+
   scoreboard.innerHTML = score;
   drawPaddle();
   drawBall();
   movePaddleBool();
   movePaddle();
-  if (game_started) moveBall();
+  timeDiv.innerHTML = timer;
+
+  if (game_started) {
+
+    moveBall();
+    updateTime(time / 1000);
+
+    if (time / 1000 > firstTime) {
+      firstTime++;
+      timer += 1;
+    }
+  }
+
   padCollision();
-  ballWallCollision();
+  ballWallCollision(performance.now()/1000 );
   brickCollision();
-  gameOver()
+  gameOver();
   if (!game_over) {
     requestAnimationFrame(gameLoop);
   }
