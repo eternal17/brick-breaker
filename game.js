@@ -163,7 +163,7 @@ function ballWallCollision() {
   }
 
   // if the ball hits goes past the paddle (i.e lose a life), all the logic for what happens should be here
-  if (ballRect.top > padRect.bottom) {
+  if (ballRect.top > padRect.top) {
 
     // reset the ball to middle of pad
     ball.x = gameBoardRect.width / 2 - ballRadius
@@ -200,9 +200,8 @@ function padCollision() {
   //added + ballRect.height
   if (
     ballRect.x < padRect.x + padRect.width &&
-    ballRect.x > padRect.x &&
-    padRect.y < padRect.y + padRect.height &&
-    ballRect.y + ballRect.height > padRect.y
+    ballRect.x + ballRadius * 2 > padRect.x &&
+    ballRect.bottom >= padRect.top
   ) {
     // CHECK WHERE THE ballRect HIT THE PADDLE
     let collidePoint = ballRect.x - (padRect.x + padRect.width / 2);
@@ -256,7 +255,7 @@ function createBricks() {
       docFrag.appendChild(brick);
     }
     styleLeft = 35;
-    styleTop += 25;
+    styleTop += 55;
   }
 
   return docFrag;
