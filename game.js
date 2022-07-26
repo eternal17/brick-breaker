@@ -181,20 +181,6 @@ function ballWallCollision() {
   }
 }
 
-function gameOver() {
-  const youLoseDiv = document.querySelector("#game-over");
-  let scoreSpan = document.querySelector("#final-score");
-  if (maxlives === 0) {
-    game_over = true;
-    youLoseDiv.style.display = "flex";
-    scoreSpan.innerHTML = `Score:${score}`;
-    window.addEventListener("keydown", (e) => {
-      if (e.code === "KeyR") {
-        window.location.reload("true");
-      }
-    });
-  }
-}
 
 function padCollision() {
   //also tried making the below two variables global but causes errors
@@ -221,7 +207,7 @@ function padCollision() {
 const brick_width = 60;
 const brick_height = 20;
 const brick_rows = 4;
-const brick_column = 5;
+const brick_column = 2;
 const brick_buffer = (gameBoardRect.width - brick_width * brick_rows) / brick_rows - 2;
 let styleLeft = 20;
 let styleTop = 50;
@@ -361,8 +347,44 @@ drawBricks();
 
 //one time function
 function updateTime(time) {
-  updateTime = function () {};
+  updateTime = function () { };
   firstTime = time;
+}
+
+function gameOver() {
+  const youLoseDiv = document.querySelector("#game-over");
+  let scoreSpan = document.querySelector("#final-score");
+  if (maxlives === 0) {
+    game_over = true;
+    youLoseDiv.style.display = "flex";
+    scoreSpan.innerHTML = `Score:${score}`;
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "KeyR") {
+        window.location.reload("true");
+      }
+    });
+  }
+}
+
+// When no bricks left, display you win div
+function youWin() {
+  let gameBricks = document.getElementsByClassName("brick");
+  let youWinDiv = document.querySelector('#you-win')
+  let scoreSpan = document.querySelector("#score");
+  let secondsSpan = document.querySelector('#time')
+  console.log(score)
+  if (gameBricks.length == 0) {
+    youWinDiv.style.display = "flex"
+    scoreSpan.innerHTML = `Score:${score}`;
+    secondsSpan.innerHTML = `Time:${timer}s`
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "KeyR") {
+        window.location.reload("true");
+      }
+    });
+    // to stop the ball from moving
+    game_started = false
+  }
 }
 
 function gameLoop() {
@@ -396,7 +418,7 @@ function gameLoop() {
 
     if (performance.now() / 1000 > firstTime) {
       firstTime++;
-      timer ++;
+      timer++;
     }
   }
 
@@ -404,6 +426,7 @@ function gameLoop() {
   ballWallCollision(performance.now() / 1000);
   brickCollision();
   gameOver();
+  youWin()
   if (!game_over) {
     requestAnimationFrame(gameLoop);
   }
