@@ -5,7 +5,7 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0;
-    background-color: white;
+    background-color: rgb(12, 0, 0);
 }
 
 .game-board {
@@ -14,6 +14,7 @@ body {
     border: 5px solid rgb(32, 32, 158);
     position: absolute;
     background-color: rgb(10, 10, 10);
+
 }
 
 .top-stats {
@@ -24,6 +25,7 @@ body {
     top: 20px;
     height: 150px;
     width: 400px;
+
 }
 
 /* all divs within top stats */
@@ -38,10 +40,12 @@ body {
     border: 5px solid rgb(32, 32, 158);
     background-color: rgb(10, 10, 10);
     font-family: 'Press Start 2P', cursive;
+
 }
 
 .lives {
     color: red;
+
 }
 
 
@@ -58,6 +62,7 @@ body {
     display: none;
     flex-direction: column;
     border: 5px solid rgb(32, 32, 158);
+
 }
 
 #game-over {
@@ -73,7 +78,10 @@ body {
     flex-direction: column;
     border: 2px solid rgb(32, 32, 158);
     justify-content: space-evenly;
+
 }
+
+
 
 #you-win {
     position: absolute;
@@ -88,4 +96,28 @@ body {
     flex-direction: column;
     border: 2px solid rgb(32, 32, 158);
     justify-content: space-evenly;
+
+}
+
+.title-screen{
+    position: absolute;
+    top : 43px;
+    height: 630px;
+    width: 400px;
+    font-family: 'Press Start 2P', cursive;
+    display: block;
+    border:rgb(255, 255, 255)solid rgb(32, 32, 158);
+    color: white;
+    border: 5px solid rgb(32, 32, 158);
+    background-color: black;
+    z-index: 1;
+
+}
+
+.title-brick{
+position: absolute;
+
+border:rgb(255, 255, 255)solid rgb(255,255,255);
+
+z-index: -1;
 }

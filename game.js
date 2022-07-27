@@ -34,9 +34,12 @@ ballDiv.setAttribute("transform", defaultValue);
 //brick variables
 const brick = document.createElement("div");
 const docFrag = document.createDocumentFragment();
+const titleFrag = document.createDocumentFragment();
 
-//game start boolean
+//game start boolean/title screen
 let game_started = false;
+const titleDiv = document.querySelector(".title-screen");
+let title_screen = true;
 
 // gameover - no lives left
 let game_over = false;
@@ -181,7 +184,6 @@ function ballWallCollision() {
   }
 }
 
-
 function padCollision() {
   //also tried making the below two variables global but causes errors
   const ballRect = ballDiv.getBoundingClientRect();
@@ -220,6 +222,44 @@ let bricks = {
   style_left: styleLeft,
   style_top: styleTop,
 };
+
+///title screen///
+
+function titleBricks() {
+
+ let Color = "rgb(217, 56, 136)"
+  
+  //let randomColor2 = Math.floor(Math.random() * 16777215).toString(16);
+
+  for (let i = 0; i < 14; i++) {
+    if (i>6) Color = ' rgb(172, 39, 245)'
+    for (let i = 0; i < 4; i++) {
+      let brick = document.createElement("div");
+      brick.classList.add("title-brick");
+      brick.style.left = styleLeft + "px";
+      brick.style.top = styleTop + "px";
+      brick.style.height = bricks.height + "px";
+      brick.style.width = bricks.width + "px";
+      brick.style.backgroundColor = Color
+      ;
+      brick.style.position = "absolute";
+
+      styleLeft += brick_width + brick_buffer;
+      titleFrag.appendChild(brick);
+    }
+    styleLeft = 20;
+    styleTop += 25;
+  }
+
+  return titleFrag;
+}
+
+function bricksToTitle() {
+  const titleBrics = titleBricks();
+  titleDiv.append(titleBrics);
+}
+
+/////////////
 
 function createBricks() {
   let id = 1;
@@ -342,12 +382,24 @@ window.addEventListener("keydown", function (e) {
   if (e.code === "Space") game_started = true;
 });
 
+//title screen
+window.addEventListener("keydown", function (e) {
+  e.preventDefault();
+  if (e.code === "Enter") {
+titleDiv.style.display = 'none'
+    title_screen = false
+  }
+
+});
+
 //behaves funky within the game loop, frames stable nevertheless
 drawBricks();
 
+bricksToTitle();
+
 //one time function
 function updateTime(time) {
-  updateTime = function () { };
+  updateTime = function () {};
   firstTime = time;
 }
 
@@ -369,67 +421,71 @@ function gameOver() {
 // When no bricks left, display you win div
 function youWin() {
   let gameBricks = document.getElementsByClassName("brick");
-  let youWinDiv = document.querySelector('#you-win')
+  let youWinDiv = document.querySelector("#you-win");
   let scoreSpan = document.querySelector("#score");
-  let secondsSpan = document.querySelector('#time')
-  console.log(score)
+  let secondsSpan = document.querySelector("#time");
+
   if (gameBricks.length == 0) {
-    youWinDiv.style.display = "flex"
+    youWinDiv.style.display = "flex";
     scoreSpan.innerHTML = `Score:${score}`;
-    secondsSpan.innerHTML = `Time:${timer}s`
+    secondsSpan.innerHTML = `Time:${timer}s`;
     window.addEventListener("keydown", (e) => {
       if (e.code === "KeyR") {
         window.location.reload("true");
       }
     });
     // to stop the ball from moving
-    game_started = false
+    game_started = false;
   }
 }
 
+
 function gameLoop() {
+
+
   if (paused) {
     a = true;
     return;
   }
 
-  //timer when paused
-  if (!paused && a == true) {
-    a = false;
-    firstTime = performance.now() / 1000;
-  }
-
-  //out of bounds/deadball, psuedo-stops timer
-  if (game_started && maxlives == livesComp) {
-    livesComp--;
-    firstTime = performance.now() / 1000;
-  }
-
-  scoreboard.innerHTML = score;
-  drawPaddle();
-  drawBall();
-  movePaddleBool();
-  movePaddle();
-  timeDiv.innerHTML = timer;
-
-  if (game_started) {
-    moveBall();
-    updateTime(performance.now() / 1000);
-
-    if (performance.now() / 1000 > firstTime) {
-      firstTime++;
-      timer++;
+    //timer when paused
+    if (!paused && a == true) {
+      a = false;
+      firstTime = performance.now() / 1000;
     }
-  }
 
-  padCollision();
-  ballWallCollision(performance.now() / 1000);
-  brickCollision();
-  gameOver();
-  youWin()
-  if (!game_over) {
-    requestAnimationFrame(gameLoop);
-  }
+    //out of bounds/deadball, psuedo-stops timer
+    if (game_started && maxlives == livesComp) {
+      livesComp--;
+      firstTime = performance.now() / 1000;
+    }
+    
+    scoreboard.innerHTML = score;
+    drawPaddle();
+    drawBall();
+    movePaddleBool();
+    movePaddle();
+    timeDiv.innerHTML = timer;
+
+    if (game_started) {
+      moveBall();
+      updateTime(performance.now() / 1000);
+
+      if (performance.now() / 1000 > firstTime) {
+        firstTime++;
+        timer++;
+      }
+    }
+
+    padCollision();
+    ballWallCollision(performance.now() / 1000);
+    brickCollision();
+    gameOver();
+    youWin();
+    if (!game_over) {
+      requestAnimationFrame(gameLoop);
+    }
+  
 }
 
 requestAnimationFrame(gameLoop);
