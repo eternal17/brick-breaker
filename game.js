@@ -374,6 +374,7 @@ function youWin() {
   let secondsSpan = document.querySelector('#time')
   console.log(score)
   if (gameBricks.length == 0) {
+    paused = true
     youWinDiv.style.display = "flex"
     scoreSpan.innerHTML = `Score:${score}`;
     secondsSpan.innerHTML = `Time:${timer}s`
