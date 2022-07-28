@@ -290,7 +290,7 @@ function createBricks() {
       docFrag.appendChild(brick);
     }
     styleLeft = 20;
-    styleTop += 25;
+    styleTop += 35;
   }
 
   return docFrag;
@@ -311,8 +311,8 @@ function brickCollision() {
       ball.deltaY < 0 &&
       ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom &&
       ballRect.top <= gameBricks[i].getBoundingClientRect().bottom &&
-      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRadius &&
-      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRadius
+      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRadius * 2 &&
+      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRadius * 2
     ) {
       console.log("hit bottom");
       score += 1;
@@ -324,8 +324,8 @@ function brickCollision() {
       ball.deltaY > 0 &&
       ballRect.top < gameBricks[i].getBoundingClientRect().top &&
       ballRect.bottom >= gameBricks[i].getBoundingClientRect().top &&
-      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRadius &&
-      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRadius
+      ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRadius * 2 &&
+      ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRadius * 2
     ) {
       console.log("hit top");
       score += 1;
