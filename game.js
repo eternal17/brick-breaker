@@ -80,12 +80,11 @@ function drawPaddle() {
 function movePaddleBool() {
   document.addEventListener("keydown", function (event) {
     const padRect = pad.getBoundingClientRect();
+    event.preventDefault();
 
     if (event.key == "ArrowRight" && padRect.right + parseInt(gameCompStyles.border) < gameBoardRect.right) {
-      event.preventDefault();
       paddle.right = true;
     } else if (event.key == "ArrowLeft" && padRect.left - parseInt(gameCompStyles.border) > gameBoardRect.left) {
-      event.preventDefault();
       paddle.left = true;
     }
   });
@@ -93,8 +92,14 @@ function movePaddleBool() {
 
 //translates paddle on the X axis
 function movePaddle() {
+  const padRect = pad.getBoundingClientRect();
+
   if (paddle.right) {
-    paddle.start += paddle.xMovement;
+    if (padRect.right + paddle.xMovement <= gameBoardRect.right) {
+      paddle.start += paddle.xMovement;
+    } else {
+      paddle.start += gameBoardRect.right - padRect.right;
+    }
 
     if (!game_started) {
       ballDiv.style.transform = `translateX(${paddle.start}px)`;
@@ -107,7 +112,11 @@ function movePaddle() {
   }
 
   if (paddle.left) {
-    paddle.start -= paddle.xMovement;
+    if (padRect.left - paddle.xMovement >= gameBoardRect.left) {
+      paddle.start -= paddle.xMovement;
+    } else {
+      paddle.start -= padRect.left - gameBoardRect.left;
+    }
     if (!game_started) {
       ballDiv.style.transform = `translate(${paddle.start}px)`;
       pad.style.transform = `translate(${paddle.start}px)`;
@@ -227,12 +236,12 @@ let bricks = {
 
 function titleBricks() {
 
- let Color = "rgb(217, 56, 136)"
-  
+  let Color = "rgb(217, 56, 136)"
+
   //let randomColor2 = Math.floor(Math.random() * 16777215).toString(16);
 
   for (let i = 0; i < 14; i++) {
-    if (i>6) Color = ' rgb(172, 39, 245)'
+    if (i > 6) Color = ' rgb(172, 39, 245)'
     for (let i = 0; i < 4; i++) {
       let brick = document.createElement("div");
       brick.classList.add("title-brick");
@@ -241,7 +250,7 @@ function titleBricks() {
       brick.style.height = bricks.height + "px";
       brick.style.width = bricks.width + "px";
       brick.style.backgroundColor = Color
-      ;
+        ;
       brick.style.position = "absolute";
 
       styleLeft += brick_width + brick_buffer;
@@ -379,7 +388,7 @@ window.addEventListener("keydown", function (e) {
 
 window.addEventListener("keydown", function (e) {
   e.preventDefault();
-  if(title_started){
+  if (title_started) {
     if (e.code === "Space") game_started = true;
 
   }
@@ -389,18 +398,18 @@ window.addEventListener("keydown", function (e) {
 //title screen
 
 
-  window.addEventListener("keydown", function (title) {
-    title.preventDefault();
-    if (title.code === "Enter") {
-  titleDiv.style.display = 'none'
-      title_started = true
-      requestAnimationFrame(gameLoop);
+window.addEventListener("keydown", function (title) {
+  title.preventDefault();
+  if (title.code === "Enter") {
+    titleDiv.style.display = 'none'
+    title_started = true
+    requestAnimationFrame(gameLoop);
 
-      this.removeEventListener("keydown", title)
-  
-    }
-  
-  });
+    this.removeEventListener("keydown", title)
+
+  }
+
+});
 
 
 
@@ -412,7 +421,7 @@ bricksToTitle();
 
 //one time function
 function updateTime(time) {
-  updateTime = function () {};
+  updateTime = function () { };
   firstTime = time;
 }
 
@@ -455,12 +464,12 @@ function youWin() {
 
 
 function gameLoop() {
-if (title_started){
+  if (title_started) {
 
-  if (paused) {
-    a = true;
-    return;
-  }
+    if (paused) {
+      a = true;
+      return;
+    }
 
     //timer when paused
     if (!paused && a == true) {
@@ -473,7 +482,7 @@ if (title_started){
       livesComp--;
       firstTime = performance.now() / 1000;
     }
-    
+
     scoreboard.innerHTML = score;
     drawPaddle();
     drawBall();
@@ -500,7 +509,7 @@ if (title_started){
       requestAnimationFrame(gameLoop);
     }
   }
-  
+
 }
 
 
