@@ -39,7 +39,7 @@ const titleFrag = document.createDocumentFragment();
 //game start boolean/title screen
 let game_started = false;
 const titleDiv = document.querySelector(".title-screen");
-let title_screen = true;
+let title_started = false
 
 // gameover - no lives left
 let game_over = false;
@@ -379,18 +379,31 @@ window.addEventListener("keydown", function (e) {
 
 window.addEventListener("keydown", function (e) {
   e.preventDefault();
-  if (e.code === "Space") game_started = true;
+  if(title_started){
+    if (e.code === "Space") game_started = true;
+
+  }
 });
+
 
 //title screen
-window.addEventListener("keydown", function (e) {
-  e.preventDefault();
-  if (e.code === "Enter") {
-titleDiv.style.display = 'none'
-    title_screen = false
-  }
 
-});
+
+  window.addEventListener("keydown", function (title) {
+    title.preventDefault();
+    if (title.code === "Enter") {
+  titleDiv.style.display = 'none'
+      title_started = true
+      requestAnimationFrame(gameLoop);
+
+      this.removeEventListener("keydown", title)
+  
+    }
+  
+  });
+
+
+
 
 //behaves funky within the game loop, frames stable nevertheless
 drawBricks();
@@ -426,6 +439,7 @@ function youWin() {
   let secondsSpan = document.querySelector("#time");
 
   if (gameBricks.length == 0) {
+    paused = true
     youWinDiv.style.display = "flex";
     scoreSpan.innerHTML = `Score:${score}`;
     secondsSpan.innerHTML = `Time:${timer}s`;
@@ -441,7 +455,7 @@ function youWin() {
 
 
 function gameLoop() {
-
+if (title_started){
 
   if (paused) {
     a = true;
@@ -485,7 +499,9 @@ function gameLoop() {
     if (!game_over) {
       requestAnimationFrame(gameLoop);
     }
+  }
   
 }
+
 
 requestAnimationFrame(gameLoop);
