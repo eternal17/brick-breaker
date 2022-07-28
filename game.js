@@ -479,7 +479,7 @@ if (title_started){
     drawBall();
     movePaddleBool();
     movePaddle();
-    timeDiv.innerHTML = timer;
+    timeDiv.innerHTML = `${timer}s`
 
     if (game_started) {
       moveBall();
