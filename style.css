@@ -9,6 +9,7 @@ body {
 }
 
 .game-board {
+    top: 150px;
     height: 500px;
     width: 400px;
     border: 5px solid rgb(32, 32, 158);
@@ -99,14 +100,14 @@ body {
 
 }
 
-.title-screen{
+.title-screen {
     position: absolute;
-    top : 43px;
-    height: 630px;
+    top: 43px;
+    height: 607px;
     width: 400px;
     font-family: 'Press Start 2P', cursive;
     display: block;
-    border:rgb(255, 255, 255)solid rgb(32, 32, 158);
+    border: rgb(255, 255, 255)solid rgb(32, 32, 158);
     color: white;
     border: 5px solid rgb(32, 32, 158);
     background-color: black;
@@ -114,10 +115,10 @@ body {
 
 }
 
-.title-brick{
-position: absolute;
+.title-brick {
+    position: absolute;
 
-border:rgb(255, 255, 255)solid rgb(255,255,255);
+    border: rgb(255, 255, 255)solid rgb(255, 255, 255);
 
-z-index: -1;
+    z-index: -1;
 }
