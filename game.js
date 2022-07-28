@@ -383,7 +383,9 @@ function togglePause() {
 
 window.addEventListener("keydown", function (e) {
   e.preventDefault();
-  if (e.code === "KeyP") togglePause();
+  if (title_started) {
+    if (e.code === "KeyP") togglePause();
+  }
 });
 
 window.addEventListener("keydown", function (e) {
