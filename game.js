@@ -64,6 +64,13 @@ let timeDiv = document.querySelector(".time ");
 let firstTime = 0;
 let a = false;
 
+// sounds
+const win_sound = new Audio('winsound.wav')
+const paddle_hit_sound = new Audio('paddlehit.wav')
+const brick_collided_sound = new Audio('brick-collided.wav')
+const life_lost_sound = new Audio('life-lost.wav')
+const game_over_sound = new Audio('game-over.wav')
+
 // draw paddle
 function drawPaddle() {
   pad.classList.add("pad");
@@ -184,10 +191,14 @@ function ballWallCollision() {
   // if the ball hits goes past the paddle (i.e lose a life), all the logic for what happens should be here
   if (ballRect.top > padRect.top) {
     // reset the ball to middle of pad
+
     ball.x = gameBoardRect.width / 2 - ballRadius;
     ball.y = paddle.y - 2 * ballRadius;
     ballDiv.style.transform = `translateX(${paddle.start}px)`;
     maxlives -= 1;
+    if (maxlives !== 0) {
+      life_lost_sound.play()
+    }
     livesbox.innerHTML = "&#10084".repeat(maxlives);
     game_started = false;
   }
@@ -200,6 +211,11 @@ function padCollision() {
 
   //added + ballRect.height
   if (ballRect.x < padRect.x + padRect.width && ballRect.x + ballRadius * 2 > padRect.x && ballRect.bottom >= padRect.top) {
+
+    // play sound
+    if (game_started) {
+      paddle_hit_sound.play()
+    }
     // CHECK WHERE THE ballRect HIT THE PADDLE
     let collidePoint = ballRect.x - (padRect.x + padRect.width / 2);
 
@@ -318,7 +334,7 @@ function brickCollision() {
       score += 1;
       gameBricks[i].remove();
       ball.deltaY = Math.abs(ball.deltaY);
-
+      brick_collided_sound.play()
       //top of brick collison
     } else if (
       ball.deltaY > 0 &&
@@ -331,7 +347,7 @@ function brickCollision() {
       score += 1;
       gameBricks[i].remove();
       ball.deltaY = -Math.abs(ball.deltaY);
-
+      brick_collided_sound.play()
       //right of brick collision
     } else if (
       ballRect.right > gameBricks[i].getBoundingClientRect().right &&
@@ -341,13 +357,10 @@ function brickCollision() {
     ) {
       console.log("hit right");
       gameBricks[i].remove();
-
       score += 1;
-
       console.log("right1", ball.deltaX);
-
       ball.deltaX = Math.abs(ball.deltaX);
-
+      brick_collided_sound.play()
       //left of brick collision
     } else if (
       ballRect.left < gameBricks[i].getBoundingClientRect().left &&
@@ -357,10 +370,9 @@ function brickCollision() {
     ) {
       console.log("hit left");
       gameBricks[i].remove();
-
       score += 1;
-
       ball.deltaX = -Math.abs(ball.deltaX);
+      brick_collided_sound.play()
     }
   }
 }
@@ -432,6 +444,7 @@ function gameOver() {
   let scoreSpan = document.querySelector("#final-score");
   if (maxlives === 0) {
     game_over = true;
+    game_over_sound.play()
     youLoseDiv.style.display = "flex";
     scoreSpan.innerHTML = `Score:${score}`;
     window.addEventListener("keydown", (e) => {
@@ -450,6 +463,7 @@ function youWin() {
   let secondsSpan = document.querySelector("#time");
 
   if (gameBricks.length == 0) {
+    win_sound.play()
     paused = true
     youWinDiv.style.display = "flex";
     scoreSpan.innerHTML = `Score:${score}`;
