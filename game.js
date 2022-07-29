@@ -65,11 +65,12 @@ let firstTime = 0;
 let a = false;
 
 // sounds
-const win_sound = new Audio('winsound.wav')
-const paddle_hit_sound = new Audio('paddlehit.wav')
-const brick_collided_sound = new Audio('brick-collided.wav')
-const life_lost_sound = new Audio('life-lost.wav')
-const game_over_sound = new Audio('game-over.wav')
+const win_sound = new Audio('./assets/gamewin1.mp3')
+const paddle_hit_sound = new Audio('./assets/paddlehit.mp3')
+const brick_collided_sound = new Audio('./assets/brickhit1.mp3')
+const life_lost_sound = new Audio('./assets/life-lost.mp3')
+const game_over_sound = new Audio('./assets/game-over.mp3')
+const game_music = new Audio('./assets/game-music.mp3')
 
 // draw paddle
 function drawPaddle() {
@@ -478,10 +479,12 @@ function youWin() {
   }
 }
 
+// for the game music to keep playing 
+game_music.loop = true
 
 function gameLoop() {
+  game_music.play()
   if (title_started) {
-
     if (paused) {
       a = true;
       return;
