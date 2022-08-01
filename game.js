@@ -140,7 +140,7 @@ const ball = {
   x: gameBoardRect.width / 2 - ballRadius,
   y: paddle.y - 2 * ballRadius,
   // the speed value can eventually change
-  speed: 5,
+  speed: 4,
   radius: ballRadius,
   // these are the properties that x and y change by.
   deltaX: 4 * (Math.random() * 2 - 1),
@@ -151,8 +151,8 @@ function drawBall() {
   ballDiv.classList.add("ball");
   ballDiv.style.top = ball.y + "px";
   ballDiv.style.left = ball.x + "px";
-  ballDiv.style.height = "20px";
-  ballDiv.style.width = "20px";
+  ballDiv.style.height = "14px";
+  ballDiv.style.width = "14px";
   ballDiv.style.borderRadius = "10px";
   ballDiv.style.position = "absolute";
   ballDiv.style.backgroundColor = "silver";
@@ -160,14 +160,11 @@ function drawBall() {
 }
 
 function moveBall() {
-  ball.x += ball.deltaX;
+  ball.x += ball.deltaX
   ball.y += ball.deltaY;
 }
 
-function ballStart() {
-  const padRect = pad.getBoundingClientRect();
-  ball.x += paddle.xMovement;
-}
+
 
 // CHECK WHY WE NEED THESE VARIABLES
 function ballWallCollision() {
@@ -211,7 +208,7 @@ function padCollision() {
   const padRect = pad.getBoundingClientRect();
 
   //added + ballRect.height
-  if (ballRect.x < padRect.x + padRect.width && ballRect.x + ballRadius * 2 > padRect.x && ballRect.bottom >= padRect.top) {
+  if (ballRect.x < padRect.x + padRect.width && ballRect.x + ballRadius * 2 > padRect.x && ballRect.bottom >= padRect.top && ball.deltaY > 0) {
 
     // play sound
     if (game_started) {
@@ -233,9 +230,9 @@ function padCollision() {
 
 //brick variables
 const brick_width = 60;
-const brick_height = 20;
+const brick_height = 25;
 const brick_rows = 4;
-const brick_column = 2;
+const brick_column = 4;
 const brick_buffer = (gameBoardRect.width - brick_width * brick_rows) / brick_rows - 2;
 let styleLeft = 20;
 let styleTop = 50;
@@ -254,27 +251,28 @@ let bricks = {
 function titleBricks() {
 
   let Color = "rgb(217, 56, 136)"
-
+  let titlebrickLeft = 20
+  let titleBrickTop = 25
   //let randomColor2 = Math.floor(Math.random() * 16777215).toString(16);
 
   for (let i = 0; i < 14; i++) {
     if (i > 6) Color = ' rgb(172, 39, 245)'
     for (let i = 0; i < 4; i++) {
-      let brick = document.createElement("div");
-      brick.classList.add("title-brick");
-      brick.style.left = styleLeft + "px";
-      brick.style.top = styleTop + "px";
-      brick.style.height = bricks.height + "px";
-      brick.style.width = bricks.width + "px";
-      brick.style.backgroundColor = Color
+      let titleBrick = document.createElement("div");
+      titleBrick.classList.add("title-brick");
+      titleBrick.style.left = titlebrickLeft + "px";
+      titleBrick.style.top = titleBrickTop + "px";
+      titleBrick.style.height = bricks.height + "px";
+      titleBrick.style.width = bricks.width + "px";
+      titleBrick.style.backgroundColor = Color
         ;
-      brick.style.position = "absolute";
+      titleBrick.style.position = "absolute";
 
-      styleLeft += brick_width + brick_buffer;
-      titleFrag.appendChild(brick);
+      titlebrickLeft += brick_width + brick_buffer;
+      titleFrag.appendChild(titleBrick);
     }
-    styleLeft = 20;
-    styleTop += 25;
+    titlebrickLeft = 20;
+    titleBrickTop += 35;
   }
 
   return titleFrag;
@@ -290,10 +288,11 @@ function bricksToTitle() {
 function createBricks() {
   let id = 1;
 
-  for (let i = 0; i < bricks.columns; i++) {
-    for (let i = 0; i < bricks.rows; i++) {
+  for (let i = 0; i < bricks.rows; i++) {
+    for (let i = 0; i < bricks.columns; i++) {
       let brick = document.createElement("div");
       brick.classList.add("brick");
+      brick.style.border = '2px solid red'
       brick.style.left = styleLeft + "px";
       brick.style.top = styleTop + "px";
       brick.style.height = bricks.height + "px";
@@ -307,7 +306,7 @@ function createBricks() {
       docFrag.appendChild(brick);
     }
     styleLeft = 20;
-    styleTop += 35;
+    styleTop += 55;
   }
 
   return docFrag;
@@ -322,12 +321,13 @@ function brickCollision() {
 
   for (let i = 0; i < gameBricks.length; i++) {
     const ballRect = ballDiv.getBoundingClientRect();
-
+    // console.log(Math.floor(ballRect.top))
     //bottom of brick collision
+
     if (
       ball.deltaY < 0 &&
       ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom &&
-      ballRect.top <= gameBricks[i].getBoundingClientRect().bottom &&
+      Math.floor(ballRect.top) <= gameBricks[i].getBoundingClientRect().bottom &&
       ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRadius * 2 &&
       ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRadius * 2
     ) {
@@ -353,9 +353,9 @@ function brickCollision() {
     } else if (
       ballRect.right > gameBricks[i].getBoundingClientRect().right &&
       ballRect.left <= gameBricks[i].getBoundingClientRect().right &&
-      ((ballRect.top < gameBricks[i].getBoundingClientRect().top && ballRect.bottom > gameBricks[i].getBoundingClientRect().top) ||
-        (ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom && ballRect.top < gameBricks[i].getBoundingClientRect().bottom))
-    ) {
+      ((ballRect.top > gameBricks[i].getBoundingClientRect().top - ball.radius && ballRect.bottom < gameBricks[i].getBoundingClientRect().bottom + ball.radius)
+      )) {
+      // (ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom +ballRadius * 2 && ballRect.top < gameBricks[i].getBoundingClientRect().bottom))
       console.log("hit right");
       gameBricks[i].remove();
       score += 1;
@@ -366,9 +366,10 @@ function brickCollision() {
     } else if (
       ballRect.left < gameBricks[i].getBoundingClientRect().left &&
       ballRect.right >= gameBricks[i].getBoundingClientRect().left &&
-      ((ballRect.top < gameBricks[i].getBoundingClientRect().top && ballRect.bottom > gameBricks[i].getBoundingClientRect().top) ||
-        (ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom && ballRect.top < gameBricks[i].getBoundingClientRect().bottom))
+      ((ballRect.top > gameBricks[i].getBoundingClientRect().top - ball.radius && ballRect.bottom < gameBricks[i].getBoundingClientRect().bottom + ball.radius)
+      )
     ) {
+      // (ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom && ballRect.top < gameBricks[i].getBoundingClientRect().bottom)
       console.log("hit left");
       gameBricks[i].remove();
       score += 1;
@@ -483,7 +484,7 @@ function youWin() {
 game_music.loop = true
 
 function gameLoop() {
-  game_music.play()
+  // game_music.play()
   if (title_started) {
     if (paused) {
       a = true;
