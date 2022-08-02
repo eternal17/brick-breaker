@@ -1,7 +1,7 @@
-import { ballDiv, ballRadius, game_started, ball} from "./game.js";
+import {   game_started, ball, gameCompStyles} from "./game.js";
 
+import{ballDiv, ballRadius} from "./ball.js"
 
-//gameBoard variables
 // gameboard variables
 const gameBoard = document.querySelector(".game-board");
 const gameBoardRect = gameBoard.getBoundingClientRect();
@@ -111,5 +111,20 @@ function padCollision() {
   }
   
 
+  
+//toggles boolean used within movePaddle function
+function movePaddleBool() {
+    document.addEventListener("keydown", function (event) {
+      const padRect = pad.getBoundingClientRect();
+      event.preventDefault();
+  
+      if (event.key == "ArrowRight" && padRect.right + parseInt(gameCompStyles.border) < gameBoardRect.right) {
+        paddle.right = true;
+      } else if (event.key == "ArrowLeft" && padRect.left - parseInt(gameCompStyles.border) > gameBoardRect.left) {
+        paddle.left = true;
+      }
+    });
+  }
 
-export{paddle, drawPaddle, movePaddle, padCollision, pad}
+
+export{paddle, drawPaddle, movePaddle, padCollision, pad, movePaddleBool, paddle_width, paddle_height}

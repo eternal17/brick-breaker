@@ -1,17 +1,13 @@
 
-import { paddle, drawPaddle, movePaddle, padCollision,pad} from "./paddle.js";
+import { paddle, drawPaddle, movePaddle, padCollision,pad, movePaddleBool} from "./paddle.js";
 
+import{ballDiv, ballRadius, ball, drawBall, moveBall, ballWallCollision} from "./ball.js"
 // gameboard variables
 const gameBoard = document.querySelector(".game-board");
 const gameBoardRect = gameBoard.getBoundingClientRect();
 const gameCompStyles = window.getComputedStyle(gameBoard);
 
 
-// ball variables
-const ballDiv = document.createElement("div");
-const ballRadius = 10;
-const defaultValue = "translate(0,0)";
-ballDiv.setAttribute("transform", defaultValue);
 
 //brick variables
 const brick = document.createElement("div");
@@ -49,91 +45,13 @@ let a = false;
 // sounds
 const win_sound = new Audio('./assets/gamewin1.mp3')
 const brick_collided_sound = new Audio('./assets/brickhit1.mp3')
-const life_lost_sound = new Audio('./assets/life-lost.mp3')
 const game_over_sound = new Audio('./assets/game-over.mp3')
 const game_music = new Audio('./assets/game-music.mp3')
 
 
 
-//toggles boolean used within movePaddle function
-function movePaddleBool() {
-  document.addEventListener("keydown", function (event) {
-    const padRect = pad.getBoundingClientRect();
-    event.preventDefault();
-
-    if (event.key == "ArrowRight" && padRect.right + parseInt(gameCompStyles.border) < gameBoardRect.right) {
-      paddle.right = true;
-    } else if (event.key == "ArrowLeft" && padRect.left - parseInt(gameCompStyles.border) > gameBoardRect.left) {
-      paddle.left = true;
-    }
-  });
-}
-
-const ball = {
-  x: gameBoardRect.width / 2 - ballRadius,
-  y: paddle.y - 2 * ballRadius,
-  // the speed value can eventually change
-  speed: 4,
-  radius: ballRadius,
-  // these are the properties that x and y change by.
-  deltaX: 4 * (Math.random() * 2 - 1),
-  deltaY: -4,
-};
-
-function drawBall() {
-  ballDiv.classList.add("ball");
-  ballDiv.style.top = ball.y + "px";
-  ballDiv.style.left = ball.x + "px";
-  ballDiv.style.height = "14px";
-  ballDiv.style.width = "14px";
-  ballDiv.style.borderRadius = "10px";
-  ballDiv.style.position = "absolute";
-  ballDiv.style.backgroundColor = "silver";
-  gameBoard.append(ballDiv);
-}
-
-function moveBall() {
-  ball.x += ball.deltaX
-  ball.y += ball.deltaY;
-}
 
 
-
-// CHECK WHY WE NEED THESE VARIABLES
-function ballWallCollision() {
-  //tried make the below two variables global but causes errors
-  const ballRect = ballDiv.getBoundingClientRect();
-  const padRect = pad.getBoundingClientRect();
-
-  // collided with right side
-  if (ballRect.right + parseInt(gameCompStyles.border) >= gameBoardRect.right) {
-    ball.deltaX = -Math.abs(ball.deltaX);
-  }
-  // collided with top
-  if (ballRect.top - parseInt(gameCompStyles.border) <= gameBoardRect.top) {
-    ball.deltaY = Math.abs(ball.deltaY);
-  }
-
-  // collided with left
-  if (ballRect.left - parseInt(gameCompStyles.border) <= gameBoardRect.left) {
-    ball.deltaX = Math.abs(ball.deltaX);
-  }
-
-  // if the ball hits goes past the paddle (i.e lose a life), all the logic for what happens should be here
-  if (ballRect.top > padRect.top) {
-    // reset the ball to middle of pad
-
-    ball.x = gameBoardRect.width / 2 - ballRadius;
-    ball.y = paddle.y - 2 * ballRadius;
-    ballDiv.style.transform = `translateX(${paddle.start}px)`;
-    maxlives -= 1;
-    if (maxlives !== 0) {
-      life_lost_sound.play()
-    }
-    livesbox.innerHTML = "&#10084".repeat(maxlives);
-    game_started = false;
-  }
-}
 
 //brick variables
 const brick_width = 60;
@@ -442,4 +360,4 @@ function gameLoop() {
 
 requestAnimationFrame(gameLoop);
 
-export{ballDiv, ballRadius, game_started, ball}
+export{  game_started, ball, gameCompStyles}
