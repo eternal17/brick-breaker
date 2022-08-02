@@ -1,7 +1,7 @@
 
-import { paddle, drawPaddle, movePaddle, padCollision,pad, movePaddleBool} from "./paddle.js";
+import {  drawPaddle, movePaddle, padCollision,pad, movePaddleBool} from "./paddle.js";
 
-import{ballDiv, ballRadius, ball, drawBall, moveBall, ballWallCollision} from "./ball.js"
+import{ballDiv, ballRadius, ball, drawBall, moveBall, ballWallCollision, game_started, maxlives} from "./ball.js"
 // gameboard variables
 const gameBoard = document.querySelector(".game-board");
 const gameBoardRect = gameBoard.getBoundingClientRect();
@@ -15,7 +15,7 @@ const docFrag = document.createDocumentFragment();
 const titleFrag = document.createDocumentFragment();
 
 //game start boolean/title screen
-let game_started = false;
+
 const titleDiv = document.querySelector(".title-screen");
 let title_started = false
 
@@ -26,10 +26,8 @@ let scoreboard = document.querySelector(".scoreboard");
 let score = 0;
 
 //lives
-let maxlives = 3;
 let livesComp = 2;
-let livesbox = document.querySelector(".lives");
-livesbox.innerHTML = "&#10084".repeat(maxlives);
+
 
 //pause state
 let paused = false;
@@ -47,8 +45,6 @@ const win_sound = new Audio('./assets/gamewin1.mp3')
 const brick_collided_sound = new Audio('./assets/brickhit1.mp3')
 const game_over_sound = new Audio('./assets/game-over.mp3')
 const game_music = new Audio('./assets/game-music.mp3')
-
-
 
 
 
@@ -141,6 +137,7 @@ function drawBricks() {
   gameBoard.appendChild(brickFrags);
 }
 
+
 function brickCollision() {
   let gameBricks = document.getElementsByClassName("brick");
 
@@ -230,7 +227,7 @@ window.addEventListener("keydown", function (e) {
 window.addEventListener("keydown", function (e) {
   e.preventDefault();
   if (title_started) {
-    if (e.code === "Space") game_started = true;
+    if (e.code === "Space") game_started.a = true;
 
   }
 });
@@ -301,7 +298,7 @@ function youWin() {
       }
     });
     // to stop the ball from moving
-    game_started = false;
+    game_started.a = false;
   }
 }
 
@@ -323,7 +320,7 @@ function gameLoop() {
     }
 
     //out of bounds/deadball, psuedo-stops timer
-    if (game_started && maxlives == livesComp) {
+    if (game_started.a && maxlives == livesComp) {
       livesComp--;
       firstTime = performance.now() / 1000;
     }
@@ -335,7 +332,7 @@ function gameLoop() {
     movePaddle();
     timeDiv.innerHTML = `${timer}s`
 
-    if (game_started) {
+    if (game_started.a) {
       moveBall();
       updateTime(performance.now() / 1000);
 
@@ -360,4 +357,4 @@ function gameLoop() {
 
 requestAnimationFrame(gameLoop);
 
-export{  game_started, ball, gameCompStyles}
+export{   ball, gameCompStyles, maxlives}

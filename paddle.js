@@ -1,6 +1,6 @@
-import {   game_started, ball, gameCompStyles} from "./game.js";
+import {    ball, gameCompStyles} from "./game.js";
 
-import{ballDiv, ballRadius} from "./ball.js"
+import{game_started,ballDiv, ballRadius} from "./ball.js"
 
 // gameboard variables
 const gameBoard = document.querySelector(".game-board");
@@ -56,7 +56,7 @@ function movePaddle() {
         paddle.start += gameBoardRect.right - padRect.right;
       }
   
-      if (!game_started) {
+      if (!game_started.a) {
         ballDiv.style.transform = `translateX(${paddle.start}px)`;
         pad.style.transform = `translateX(${paddle.start}px)`;
         paddle.right = false;
@@ -72,7 +72,7 @@ function movePaddle() {
       } else {
         paddle.start -= padRect.left - gameBoardRect.left;
       }
-      if (!game_started) {
+      if (!game_started.a) {
         ballDiv.style.transform = `translate(${paddle.start}px)`;
         pad.style.transform = `translate(${paddle.start}px)`;
         paddle.left = false;
@@ -93,7 +93,7 @@ function padCollision() {
     if (ballRect.x < padRect.x + padRect.width && ballRect.x + ballRadius * 2 > padRect.x && ballRect.bottom >= padRect.top && ball.deltaY > 0) {
   
       // play sound
-      if (game_started) {
+      if (game_started.a) {
         paddle_hit_sound.play()
       }
       // CHECK WHERE THE ballRect HIT THE PADDLE

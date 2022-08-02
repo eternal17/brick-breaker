@@ -14,6 +14,9 @@ const paddle_height = 20;
 //sounds
 const life_lost_sound = new Audio('./assets/life-lost.mp3')
 
+//game started
+let game_started= { a: false};
+
 //paddle
 let paddle = {
     // start is used to track the translated values
@@ -27,6 +30,12 @@ let paddle = {
     right: false,
     left: false,
   };
+
+  //lives
+  let maxlives = 3;
+  let livesbox = document.querySelector(".lives");
+livesbox.innerHTML = "&#10084".repeat(maxlives);
+
 
   
 
@@ -101,8 +110,8 @@ function ballWallCollision() {
         life_lost_sound.play()
       }
       livesbox.innerHTML = "&#10084".repeat(maxlives);
-      game_started = false;
+      game_started.a = false;
     }
   }
 
-export{ballDiv, ballRadius, ball, drawBall, moveBall, ballWallCollision}
+export{ballDiv, ballRadius, ball, drawBall, moveBall, ballWallCollision,maxlives, game_started}
