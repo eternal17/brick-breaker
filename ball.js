@@ -1,5 +1,5 @@
 
-import { pad } from "./paddle.js";
+import { pad, pad_start } from "./paddle.js";
 import { gameCompStyles } from "./game.js";
 
 // gameboard variables
@@ -18,18 +18,9 @@ const life_lost_sound = new Audio('./assets/life-lost.mp3')
 let game_started= { a: false};
 
 //paddle
-let paddle = {
-    // start is used to track the translated values
-    start: 0,
-    x: gameBoardRect.width / 2 - paddle_width / 2,
-    // y value is the top left corner value of the paddle
-    y: gameBoardRect.height - paddle_margin_bottom - paddle_height,
-    width: paddle_width,
-    height: paddle_height,
-    xMovement: 20,
-    right: false,
-    left: false,
-  };
+let pad_y = gameBoardRect.height - paddle_margin_bottom - paddle_height;
+
+
 
   //lives
   let maxlives = 3;
@@ -47,7 +38,7 @@ ballDiv.setAttribute("transform", defaultValue);
 
 const ball = {
     x: gameBoardRect.width / 2 - ballRadius,
-    y: paddle.y - 2 * ballRadius,
+    y: pad_y - 2 * ballRadius,
     // the speed value can eventually change
     speed: 4,
     radius: ballRadius,
@@ -103,8 +94,9 @@ function ballWallCollision() {
       // reset the ball to middle of pad
   
       ball.x = gameBoardRect.width / 2 - ballRadius;
-      ball.y = paddle.y - 2 * ballRadius;
-      ballDiv.style.transform = `translateX(${paddle.start}px)`;
+      ball.y = pad_y - 2 * ballRadius;
+      // console.log(paddle.start);
+      ballDiv.style.transform = `translateX(${pad_start.a}px)`;
       maxlives -= 1;
       if (maxlives !== 0) {
         life_lost_sound.play()

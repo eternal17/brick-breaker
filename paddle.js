@@ -18,10 +18,11 @@ const padCompStyles = window.getComputedStyle(pad);
 //sound
 const paddle_hit_sound = new Audio('./assets/paddlehit.mp3')
 
+// start is used to track the translated values
+let pad_start = {a:0}
 
 let paddle = {
-  // start is used to track the translated values
-  start: 0,
+
   x: gameBoardRect.width / 2 - paddle_width / 2,
   // y value is the top left corner value of the paddle
   y: gameBoardRect.height - paddle_margin_bottom - paddle_height,
@@ -31,6 +32,8 @@ let paddle = {
   right: false,
   left: false,
 };
+
+
 
 // draw paddle
 function drawPaddle() {
@@ -51,34 +54,34 @@ function movePaddle() {
   
     if (paddle.right) {
       if (padRect.right + paddle.xMovement <= gameBoardRect.right) {
-        paddle.start += paddle.xMovement;
+        pad_start.a += paddle.xMovement;
       } else {
-        paddle.start += gameBoardRect.right - padRect.right;
+        pad_start.a += gameBoardRect.right - padRect.right;
       }
   
       if (!game_started.a) {
-        ballDiv.style.transform = `translateX(${paddle.start}px)`;
-        pad.style.transform = `translateX(${paddle.start}px)`;
+        ballDiv.style.transform = `translateX(${pad_start.a}px)`;
+        pad.style.transform = `translateX(${pad_start.a}px)`;
         paddle.right = false;
       }
   
-      pad.style.transform = `translate(${paddle.start}px)`;
+      pad.style.transform = `translate(${pad_start.a}px)`;
       paddle.right = false;
     }
   
     if (paddle.left) {
       if (padRect.left - paddle.xMovement >= gameBoardRect.left) {
-        paddle.start -= paddle.xMovement;
+        pad_start.a -= paddle.xMovement;
       } else {
-        paddle.start -= padRect.left - gameBoardRect.left;
+        pad_start.a -= padRect.left - gameBoardRect.left;
       }
       if (!game_started.a) {
-        ballDiv.style.transform = `translate(${paddle.start}px)`;
-        pad.style.transform = `translate(${paddle.start}px)`;
+        ballDiv.style.transform = `translate(${pad_start.a}px)`;
+        pad.style.transform = `translate(${pad_start.a}px)`;
         paddle.left = false;
       }
   
-      pad.style.transform = `translate(${paddle.start}px)`;
+      pad.style.transform = `translate(${pad_start.a}px)`;
       paddle.left = false;
     }
   }
@@ -127,4 +130,4 @@ function movePaddleBool() {
   }
 
 
-export{paddle, drawPaddle, movePaddle, padCollision, pad, movePaddleBool, paddle_width, paddle_height}
+export{paddle, drawPaddle, movePaddle, padCollision, pad, movePaddleBool, paddle_width, paddle_height, pad_start  }
