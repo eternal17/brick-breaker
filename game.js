@@ -78,19 +78,25 @@ window.addEventListener("keydown", function (e) {
 
 //title screen
 
-
-window.addEventListener("keydown", function (title) {
+function enterGame(title){
   title.preventDefault();
   if (title.code === "Enter") {
+    console.log('hiiii');
     titleDiv.style.display = 'none'
     title_started = true
     requestAnimationFrame(gameLoop);
 
-    this.removeEventListener("keydown", title)
+    window.removeEventListener("keydown", enterGame)
 
   }
 
-});
+
+}
+
+
+window.addEventListener("keydown", enterGame)
+
+
 
 
 
