@@ -81,7 +81,6 @@ window.addEventListener("keydown", function (e) {
 function enterGame(title){
   title.preventDefault();
   if (title.code === "Enter") {
-    console.log('hiiii');
     titleDiv.style.display = 'none'
     title_started = true
     requestAnimationFrame(gameLoop);
@@ -153,6 +152,9 @@ function youWin() {
 
 // for the game music to keep playing 
 game_music.loop = true
+
+
+
 
 function gameLoop() {
   // game_music.play()

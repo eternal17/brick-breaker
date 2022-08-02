@@ -36,6 +36,8 @@ const ballRadius = 10;
 const defaultValue = "translate(0,0)";
 ballDiv.setAttribute("transform", defaultValue);
 
+
+
 const ball = {
     x: gameBoardRect.width / 2 - ballRadius,
     y: pad_y - 2 * ballRadius,
@@ -93,6 +95,7 @@ function ballWallCollision() {
     if (ballRect.top > padRect.top) {
       // reset the ball to middle of pad
   
+
       ball.x = gameBoardRect.width / 2 - ballRadius;
       ball.y = pad_y - 2 * ballRadius;
       // console.log(paddle.start);
