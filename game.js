@@ -156,20 +156,24 @@ function youWin() {
 
 
 game_music.loop = true
-game_music.play()
+// game_music.play()
+
+let music = true
 
 
 function game_music_toggle() {
   let sound_div = document.getElementById('sound')
   console.log(sound_div)
   if (!game_music.paused) {
+    music = false
     sound_div.classList.remove('fa-volume-high')
     sound_div.classList.add('fa-volume-xmark')
-    game_music.pause()
+    //game_music.pause()
   } else {
+    music = true
     sound_div.classList.remove('fa-volume-xmark')
     sound_div.classList.add('fa-volume-high')
-    game_music.play()
+   // game_music.play()
   }
 
 }
@@ -183,6 +187,9 @@ window.addEventListener('keydown', e => {
 
 function gameLoop() {
 
+  if(music)game_music.play()
+  if(!music)game_music.pause()
+  
   if (title_started) {
     if (paused) {
       a = true;
