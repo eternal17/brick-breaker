@@ -1,9 +1,9 @@
 
-import {  drawPaddle, movePaddle, padCollision,pad, movePaddleBool} from "./paddle.js";
+import { drawPaddle, movePaddle, padCollision, pad, movePaddleBool } from "./paddle.js";
 
-import{ballDiv, ballRadius, ball, drawBall, moveBall, ballWallCollision, game_started, maxlives} from "./ball.js"
+import { ballDiv, ballRadius, ball, drawBall, moveBall, ballWallCollision, game_started, maxlives } from "./ball.js"
 
-import { docFrag, titleFrag, createBricks, drawBricks, titleBricks, bricksToTitle, titleDiv, brickCollision, score} from "./bricks.js";
+import { docFrag, titleFrag, createBricks, drawBricks, titleBricks, bricksToTitle, titleDiv, brickCollision, score } from "./bricks.js";
 
 
 // gameboard variables
@@ -78,7 +78,7 @@ window.addEventListener("keydown", function (e) {
 
 //title screen
 
-function enterGame(title){
+function enterGame(title) {
   title.preventDefault();
   if (title.code === "Enter") {
     titleDiv.style.display = 'none'
@@ -151,13 +151,38 @@ function youWin() {
 }
 
 // for the game music to keep playing 
-game_music.loop = true
 
+// game music function
+
+
+game_music.loop = true
+game_music.play()
+
+
+function game_music_toggle() {
+  let sound_div = document.getElementById('sound')
+  console.log(sound_div)
+  if (!game_music.paused) {
+    sound_div.classList.remove('fa-volume-high')
+    sound_div.classList.add('fa-volume-xmark')
+    game_music.pause()
+  } else {
+    sound_div.classList.remove('fa-volume-xmark')
+    sound_div.classList.add('fa-volume-high')
+    game_music.play()
+  }
+
+}
+window.addEventListener('keydown', e => {
+  if (e.code === "KeyM") {
+    game_music_toggle()
+  }
+})
 
 
 
 function gameLoop() {
-  // game_music.play()
+
   if (title_started) {
     if (paused) {
       a = true;
@@ -208,4 +233,4 @@ function gameLoop() {
 
 requestAnimationFrame(gameLoop);
 
-export{   ball, gameCompStyles, maxlives}
+export { ball, gameCompStyles, maxlives }

@@ -40,13 +40,20 @@ body {
     font-size: 26px;
     border: 5px solid rgb(32, 32, 158);
     background-color: rgb(10, 10, 10);
-    font-family: 'Press Start 2P', cursive;
 
 }
 
+.time {
+    font-family: 'Press Start 2P', cursive;
+}
+
+.scoreboard {
+    font-family: 'Press Start 2P', cursive;
+}
+
+
 .lives {
     color: red;
-
 }
 
 
@@ -122,3 +129,9 @@ body {
 
     z-index: -1;
 }
+
+/* .sound img {
+    background: red;
+    border: none;
+    width: 96%;
+} */
