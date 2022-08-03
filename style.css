@@ -15,6 +15,7 @@ body {
     border: 5px solid rgb(32, 32, 158);
     position: absolute;
     background-color: rgb(10, 10, 10);
+    opacity: 0;
 
 }
 

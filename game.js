@@ -212,6 +212,8 @@ function gameLoop() {
   if(!music)game_music.pause()
   
   if (title_started) {
+    gameBoard.style.opacity = 1
+    
     if (paused) {
       a = true;
       return;
