@@ -7,6 +7,7 @@ const titleDiv = document.querySelector(".title-screen");
 //score
 let score = 0;
 
+
 //sounds
 const brick_collided_sound = new Audio('./assets/brickhit1.mp3')
 
@@ -121,8 +122,7 @@ function brickCollision() {
   
     for (let i = 0; i < gameBricks.length; i++) {
       const ballRect = ballDiv.getBoundingClientRect();
-      // console.log(Math.floor(ballRect.top))
-      //bottom of brick collision
+  
   
       if (
         ball.deltaY < 0 &&
@@ -131,7 +131,7 @@ function brickCollision() {
         ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRadius * 2 &&
         ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRadius * 2
       ) {
-        console.log("hit bottom");
+        
         score += 1;
         gameBricks[i].remove();
         ball.deltaY = Math.abs(ball.deltaY);
@@ -144,7 +144,7 @@ function brickCollision() {
         ballRect.left > gameBricks[i].getBoundingClientRect().left - ballRadius * 2 &&
         ballRect.right < gameBricks[i].getBoundingClientRect().right + ballRadius * 2
       ) {
-        console.log("hit top");
+
         score += 1;
         gameBricks[i].remove();
         ball.deltaY = -Math.abs(ball.deltaY);
@@ -155,11 +155,11 @@ function brickCollision() {
         ballRect.left <= gameBricks[i].getBoundingClientRect().right &&
         ((ballRect.top > gameBricks[i].getBoundingClientRect().top - ball.radius && ballRect.bottom < gameBricks[i].getBoundingClientRect().bottom + ball.radius)
         )) {
-        // (ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom +ballRadius * 2 && ballRect.top < gameBricks[i].getBoundingClientRect().bottom))
-        console.log("hit right");
+    
+
         gameBricks[i].remove();
         score += 1;
-        console.log("right1", ball.deltaX);
+
         ball.deltaX = Math.abs(ball.deltaX);
         brick_collided_sound.play()
         //left of brick collision
@@ -170,7 +170,6 @@ function brickCollision() {
         )
       ) {
         // (ballRect.bottom > gameBricks[i].getBoundingClientRect().bottom && ballRect.top < gameBricks[i].getBoundingClientRect().bottom)
-        console.log("hit left");
         gameBricks[i].remove();
         score += 1;
         ball.deltaX = -Math.abs(ball.deltaX);

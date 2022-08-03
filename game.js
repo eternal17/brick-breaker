@@ -1,9 +1,9 @@
 
-import { drawPaddle, movePaddle, padCollision, pad, movePaddleBool } from "./paddle.js";
+import { drawPaddle, movePaddle, padCollision, movePaddleBool } from "./paddle.js";
 
-import { ballDiv, ballRadius, ball, drawBall, moveBall, ballWallCollision, game_started, maxlives } from "./ball.js"
+import {  ball, drawBall, moveBall, ballWallCollision, game_started, maxlives } from "./ball.js"
 
-import { docFrag, titleFrag, createBricks, drawBricks, titleBricks, bricksToTitle, titleDiv, brickCollision, score } from "./bricks.js";
+import {  drawBricks, bricksToTitle, titleDiv, brickCollision, score } from "./bricks.js";
 
 
 // gameboard variables
@@ -40,6 +40,12 @@ let a = false;
 const win_sound = new Audio('./assets/gamewin1.mp3')
 const game_over_sound = new Audio('./assets/game-over.mp3')
 const game_music = new Audio('./assets/game-music.mp3')
+
+//score
+let heartPoints = 0
+let timePoints = 0
+let finalscore = 0
+
 
 
 
@@ -115,10 +121,11 @@ function gameOver() {
   const youLoseDiv = document.querySelector("#game-over");
   let scoreSpan = document.querySelector("#final-score");
   if (maxlives === 0) {
+
     game_over = true;
     game_over_sound.play()
     youLoseDiv.style.display = "flex";
-    scoreSpan.innerHTML = `Score:${score}`;
+    scoreSpan.innerHTML = `Score:${finalscore}`;
     window.addEventListener("keydown", (e) => {
       if (e.code === "KeyR") {
         window.location.reload("true");
@@ -135,10 +142,18 @@ function youWin() {
   let secondsSpan = document.querySelector("#time");
 
   if (gameBricks.length == 0) {
+
+    heartPoints = maxlives * 30
+    if(timer < 60) {
+      timePoints = (60 - timer) * 7
+    }
+    
+    finalscore += score + heartPoints + timePoints
+
     win_sound.play()
     paused = true
     youWinDiv.style.display = "flex";
-    scoreSpan.innerHTML = `Score:${score}`;
+    scoreSpan.innerHTML = `Score:${finalscore}`;
     secondsSpan.innerHTML = `Time:${timer}s`;
     window.addEventListener("keydown", (e) => {
       if (e.code === "KeyR") {
@@ -163,7 +178,6 @@ let music = true
 
 function game_music_toggle() {
   let sound_div = document.getElementById('sound')
-  console.log(sound_div)
   if (!game_music.paused) {
     music = false
     sound_div.classList.remove('fa-volume-high')

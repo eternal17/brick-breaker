@@ -110,6 +110,7 @@ function padCollision() {
   
       ball.deltaX = ball.speed * Math.sin(angle);
       ball.deltaY = -ball.speed * Math.cos(angle);
+      ball.speed *= 1.05
     }
   }
   
