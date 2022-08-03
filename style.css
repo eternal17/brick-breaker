@@ -58,7 +58,7 @@ body {
 
 
 #pauseDiv {
-    top: 45%;
+    top: 33%;
     left: 10%;
     width: 80%;
     height: 25%;
@@ -70,12 +70,13 @@ body {
     display: none;
     flex-direction: column;
     border: 5px solid rgb(32, 32, 158);
-
+    z-index: 1;
+    background-color: black;
 }
 
 #game-over {
     position: absolute;
-    top: 45%;
+    top: 33%;
     left: 25%;
     width: 50%;
     height: 20%;
@@ -86,14 +87,15 @@ body {
     flex-direction: column;
     border: 2px solid rgb(32, 32, 158);
     justify-content: space-evenly;
-
+    background-color: black;
+    z-index: 1;
 }
 
 
 
 #you-win {
     position: absolute;
-    top: 32%;
+    top: 33%;
     left: 25%;
     width: 50%;
     height: 30%;
@@ -104,7 +106,8 @@ body {
     flex-direction: column;
     border: 2px solid rgb(32, 32, 158);
     justify-content: space-evenly;
-
+    background-color: black;
+    z-index: 1;
 }
 
 .title-screen {
