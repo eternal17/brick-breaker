@@ -122,16 +122,26 @@ function gameOver() {
   let scoreSpan = document.querySelector("#final-score");
   if (maxlives === 0) {
 
+    finalscore = 
     game_over = true;
     game_over_sound.play()
     youLoseDiv.style.display = "flex";
-    scoreSpan.innerHTML = `Score:${finalscore}`;
+    scoreSpan.innerHTML = `Score:${score}`;
     window.addEventListener("keydown", (e) => {
       if (e.code === "KeyR") {
         window.location.reload("true");
       }
     });
   }
+}
+
+function final_score(){
+  heartPoints = maxlives * 30
+    if(timer < 60) {
+      timePoints = (60 - timer) * 7
+    }
+    
+    return score + heartPoints + timePoints
 }
 
 // When no bricks left, display you win div
@@ -142,13 +152,10 @@ function youWin() {
   let secondsSpan = document.querySelector("#time");
 
   if (gameBricks.length == 0) {
+  
+    finalscore = final_score()
 
-    heartPoints = maxlives * 30
-    if(timer < 60) {
-      timePoints = (60 - timer) * 7
-    }
-    
-    finalscore += score + heartPoints + timePoints
+  
 
     win_sound.play()
     paused = true
