@@ -1,4 +1,4 @@
-<h1 align="left">Brick-Breaker</h1>
+<h1>Brick-Breaker</h1>
 
 A simple take on the classic Brick-Breaker game using vanilla JS. 
 
